@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. データの扱い方 &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="4. Work with Compute" href="03_Work%20with%20compute.html" />
+    <link rel="prev" title="2. Python SDKを使用したトレーニングスクリプトの実行" href="01_Run%20training%20script.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. データの扱い方</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">3.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">3.2. Connect to your workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#List-the-datastores">3.3. List the datastores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-a-datastore">3.4. Create a datastore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-data-assets">3.5. Create data assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Read-data-in-notebook">3.6. Read data in notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ノートブックでデータを読む">3.7. ノートブックでデータを読む</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Use-data-in-a-job">3.8. Use data in a job</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>データの扱い方</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/02_Work with data (1).ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="データの扱い方">
+<h1><span class="section-number">3. </span>データの扱い方<a class="headerlink" href="#データの扱い方" title="この見出しへのパーマリンク"></a></h1>
+<p>データは機械学習モデルを構築する基盤です。データをクラウドで一元管理し、複数のワークステーションやコンピュートターゲットで実験やトレーニングモデルを実行するデータサイエンティストのチームがアクセスできるようにすることは、プロフェッショナルなデータサイエンスソリューションの重要な部分です。</p>
+<p>このノートブックでは、データを扱うための2つのAzure Machine Learningオブジェクトについて説明します： <em>データストア</em>と<em>データアセット</em>です。</p>
+<section id="始める前に">
+<h2><span class="section-number">3.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<blockquote>
+<div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="Connect-to-your-workspace">
+<h2><span class="section-number">3.2. </span>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="List-the-datastores">
+<h2><span class="section-number">3.3. </span>List the datastores<a class="headerlink" href="#List-the-datastores" title="この見出しへのパーマリンク"></a></h2>
+<p>Azure Machine Learning ワークスペースを作成すると、Azure Storage Account も作成される。Storage Account には Blob ストレージとファイル ストレージが含まれ、自動的に <strong>datastores</strong> としてワークスペースに接続される。ワークスペースに接続されているすべてのデータストアを一覧できます：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">datastores</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="n">stores</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ds_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+azureml_globaldatasets
+workspaceartifactstore
+workspaceworkingdirectory
+workspacefilestore
+workspaceblobstore
+</pre></div></div>
+</div>
+<p>workspaceblobstore<code class="docutils literal notranslate"><span class="pre">は、先ほど説明した**azureml-blobstore-...**コンテナに接続していることに注意してください。workspacefilestore</span></code>は<strong>code-…</strong>ファイル共有に接続する。</p>
+</section>
+<section id="Create-a-datastore">
+<h2><span class="section-number">3.4. </span>Create a datastore<a class="headerlink" href="#Create-a-datastore" title="この見出しへのパーマリンク"></a></h2>
+<p>別の Azure ストレージサービスと Azure Machine Learning ワークスペースを接続したい場合は、いつでもデータストアを作成できる。データストアを作成すると、ワークスペースとストレージ間の接続が作成され、ストレージサービス自体は作成されないことに注意してください。</p>
+<p>データストアを作成し、（既に存在する）ストレージに接続するには、以下のように指定する必要がある：</p>
+<ul class="simple">
+<li><p>接続したいストレージサービスのタイプを示すクラス。以下の例では Blob ストレージ (<code class="docutils literal notranslate"><span class="pre">AzureBlobDatastore</span></code>) に接続しています。</p></li>
+<li><p>name`： Azure Machine Learning ワークスペースのデータストアの表示名。</p></li>
+<li><p>description`： データストアの詳細情報を提供するためのオプションの説明。</p></li>
+<li><p>アカウント名`： Azure Storage Account の名前。</p></li>
+<li><p>コンテナ名`： Azure Storage Account で blob を保存するコンテナの名前。</p></li>
+<li><p>認証情報`： 認証方法と認証するための認証情報を指定する。以下の例では、アカウントキーを使用している。</p></li>
+</ul>
+<p><strong>重要</strong>： - YOUR-STORAGE-ACCOUNT-NAME** は、自動的に作成されたストレージアカウント名に置き換えます。 - account_key`の <strong>XXXX-XXXX</strong> は、Azure ストレージアカウントのアカウントキーに置き換えます。</p>
+<p>アカウントキーは、<a class="reference external" href="https://portal.azure.com">Azure ポータル</a> に移動して、ストレージアカウントに移動し、<strong>Access keys</strong> タブから、key1 または key2 の <strong>Key</strong> 値をコピーすることで取得できます。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">AzureBlobDatastore</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">AccountKeyConfiguration</span>
+
+<span class="n">store</span> <span class="o">=</span> <span class="n">AzureBlobDatastore</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;blob_training_data&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Blob Storage for training data&quot;</span><span class="p">,</span>
+    <span class="n">account_name</span><span class="o">=</span><span class="s2">&quot;koikedemo9278802619&quot;</span><span class="p">,</span>
+    <span class="n">container_name</span><span class="o">=</span><span class="s2">&quot;training-data&quot;</span><span class="p">,</span>
+    <span class="n">credentials</span><span class="o">=</span><span class="n">AccountKeyConfiguration</span><span class="p">(</span>
+        <span class="n">account_key</span><span class="o">=</span><span class="s2">&quot;fs+LwdO38ZxW2qoB2yG6JUzeqNQ/3F6xUbTmm08ACN5aIYhoBBDjYAO4Hk4unzmUcSIjYsO3xEne+AStvEqEqA==&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AzureBlobDatastore({&#39;type&#39;: &lt;DatastoreType.AZURE_BLOB: &#39;AzureBlob&#39;&gt;, &#39;name&#39;: &#39;blob_training_data&#39;, &#39;description&#39;: &#39;Blob Storage for training data&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/datastores/blob_training_data&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/03&#39;, &#39;creation_context&#39;: None, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f4b46e2f6d0&gt;, &#39;credentials&#39;: &lt;azure.ai.ml.entities._credentials.NoneCredentialConfiguration object at 0x7f4b5e9fbeb0&gt;, &#39;container_name&#39;: &#39;training-data&#39;, &#39;account_name&#39;: &#39;koikedemo9278802619&#39;, &#39;endpoint&#39;: &#39;core.windows.net&#39;, &#39;protocol&#39;: &#39;https&#39;})
+</pre></div></div>
+</div>
+<p>データストアをもう一度リストアップして、<code class="docutils literal notranslate"><span class="pre">blob_training_data</span></code>という名前の新しいデータストアが作成されていることを確認します：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">datastores</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="n">stores</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ds_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+blob_training_data
+azureml_globaldatasets
+workspaceartifactstore
+workspaceworkingdirectory
+workspacefilestore
+workspaceblobstore
+</pre></div></div>
+</div>
+</section>
+<section id="Create-data-assets">
+<h2><span class="section-number">3.5. </span>Create data assets<a class="headerlink" href="#Create-data-assets" title="この見出しへのパーマリンク"></a></h2>
+<p>データストア内の特定のフォルダやファイルを指定するには、データアセットを作成します。データアセットには3つのタイプがあります：</p>
+<ul class="simple">
+<li><p>URI_FILE` は特定のファイルを指す。</p></li>
+<li><p>URI_FOLDER` は特定のフォルダを指す。</p></li>
+<li><p>MLTABLE` は MLTable ファイルを指し、フォルダ内の 1 つまたは複数のファイルの読み取り方法を指定する。</p></li>
+</ul>
+<p>この3つのタイプのデータ資産をすべて作成し、それぞれの違いを体験してください。</p>
+<p>URI_FILE` データアセットを作成するには、特定のファイルを指すパスを指定する必要があります。パスはローカルパスでもクラウドパスでもかまいません。</p>
+<p>以下の例では、<em>ローカル</em>パスを参照してデータアセットを作成します。Azure Machine Learningワークスペースで作業するときにデータが常に利用できるように、ローカルファイルはデフォルトのデータストアに自動的にアップロードされます。この場合、<code class="docutils literal notranslate"><span class="pre">diabetes.csv</span></code> ファイルは、<strong>workspaceblobstore</strong> データストアの <strong>LocalUpload</strong> フォルダにアップロードされます。</p>
+<p>ローカルファイルからデータアセットを作成するには、以下のセルを実行します：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">my_path</span> <span class="o">=</span> <span class="s1">&#39;./data/diabetes.csv&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">my_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FILE</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data asset pointing to a local file, automatically uploaded to the default datastore&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;diabetes-local&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading diabetes.csv</span><span class="ansi-green-fg"> (&lt; 1 MB): 100%|██████████| 518k/518k [00:00&lt;00:00, 10.3MB/s]
+</span>
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Data({&#39;path&#39;: &#39;azureml://subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo/datastores/workspaceblobstore/paths/LocalUpload/d52d15a0d7d1e95b90a03f146099424a/diabetes.csv&#39;, &#39;skip_validation&#39;: False, &#39;mltable_schema_url&#39;: None, &#39;referenced_uris&#39;: None, &#39;type&#39;: &#39;uri_file&#39;, &#39;is_anonymous&#39;: False, &#39;auto_increment_version&#39;: False, &#39;auto_delete_setting&#39;: None, &#39;name&#39;: &#39;diabetes-local&#39;, &#39;description&#39;: &#39;Data asset pointing to a local file, automatically uploaded to the default datastore&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/data/diabetes-local/versions/1&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/03&#39;, &#39;creation_context&#39;: &lt;azure.ai.ml.entities._system_data.SystemData object at 0x7f4b46e56800&gt;, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f4b46e56cb0&gt;, &#39;version&#39;: &#39;1&#39;, &#39;latest_version&#39;: None, &#39;datastore&#39;: None})
+</pre></div></div>
+</div>
+<p>URI_FOLDER` データアセットを作成するには、特定のフォルダを指すパスを指定する必要があります。パスはローカルパスでもクラウドパスでもかまいません。</p>
+<p>以下の例では、<em>クラウド</em>パスを参照してデータアセットを作成します。パスはまだ存在する必要はありません。フォルダは、データがパスにアップロードされたときに作成されます。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">datastore_path</span> <span class="o">=</span> <span class="s1">&#39;azureml://datastores/blob_training_data/paths/data-asset-path/&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">datastore_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data asset pointing to data-asset-path folder in datastore&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;diabetes-datastore-path&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Data({&#39;path&#39;: &#39;azureml://subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo/datastores/blob_training_data/paths/data-asset-path/&#39;, &#39;skip_validation&#39;: False, &#39;mltable_schema_url&#39;: None, &#39;referenced_uris&#39;: None, &#39;type&#39;: &#39;uri_folder&#39;, &#39;is_anonymous&#39;: False, &#39;auto_increment_version&#39;: False, &#39;auto_delete_setting&#39;: None, &#39;name&#39;: &#39;diabetes-datastore-path&#39;, &#39;description&#39;: &#39;Data asset pointing to data-asset-path folder in datastore&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/data/diabetes-datastore-path/versions/1&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/03&#39;, &#39;creation_context&#39;: &lt;azure.ai.ml.entities._system_data.SystemData object at 0x7f4b46ed3c10&gt;, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f4b46ed27d0&gt;, &#39;version&#39;: &#39;1&#39;, &#39;latest_version&#39;: None, &#39;datastore&#39;: None})
+</pre></div></div>
+</div>
+<p>MLTable`データ資産を作成するには、MLTableファイルを含むフォルダを指すパスを指定する必要があります。パスはローカルパスでもクラウドパスでもかまいません。</p>
+<blockquote>
+<div><p>注**： MLTable<code class="docutils literal notranslate"><span class="pre">ファイルを</span></code>MLTable.yaml<code class="docutils literal notranslate"><span class="pre">や</span></code>MLTable.yml<code class="docutils literal notranslate"><span class="pre">にリネームしないでください。Azure</span> <span class="pre">の機械学習では、</span></code>MLTable` ファイルが必要です。</p>
+</div></blockquote>
+<p>以下の例では、MLTable と CSV ファイルを含む <em>ローカル</em> パスを参照してデータアセットを作成します。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;data/&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">local_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLTABLE</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;MLTable pointing to diabetes.csv in data folder&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;diabetes-table&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading data (0.52 MBs): 100%|██████████| 518211/518211 [00:00&lt;00:00, 19717817.60it/s]
+</span>
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Data({&#39;path&#39;: &#39;azureml://subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo/datastores/workspaceblobstore/paths/LocalUpload/45c4bb11b5759d37974b72b7b978482e/data/&#39;, &#39;skip_validation&#39;: False, &#39;mltable_schema_url&#39;: None, &#39;referenced_uris&#39;: [&#39;./diabetes.csv&#39;], &#39;type&#39;: &#39;mltable&#39;, &#39;is_anonymous&#39;: False, &#39;auto_increment_version&#39;: False, &#39;auto_delete_setting&#39;: None, &#39;name&#39;: &#39;diabetes-table&#39;, &#39;description&#39;: &#39;MLTable pointing to diabetes.csv in data folder&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/data/diabetes-table/versions/1&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/03&#39;, &#39;creation_context&#39;: &lt;azure.ai.ml.entities._system_data.SystemData object at 0x7f4b46ed4670&gt;, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f4b46ed7ee0&gt;, &#39;version&#39;: &#39;1&#39;, &#39;latest_version&#39;: None, &#39;datastore&#39;: None})
+</pre></div></div>
+</div>
+<p>To verify that the new data assets have been created, you can list all data assets in the workspace again:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datasets</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ds_name</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+diabetes
+diabetes-local
+diabetes-datastore-path
+diabetes-table
+</pre></div></div>
+</div>
+</section>
+<section id="Read-data-in-notebook">
+<h2><span class="section-number">3.6. </span>Read data in notebook<a class="headerlink" href="#Read-data-in-notebook" title="この見出しへのパーマリンク"></a></h2>
+</section>
+<section id="ノートブックでデータを読む">
+<h2><span class="section-number">3.7. </span>ノートブックでデータを読む<a class="headerlink" href="#ノートブックでデータを読む" title="この見出しへのパーマリンク"></a></h2>
+<p>最初はノートブックでデータ資産を操作して、データを探索したり機械学習モデルを実験したりしたいと思うかもしれません。URI_FILE<code class="docutils literal notranslate"><span class="pre">または</span></code>URI_FOLDER<code class="docutils literal notranslate"><span class="pre">タイプのデータアセットは、通常のデータ読み込みと同様に読み込まれます。例えば、データ資産が指すCSVファイルを読み込むには、pandasの関数</span></code>read_csv()` を使用します。</p>
+<p>MLTable` 型のデータアセットは、スキーマとデータの解釈方法を指定する <strong>MLTable</strong> ファイルによって既に **読み込まれ* ています。このファイルはスキーマを指定し、データをどのように解釈するかを指定します。データはすでに <em>read</em> されているので、MLTable 型のデータ資産を簡単に pandas dataframe に変換することができます。</p>
+<p>mltable`ライブラリをインストールする必要があります（ターミナルでインストールしました）。その後、データ資産をデータフレームに変換し、データを可視化することができます。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mltable</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Collecting mltable
+  Downloading mltable-1.6.1-py3-none-any.whl (189 kB)
+     <span class="ansi-black-intense-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-green-fg">189.4/189.4 kB</span> <span class="ansi-red-fg">10.1 MB/s</span> eta <span class="ansi-cyan-fg">0:00:00</span>
+Requirement already satisfied: msrest&gt;=0.6.18 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (0.7.1)
+Requirement already satisfied: cryptography!=1.9,!=2.0.*,!=2.1.*,!=2.2.* in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (38.0.4)
+Requirement already satisfied: azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (1.30.2)
+Requirement already satisfied: azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (5.1.6)
+Requirement already satisfied: pytz in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (2022.5)
+Requirement already satisfied: jsonschema&lt;5.0.0,&gt;=4.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (4.23.0)
+Requirement already satisfied: azure-mgmt-core&lt;2.0.0,&gt;=1.3.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (1.4.0)
+Requirement already satisfied: PyJWT&lt;3.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (2.4.0)
+Requirement already satisfied: python-dateutil&lt;3.0.0,&gt;=2.7.3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (2.9.0.post0)
+Requirement already satisfied: pyyaml&lt;7.0.0,&gt;=5.1.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mltable) (6.0.1)
+Requirement already satisfied: typing-extensions&gt;=4.6.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (4.12.2)
+Requirement already satisfied: six&gt;=1.11.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (1.16.0)
+Requirement already satisfied: requests&gt;=2.21.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (2.32.3)
+Requirement already satisfied: azureml-dataprep-rslex~=2.22.2dev0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (2.22.2)
+Requirement already satisfied: cloudpickle&lt;3.0.0,&gt;=1.1.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (2.2.1)
+Requirement already satisfied: azure-identity&gt;=1.7.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (1.17.1)
+Requirement already satisfied: azureml-dataprep-native&lt;42.0.0,&gt;=41.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (41.0.0)
+Requirement already satisfied: pyarrow&gt;=0.17.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (14.0.2)
+Requirement already satisfied: cffi&gt;=1.12 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from cryptography!=1.9,!=2.0.*,!=2.1.*,!=2.2.*-&gt;mltable) (1.16.0)
+Requirement already satisfied: jsonschema-specifications&gt;=2023.03.6 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from jsonschema&lt;5.0.0,&gt;=4.0.0-&gt;mltable) (2023.12.1)
+Requirement already satisfied: rpds-py&gt;=0.7.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from jsonschema&lt;5.0.0,&gt;=4.0.0-&gt;mltable) (0.20.0)
+Requirement already satisfied: referencing&gt;=0.28.4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from jsonschema&lt;5.0.0,&gt;=4.0.0-&gt;mltable) (0.35.1)
+Requirement already satisfied: attrs&gt;=22.2.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from jsonschema&lt;5.0.0,&gt;=4.0.0-&gt;mltable) (24.2.0)
+Requirement already satisfied: isodate&gt;=0.6.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from msrest&gt;=0.6.18-&gt;mltable) (0.6.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from msrest&gt;=0.6.18-&gt;mltable) (2024.8.30)
+Requirement already satisfied: requests-oauthlib&gt;=0.5.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from msrest&gt;=0.6.18-&gt;mltable) (2.0.0)
+Requirement already satisfied: msal&gt;=1.24.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azure-identity&gt;=1.7.0-&gt;azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (1.30.0)
+Requirement already satisfied: msal-extensions&gt;=0.3.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from azure-identity&gt;=1.7.0-&gt;azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (1.2.0)
+Requirement already satisfied: pycparser in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from cffi&gt;=1.12-&gt;cryptography!=1.9,!=2.0.*,!=2.1.*,!=2.2.*-&gt;mltable) (2.22)
+Requirement already satisfied: numpy&gt;=1.16.6 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from pyarrow&gt;=0.17.0-&gt;azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (1.23.5)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&gt;=2.21.0-&gt;azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&gt;=2.21.0-&gt;azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&gt;=2.21.0-&gt;azure-core!=1.22.0,&lt;2.0.0,&gt;=1.8.0-&gt;mltable) (1.26.19)
+Requirement already satisfied: oauthlib&gt;=3.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests-oauthlib&gt;=0.5.0-&gt;msrest&gt;=0.6.18-&gt;mltable) (3.2.2)
+Requirement already satisfied: portalocker&lt;3,&gt;=1.4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from msal-extensions&gt;=0.3.0-&gt;azure-identity&gt;=1.7.0-&gt;azureml-dataprep[parquet]&lt;5.2.0a,&gt;=5.1.0a-&gt;mltable) (2.10.1)
+Installing collected packages: mltable
+Successfully installed mltable-1.6.1
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mltable</span>
+
+<span class="n">registered_data_asset</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;diabetes-table&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tbl</span> <span class="o">=</span> <span class="n">mltable</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;azureml:/</span><span class="si">{</span><span class="n">registered_data_asset</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">tbl</span><span class="o">.</span><span class="n">to_pandas_dataframe</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PatientID</th>
+      <th>Pregnancies</th>
+      <th>PlasmaGlucose</th>
+      <th>DiastolicBloodPressure</th>
+      <th>TricepsThickness</th>
+      <th>SerumInsulin</th>
+      <th>BMI</th>
+      <th>DiabetesPedigree</th>
+      <th>Age</th>
+      <th>Diabetic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1354778</td>
+      <td>0</td>
+      <td>171</td>
+      <td>80</td>
+      <td>34</td>
+      <td>23</td>
+      <td>43.509726</td>
+      <td>1.213191</td>
+      <td>21</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1147438</td>
+      <td>8</td>
+      <td>92</td>
+      <td>93</td>
+      <td>47</td>
+      <td>36</td>
+      <td>21.240576</td>
+      <td>0.158365</td>
+      <td>23</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1640031</td>
+      <td>7</td>
+      <td>115</td>
+      <td>47</td>
+      <td>52</td>
+      <td>35</td>
+      <td>41.511523</td>
+      <td>0.079019</td>
+      <td>23</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1883350</td>
+      <td>9</td>
+      <td>103</td>
+      <td>78</td>
+      <td>25</td>
+      <td>304</td>
+      <td>29.582192</td>
+      <td>1.282870</td>
+      <td>43</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1424119</td>
+      <td>1</td>
+      <td>85</td>
+      <td>59</td>
+      <td>27</td>
+      <td>35</td>
+      <td>42.604536</td>
+      <td>0.549542</td>
+      <td>22</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Use-data-in-a-job">
+<h2><span class="section-number">3.8. </span>Use data in a job<a class="headerlink" href="#Use-data-in-a-job" title="この見出しへのパーマリンク"></a></h2>
+<p>ノートブックを実験に使った後 スクリプトを使って機械学習モデルを学習することができる。スクリプトはジョブとして実行でき、ジョブごとに入力と出力を指定できます。</p>
+<p>ジョブの入力または出力として、<strong>データアセット</strong>または<strong>データストアパス</strong>のいずれかを使用できます。</p>
+<p>以下のセルは <strong>src</strong> フォルダに <strong>move-data.py</strong> スクリプトを作成します。スクリプトは <code class="docutils literal notranslate"><span class="pre">read_csv()</span></code> 関数で入力データを読み込みます。スクリプトはデータを CSV ファイルとして出力パスに格納します。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># create a folder for the script files</span>
+<span class="n">script_folder</span> <span class="o">=</span> <span class="s1">&#39;src&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="s1">&#39;folder created&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+src folder created
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> $script_folder/move-data.py
+<span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># read data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input_data</span><span class="p">)</span>
+
+    <span class="n">output_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">((</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_datastore</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;diabetes.csv&quot;</span><span class="p">),</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># function that reads the data</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="c1"># Count the rows and print the result</span>
+    <span class="n">row_count</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analyzing </span><span class="si">{}</span><span class="s1"> rows of data&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row_count</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="c1"># setup arg parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="c1"># add arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--input_data&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;input_data&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_datastore&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;output_datastore&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># return args</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="c1"># run script</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># run main function</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Writing src/move-data.py
+</pre></div></div>
+</div>
+<p>move-data.py**スクリプトを実行するジョブを投入するには、以下のセルを実行してください。</p>
+<p>このジョブはデータアセット <code class="docutils literal notranslate"><span class="pre">diabetes-local</span></code> を使用するように設定されており、入力としてローカルの <strong>diabetes.csv</strong> ファイルを指します。出力は新しいデータストア <code class="docutils literal notranslate"><span class="pre">blob_training_data</span></code> のフォルダを指すパスです。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Output</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span>
+
+<span class="c1"># configure input and output</span>
+<span class="n">my_job_inputs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;local_data&quot;</span><span class="p">:</span> <span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FILE</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml:diabetes-local:1&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">my_job_outputs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;datastore_data&quot;</span><span class="p">:</span> <span class="n">Output</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml://datastores/blob_training_data/paths/datastore-path&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># configure job</span>
+<span class="c1">#Computename を自身のコンピューティングインスタンス名に置き換えてください。</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python move-data.py --input_data ${{inputs.local_data}} --output_datastore ${{outputs.datastore_data}}&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="n">my_job_inputs</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="n">my_job_outputs</span><span class="p">,</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;demokoike&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;move-diabetes-data&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;move-diabetes-data&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+pathOnCompute is not a known attribute of class &lt;class &#39;azure.ai.ml._restclient.v2023_04_01_preview.models._models_py3.UriFolderJobOutput&#39;&gt; and will be ignored
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/orange_night_lh9tdjlryq?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01_Run%20training%20script.html" class="btn btn-neutral float-left" title="2. Python SDKを使用したトレーニングスクリプトの実行" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-right" title="4. Work with Compute" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

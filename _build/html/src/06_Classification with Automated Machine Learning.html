@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. 自動機械学習で分類モデルを訓練する &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="7. MLflowによるノートブックでのモデルトレーニングの追跡" href="07_Track%20model%20training%20with%20MLflow.html" />
+    <link rel="prev" title="5. Work with environments" href="04_Work%20with%20environments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. 自動機械学習で分類モデルを訓練する</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Before-you-start">6.1. Before you start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">6.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#データの準備">6.3. データの準備</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#自動機械学習ジョブの設定">6.4. 自動機械学習ジョブの設定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Run-an-automated-machine-learning-job">6.5. Run an automated machine learning job</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>自動機械学習で分類モデルを訓練する</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/06_Classification with Automated Machine Learning.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="自動機械学習で分類モデルを訓練する">
+<h1><span class="section-number">6. </span>自動機械学習で分類モデルを訓練する<a class="headerlink" href="#自動機械学習で分類モデルを訓練する" title="この見出しへのパーマリンク"></a></h1>
+<p>モデルを訓練するために使用できる機械学習アルゴリズムには多くの種類があり、特定のデータと予測要件に最も効果的なアルゴリズムを決定するのは簡単ではない場合があります。さらに、正規化、欠損特徴インピュテーションなどのテクニックを使って学習データを前処理することで、モデルの予測性能に大きな影響を与えることができます。要件に最適なモデルを見つけようとすると、アルゴリズムと前処理変換の多くの組み合わせを試す必要があるかもしれません。</p>
+<p>Azure Machine Learningでは、異なるアルゴリズムと前処理オプションを使用してトレーニングされたモデルの比較を自動化できます。この機能を活用するには、<a class="reference external" href="https://ml/azure.com">Azure Machine Learning Studio</a>またはPython SDK(v2)のビジュアルインターフェイスを使用できます。Python SDKでは、自動機械学習ジョブの設定をより詳細に制御できますが、ビジュアルインターフェースの方が使いやすくなっています。</p>
+<section id="Before-you-start">
+<h2><span class="section-number">6.1. </span>Before you start<a class="headerlink" href="#Before-you-start" title="この見出しへのパーマリンク"></a></h2>
+<p>You’ll need the latest version of the <strong>azure-ai-ml</strong> package to run the code in this notebook. Run the cell below to verify that it is installed.</p>
+<blockquote>
+<div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2><span class="section-number">6.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="データの準備">
+<h2><span class="section-number">6.3. </span>データの準備<a class="headerlink" href="#データの準備" title="この見出しへのパーマリンク"></a></h2>
+<p>自動機械学習用の学習スクリプトを作成する必要はないが、学習データをロードする必要がある。</p>
+<p>今回は、糖尿病患者の詳細を含むデータセットを使用します。</p>
+<p>自動機械学習の入力としてデータセットを渡すには、そのデータは表形式で、対象となる列が含まれていなければなりません。データを表形式のデータセットとして解釈するためには、入力データセットは <strong>MLTable</strong> でなければなりません。</p>
+<p>MLTableデータ資産は、セットアップ時に既に作成されています。このデータ資産は、<strong>Data</strong> ページに移動して調べることができます。ここで名前 <code class="docutils literal notranslate"><span class="pre">diabetes-training-table</span></code> とバージョン <code class="docutils literal notranslate"><span class="pre">1</span></code> を指定してデータアセットを取得します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span>
+
+<span class="c1"># creates a dataset based on the files in the local data folder</span>
+<span class="n">my_training_data_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLTABLE</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml:diabetes-training:1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="自動機械学習ジョブの設定">
+<h2><span class="section-number">6.4. </span>自動機械学習ジョブの設定<a class="headerlink" href="#自動機械学習ジョブの設定" title="この見出しへのパーマリンク"></a></h2>
+<p>これで、自動機械学習実験を設定する準備ができた。</p>
+<p>以下のコードを実行すると、以下のような自動機械学習ジョブが作成される：</p>
+<ul class="simple">
+<li><p>aml-cluster`という名前の計算クラスタを使う。</p></li>
+<li><p>ターゲットカラムとして <code class="docutils literal notranslate"><span class="pre">Diabetic</span></code> を設定する。</p></li>
+<li><p>主要な指標として <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> を設定する。</p></li>
+<li><p>総トレーニング時間 <code class="docutils literal notranslate"><span class="pre">60</span></code> 分後にタイムアウトする。</p></li>
+<li><p>最大5`のモデルを学習する。</p></li>
+<li><p>LogisticRegression` アルゴリズムではモデルは学習されない。</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">automl</span>
+
+<span class="c1"># configure the classification job</span>
+<span class="n">classification_job</span> <span class="o">=</span> <span class="n">automl</span><span class="o">.</span><span class="n">classification</span><span class="p">(</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;auto-ml-class-dev&quot;</span><span class="p">,</span>
+    <span class="n">training_data</span><span class="o">=</span><span class="n">my_training_data_input</span><span class="p">,</span>
+    <span class="n">target_column_name</span><span class="o">=</span><span class="s2">&quot;Diabetic&quot;</span><span class="p">,</span>
+    <span class="n">primary_metric</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+    <span class="n">n_cross_validations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">enable_model_explainability</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># set the limits (optional)</span>
+<span class="n">classification_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span>
+    <span class="n">timeout_minutes</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">trial_timeout_minutes</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">max_trials</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">enable_early_termination</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># set the training properties (optional)</span>
+<span class="n">classification_job</span><span class="o">.</span><span class="n">set_training</span><span class="p">(</span>
+    <span class="n">blocked_training_algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;LogisticRegression&quot;</span><span class="p">],</span>
+    <span class="n">enable_onnx_compatible_models</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Run-an-automated-machine-learning-job">
+<h2><span class="section-number">6.5. </span>Run an automated machine learning job<a class="headerlink" href="#Run-an-automated-machine-learning-job" title="この見出しへのパーマリンク"></a></h2>
+<p>OK, you’re ready to go. Let’s run the automated machine learning experiment.</p>
+<blockquote>
+<div><p><strong>Note</strong>: This may take some time!</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Submit the AutoML job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span>
+    <span class="n">classification_job</span>
+<span class="p">)</span>
+
+<span class="c1"># submit the job to the backend</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/gray_nutmeg_s9240p5fg4?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<p>While the job is running, you can monitor it in the Studio.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="04_Work%20with%20environments.html" class="btn btn-neutral float-left" title="5. Work with environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="07_Track%20model%20training%20with%20MLflow.html" class="btn btn-neutral float-right" title="7. MLflowによるノートブックでのモデルトレーニングの追跡" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

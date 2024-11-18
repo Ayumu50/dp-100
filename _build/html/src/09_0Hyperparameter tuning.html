@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9. スイープジョブでハイパーパラメータを調整する &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="10. MLflow でモデルをログする" href="10_01Log%20models%20with%20MLflow.html" />
+    <link rel="prev" title="8. トレーニングスクリプトをコマンドジョブとして実行する" href="08_0Run%20script%20as%20a%20command%20job.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. スイープジョブでハイパーパラメータを調整する</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">9.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">9.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#学習スクリプトの作成">9.3. 学習スクリプトの作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#コマンドジョブの設定と実行">9.4. コマンドジョブの設定と実行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Define-the-search-space">9.5. Define the search space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#スイープジョブの設定と投入">9.6. スイープジョブの設定と投入</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9. </span>スイープジョブでハイパーパラメータを調整する</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/09_0Hyperparameter tuning.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="スイープジョブでハイパーパラメータを調整する">
+<h1><span class="section-number">9. </span>スイープジョブでハイパーパラメータを調整する<a class="headerlink" href="#スイープジョブでハイパーパラメータを調整する" title="この見出しへのパーマリンク"></a></h1>
+<p>機械学習アルゴリズムの中には、ハイパーパラメータ（学習に影響を与えるが、学習データ自体からは決定できないパラメータ値）を必要とするものがたくさんある。例えば、ロジスティック回帰モデルを学習する場合、正則化率のハイパーパラメータを使用してモデルの偏りを打ち消すことができます。また、畳み込みニューラルネットワークを学習する場合、学習率やバッチサイズのようなハイパーパラメータを使用して、重みの調整方法やミニバッチで処理されるデータ項目の数をそれぞれ制御することができます。ハイパーパラメータ値の選択は、学習済みモデルのパフォーマンスや学習にかかる時間に大きく影響する可能性があり、最適解を見つけるために複数の組み合わせを試す必要があることがよくあります。</p>
+<section id="始める前に">
+<h2><span class="section-number">9.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<blockquote>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2><span class="section-number">9.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="学習スクリプトの作成">
+<h2><span class="section-number">9.3. </span>学習スクリプトの作成<a class="headerlink" href="#学習スクリプトの作成" title="この見出しへのパーマリンク"></a></h2>
+<p>ハイパーパラメータチューニングは、機械学習モデルを訓練したいが入力パラメータを変えたい場合に最適です。アルゴリズムのハイパーパラメータの1つを表す入力パラメータを期待する学習スクリプトを作成する必要があります。</p>
+<p>以下のセルを実行して、<strong>src</strong> フォルダーとトレーニングスクリプトを作成します。</p>
+<p>トレーニングスクリプトは2つの入力パラメータを必要とすることに注意してください：</p>
+<ul class="simple">
+<li><p>training_data<code class="docutils literal notranslate"><span class="pre">には文字列を指定します。training_data</span></code>には文字列を指定します。</p></li>
+<li><p>reg_rate<code class="docutils literal notranslate"><span class="pre">は数値を指定しますが、デフォルト値は</span></code>0.01`です。この入力パラメータはハイパーパラメータのチューニングに使用する。</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># create a folder for the script files</span>
+<span class="n">script_folder</span> <span class="o">=</span> <span class="s1">&#39;src&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="s1">&#39;folder created&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+src folder created
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> $script_folder/train.py
+<span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">mlflow</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># read data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">training_data</span><span class="p">)</span>
+
+    <span class="c1"># split data</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1"># train model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+    <span class="c1"># evaluate model</span>
+    <span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># function that reads the data</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading data...&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># function that splits the data</span>
+<span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splitting data...&quot;</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span><span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span><span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span><span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span><span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+
+<span class="c1"># function that trains the model</span>
+<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;Regularization rate&quot;</span><span class="p">,</span> <span class="n">reg_rate</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training model...&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># function that evaluates the model</span>
+<span class="k">def</span> <span class="nf">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="c1"># calculate accuracy</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Accuracy:&#39;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;training_accuracy_score&quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+
+    <span class="c1"># calculate AUC</span>
+    <span class="n">y_scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AUC: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">auc</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;AUC&quot;</span><span class="p">,</span> <span class="n">auc</span><span class="p">)</span>
+
+    <span class="c1"># plot ROC curve</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="c1"># Plot the diagonal 50% line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot the FPR and TPR achieved by our model</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ROC Curve&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;ROC-Curve.png&quot;</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="s2">&quot;ROC-Curve.png&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="c1"># setup arg parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="c1"># add arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--training_data&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;training_data&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--reg_rate&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;reg_rate&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># return args</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="c1"># run script</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># run main function</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting src/train.py
+</pre></div></div>
+</div>
+</section>
+<section id="コマンドジョブの設定と実行">
+<h2><span class="section-number">9.4. </span>コマンドジョブの設定と実行<a class="headerlink" href="#コマンドジョブの設定と実行" title="この見出しへのパーマリンク"></a></h2>
+<p>糖尿病を予測する分類モデルをトレーニングするために以下のセルを実行します。モデルは<strong>src</strong>フォルダにある<strong>train.py</strong>スクリプトを実行することで学習されます。学習データとして、登録されている <code class="docutils literal notranslate"><span class="pre">diabetes-data</span></code> データアセットを使用します。</p>
+<ul class="simple">
+<li><p>code`: 実行するスクリプトを含むフォルダを指定します。</p></li>
+<li><p>command`: 具体的に何を実行するかを指定する。</p></li>
+<li><p>環境`: コマンドを実行する前に計算機にインストールするパッケージを指定する。</p></li>
+<li><p>compute`: コマンドの実行に使用するコンピュートを指定する。</p></li>
+<li><p>display_name`: 個々のジョブの名前。</p></li>
+<li><p>experiment_name`: ジョブが属する実験の名前。</p></li>
+</ul>
+<p>コマンドジョブは正則化率 <code class="docutils literal notranslate"><span class="pre">0.1</span></code> でトレーニングスクリプトを一度だけ実行することに注意してください。ハイパーパラメータを調整するためにスイープジョブを実行する前に、コマンドジョブでスクリプトが期待通りに動作するかをテストするのがベストプラクティスです。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="c1"># configure job</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python train.py --training_data ${{inputs.diabetes_data}} --reg_rate ${{inputs.reg_rate}}&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;diabetes_data&quot;</span><span class="p">:</span> <span class="n">Input</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FILE</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml:diabetes-data:1&quot;</span>
+            <span class="p">),</span>
+        <span class="s2">&quot;reg_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;diabetes-train-mlflow&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;diabetes-training&quot;</span><span class="p">,</span>
+    <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;LogisticRegression&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+<span class="ansi-green-fg">Uploading src (0.0 MBs): 100%|██████████| 2915/2915 [00:00&lt;00:00, 294533.89it/s]
+</span>
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+</section>
+<section id="Define-the-search-space">
+<h2><span class="section-number">9.5. </span>Define the search space<a class="headerlink" href="#Define-the-search-space" title="この見出しへのパーマリンク"></a></h2>
+<p>コマンド・ジョブが正常に完了したら、掃引ジョブを設定して実行できます。</p>
+<p>まず、ハイパーパラメータの探索空間を指定します。3つのモデルをそれぞれ異なる正則化率（<code class="docutils literal notranslate"><span class="pre">0.01</span></code>, <code class="docutils literal notranslate"><span class="pre">0.1</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>）で学習させるためには、<code class="docutils literal notranslate"><span class="pre">Choice</span></code>ハイパーパラメータで探索空間を定義します。</p>
+<p><a class="reference external" href="https://learn.microsoft.com/ja-jp/azure/machine-learning/how-to-tune-hyperparameters?view=azureml-api-2">ハイパーパラメータチューニングの選択</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.sweep</span> <span class="kn">import</span> <span class="n">Choice</span>
+
+<span class="n">command_job_for_sweep</span> <span class="o">=</span> <span class="n">job</span><span class="p">(</span>
+    <span class="n">reg_rate</span><span class="o">=</span><span class="n">Choice</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="スイープジョブの設定と投入">
+<h2><span class="section-number">9.6. </span>スイープジョブの設定と投入<a class="headerlink" href="#スイープジョブの設定と投入" title="この見出しへのパーマリンク"></a></h2>
+<p>トレーニングスクリプトのハイパーパラメータチューニングを行うために、スイープ機能を使用します。スイープジョブを設定するには、以下のように設定する必要があります：</p>
+<ul class="simple">
+<li><p>compute<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">compute</span></code>: ジョブを実行する計算対象の名前。</p></li>
+<li><p>sampling_algorithm<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">探索空間で使用するハイパーパラメータのサンプリングアルゴリズム。許可される値は</span></code>random<code class="docutils literal notranslate"><span class="pre">、</span></code>grid<code class="docutils literal notranslate"><span class="pre">および</span></code>bayesian` である。</p></li>
+<li><p>primary_metric<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">各トライアルジョブが報告するプライマリメトリクスの名前。このメトリックは</span></code>mlflow.log_metric()` を使用して、ユーザーのトレーニングスクリプトに同じメトリック名で記録されている必要がある。</p></li>
+<li><p>ゴール<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">primary_metric</span></code> の最適化目標。指定できる値は <code class="docutils literal notranslate"><span class="pre">maximize</span></code> と <code class="docutils literal notranslate"><span class="pre">minimize</span></code> である。</p></li>
+<li><p>limit`: 掃引ジョブの制限値： スイープジョブの制限値。例えば、トレーニングする試行回数やモデルの最大数など。</p></li>
+</ul>
+<p>コマンドジョブはスイープジョブのベースとして使用されることに注意してください。コマンドジョブの設定はスイープジョブで再利用されます。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply the sweep parameter to obtain the sweep_job</span>
+<span class="n">sweep_job</span> <span class="o">=</span> <span class="n">command_job_for_sweep</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">sampling_algorithm</span><span class="o">=</span><span class="s2">&quot;grid&quot;</span><span class="p">,</span>
+    <span class="n">primary_metric</span><span class="o">=</span><span class="s2">&quot;training_accuracy_score&quot;</span><span class="p">,</span>
+    <span class="n">goal</span><span class="o">=</span><span class="s2">&quot;Maximize&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># set the name of the sweep job experiment</span>
+<span class="n">sweep_job</span><span class="o">.</span><span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;sweep-diabetes&quot;</span>
+
+<span class="c1"># define the limits for this sweep</span>
+<span class="n">sweep_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span><span class="n">max_total_trials</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_concurrent_trials</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">7200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Run the following cell to submit the sweep job.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">returned_sweep_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">sweep_job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_sweep_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<p>When the job is completed, navigate to the job overview. The <strong>Trials</strong> tab will show all models that have been trained and how the <code class="docutils literal notranslate"><span class="pre">Accuracy</span></code> score differs for each regularization rate value you tried.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="08_0Run%20script%20as%20a%20command%20job.html" class="btn btn-neutral float-left" title="8. トレーニングスクリプトをコマンドジョブとして実行する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="10_01Log%20models%20with%20MLflow.html" class="btn btn-neutral float-right" title="10. MLflow でモデルをログする" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

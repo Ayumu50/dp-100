@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11. バッチエンドポイントへのデプロイ &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="12. オンラインエンドポイントへのデプロイ" href="11_11Deploy%20to%20online%20endpoint.html" />
+    <link rel="prev" title="10. MLflow でモデルをログする" href="10_01Log%20models%20with%20MLflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. バッチエンドポイントへのデプロイ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">11.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">11.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#モデルの登録">11.3. モデルの登録</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#バッチエンドポイントの作成">11.4. バッチエンドポイントの作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#デプロイメントの作成">11.5. デプロイメントの作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#バッチ予測用のデータを準備する">11.6. バッチ予測用のデータを準備する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ジョブの投入">11.7. ジョブの投入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#結果の取得">11.8. 結果の取得</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">11. </span>バッチエンドポイントへのデプロイ</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/11_00Deploy to batch endpoint.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="バッチエンドポイントへのデプロイ">
+<h1><span class="section-number">11. </span>バッチエンドポイントへのデプロイ<a class="headerlink" href="#バッチエンドポイントへのデプロイ" title="この見出しへのパーマリンク"></a></h1>
+<p>ある診療所が一日中患者の測定を行い、各患者の詳細を個別のファイルに保存しているとする。そして一晩中、糖尿病予測モデルを使用して、その日のすべての患者データをバッチ処理し、翌朝に待機する予測を生成して、クリニックが糖尿病のリスクがあると予測される患者をフォローアップできるようにします。Azure Machine Learningでは、バッチエンドポイントを作成することでこれを実現できます。</p>
+<section id="始める前に">
+<h2><span class="section-number">11.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、最新バージョンの <strong>azure-ai-ml</strong> パッケージが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<blockquote>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
+</div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2><span class="section-number">11.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="モデルの登録">
+<h2><span class="section-number">11.3. </span>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
+<p>バッチデプロイはワークスペースに登録されたモデルのみをデプロイすることができます。ローカルの <code class="docutils literal notranslate"><span class="pre">model</span></code> フォルダに格納されている MLflow モデルを登録します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;diabetes-mlflow&#39;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span>
+    <span class="n">Model</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./model&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLFLOW_MODEL</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="バッチエンドポイントの作成">
+<h2><span class="section-number">11.4. </span>バッチエンドポイントの作成<a class="headerlink" href="#バッチエンドポイントの作成" title="この見出しへのパーマリンク"></a></h2>
+<p>バッチエンドポイントは、アプリケーションがバッチスコアリングジョブをトリガーするために呼び出すことができる HTTPS エンドポイントです。バッチエンドポイント名は Azure リージョン内で一意である必要があります。datetime` 関数を使用して、現在の日付と時刻に基づいて一意の名前を生成します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">endpoint_name</span> <span class="o">=</span> <span class="s2">&quot;batch-&quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m</span><span class="si">%d</span><span class="s2">%H%M</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">endpoint_name</span>
+</pre></div>
+</div>
+</div>
+<p>BatchEndpoint` クラスでエンドポイントを作成するには、名前とオプションで説明を指定する必要があります。エンドポイントを作成したら、そのエンドポイントにモデルをデプロイします。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">BatchEndpoint</span>
+
+<span class="c1"># create a batch endpoint</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="n">BatchEndpoint</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">endpoint_name</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A batch endpoint for classifying diabetes in patients&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">batch_endpoints</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！続行する前に、エンドポイントが作成されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>
+</p></section>
+<section id="デプロイメントの作成">
+<h2><span class="section-number">11.5. </span>デプロイメントの作成<a class="headerlink" href="#デプロイメントの作成" title="この見出しへのパーマリンク"></a></h2>
+<p>デプロイメントとは、実際の推論を行うモデルをホストするために必要なリソースのセットです。BatchDeployment` クラスを使用してエンドポイント用のデプロイメントを作成します。</p>
+<p>MLflow モデルをデプロイするので、スコアリングスクリプトや環境の定義は必要ありません。Azure Machine Learning が自動的にそれらのアセットを作成してくれます。model<code class="docutils literal notranslate"><span class="pre">フォルダ内の</span></code>MLmodel` ファイルは、モデルの期待される入力と出力を理解するために使用されます。</p>
+<p>以下のパラメータでモデルをデプロイします：</p>
+<ul class="simple">
+<li><p>name`： 配置の名前。</p></li>
+<li><p>description`： 配置が何を表しているかをさらに明確にするためのオプションの説明。</p></li>
+<li><p>endpoint_name`： モデルをデプロイするエンドポイントの名前。</p></li>
+<li><p>モデル`： 登録されているモデルの名前。</p></li>
+<li><p>compute`: コンピュート： 予測値を生成するためにデプロイされたモデルを呼び出す際に使用するコンピュート。</p></li>
+<li><p>インスタンス数 <code class="docutils literal notranslate"><span class="pre">instance_count</span></code>： 予測生成に使用するコンピュートノードの数。</p></li>
+<li><p>max_concurrency_per_instance`: 並列スコアリングスクリプトの最大実行数： 計算ノードあたりのスコアリングスクリプトの最大並列実行数。</p></li>
+<li><p>mini_batch_size`： スコアリングスクリプトの実行ごとに渡されるファイルの数。</p></li>
+<li><p>出力アクション`： それぞれの新しい予測値が新しい行として出力ファイルに追加される。</p></li>
+<li><p>出力ファイル名`： 予測値が追加されるファイル。</p></li>
+<li><p>retry_settings`: ミニバッチが失敗した場合の設定： ミニバッチが失敗した場合の設定。</p></li>
+<li><p>logging_level<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">ログの冗長性レベル。許可される値は</span></code>warning<code class="docutils literal notranslate"><span class="pre">、</span></code>info<code class="docutils literal notranslate"><span class="pre">、</span></code>debug` である。</p></li>
+</ul>
+<p>以下のセルを実行すると、デプロイが設定され、作成される。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">BatchDeployment</span><span class="p">,</span> <span class="n">BatchRetrySettings</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">BatchDeploymentOutputAction</span>
+
+<span class="n">deployment</span> <span class="o">=</span> <span class="n">BatchDeployment</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;classifier-diabetes-mlflow&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A diabetes classifier&quot;</span><span class="p">,</span>
+    <span class="n">endpoint_name</span><span class="o">=</span><span class="n">endpoint</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">instance_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">max_concurrency_per_instance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">output_action</span><span class="o">=</span><span class="n">BatchDeploymentOutputAction</span><span class="o">.</span><span class="n">APPEND_ROW</span><span class="p">,</span>
+    <span class="n">output_file_name</span><span class="o">=</span><span class="s2">&quot;predictions.csv&quot;</span><span class="p">,</span>
+    <span class="n">retry_settings</span><span class="o">=</span><span class="n">BatchRetrySettings</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+    <span class="n">logging_level</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">batch_deployments</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">deployment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！デプロイが完了するまでお待ちください！スタジオに緑色の通知が表示されるはずです。</p>
+</p><p>1つのエンドポイントに複数のモデルをデプロイできます。デフォルトのデプロイメントを設定すると、バッチエンドポイントを呼び出すときにデフォルトで使用するモデルを指定できます。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">endpoint</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">endpoint</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;deployment_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">name</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">batch_endpoints</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！続行する前に、デフォルトの配置が設定されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>
+</p></section>
+<section id="バッチ予測用のデータを準備する">
+<h2><span class="section-number">11.6. </span>バッチ予測用のデータを準備する<a class="headerlink" href="#バッチ予測用のデータを準備する" title="この見出しへのパーマリンク"></a></h2>
+<p>data<code class="docutils literal notranslate"><span class="pre">フォルダにラベル付けされていないデータのCSVファイルがあります。data</span></code> フォルダ内のファイルを指すデータアセットを作成し、バッチジョブの入力として使用します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./data&quot;</span>
+<span class="n">dataset_name</span> <span class="o">=</span> <span class="s2">&quot;patient-data-unlabeled&quot;</span>
+
+<span class="n">patient_dataset_unlabeled</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An unlabeled dataset for diabetes classification&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">patient_dataset_unlabeled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">patient_dataset_unlabeled</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;patient-data-unlabeled&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;latest&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="ジョブの投入">
+<h2><span class="section-number">11.7. </span>ジョブの投入<a class="headerlink" href="#ジョブの投入" title="この見出しへのパーマリンク"></a></h2>
+<p>バッチエンドポイントにモデルをデプロイし、ラベル付けされていないデータ資産を手に入れたので、ラベル付けされていないデータに対して予測を生成するためにエンドポイントを呼び出す準備ができました。</p>
+<p>まず、登録したデータ資産を参照して入力を定義します。次にエンドポイントを起動し、パイプラインジョブを送信します。ジョブのURLを使用して、スタジオでジョブを監視できます。ジョブには、予測値を取得するための（生成された）スコアリングスクリプトの実行を表す子ジョブが含まれます。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="nb">input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">patient_dataset_unlabeled</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">batch_endpoints</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="n">endpoint_name</span><span class="o">=</span><span class="n">endpoint</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="結果の取得">
+<h2><span class="section-number">11.8. </span>結果の取得<a class="headerlink" href="#結果の取得" title="この見出しへのパーマリンク"></a></h2>
+<p>バッチエンドポイントを呼び出したパイプラインジョブが完了すると、結果を見ることができます。すべての予測結果は、デフォルトのデータストアに格納されている <code class="docutils literal notranslate"><span class="pre">predictions.csv</span></code> ファイルに収集されます。以下のセルを実行することで、ファイルをダウンロードし、データを可視化することができる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">download_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;predictions.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">literal_eval</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">score</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="10_01Log%20models%20with%20MLflow.html" class="btn btn-neutral float-left" title="10. MLflow でモデルをログする" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="11_11Deploy%20to%20online%20endpoint.html" class="btn btn-neutral float-right" title="12. オンラインエンドポイントへのデプロイ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

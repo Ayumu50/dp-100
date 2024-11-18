@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Work with environments &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="6. 自動機械学習で分類モデルを訓練する" href="06_Classification%20with%20Automated%20Machine%20Learning.html" />
+    <link rel="prev" title="4. Work with Compute" href="03_Work%20with%20compute.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Work with environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">5.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">5.2. Connect to your workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Run-a-script-as-a-job">5.3. Run a script as a job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#List-environments">5.4. List environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-and-use-a-custom-environment">5.5. Create and use a custom environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Work with environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/04_Work with environments.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Work-with-environments">
+<h1><span class="section-number">5. </span>Work with environments<a class="headerlink" href="#Work-with-environments" title="この見出しへのパーマリンク"></a></h1>
+<p>Azure Machine Learningジョブとしてスクリプトを実行する場合、ジョブ実行の実行コンテキストを定義する必要があります。重要な設定の1つは、スクリプトを実行するコンピュートターゲットです。これは、ローカルワークステーション（この場合はコンピュートインスタンス）、またはオンデマンドでプロビジョニングされるAzure Machine Learningマネージドコンピュートクラスターのようなリモートコンピュートターゲットになります。</p>
+<p>このノートブックでは、コンピュートクラスタを作成し、ジョブ用のコンピュートターゲットを探索します。</p>
+<section id="始める前に">
+<h2><span class="section-number">5.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Connect-to-your-workspace">
+<h2><span class="section-number">5.2. </span>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="Run-a-script-as-a-job">
+<h2><span class="section-number">5.3. </span>Run a script as a job<a class="headerlink" href="#Run-a-script-as-a-job" title="この見出しへのパーマリンク"></a></h2>
+<p>モデルをトレーニングするには、まず <strong>src</strong> フォルダに <strong>diabetes_training.py</strong> スクリプトを作成します。このスクリプトは、学習データと同じフォルダにある <strong>diabetes.csv</strong> ファイルを使用します。</p>
+<p>スクリプトの最初にライブラリをインポートしていることに注意してください。これらのライブラリの関数は、データの処理とモデルの学習に使用されます。スクリプトの実行に使用する計算機には、これらのライブラリがインストールされている必要があります。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> src/diabetes-training.py
+<span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+
+<span class="c1"># load the diabetes dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading Data...&quot;</span><span class="p">)</span>
+<span class="n">diabetes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;diabetes.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># separate features and labels</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span><span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span><span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span><span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span><span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span><span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">diabetes</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># split data into training set and test set</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># set regularization hyperparameter</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># train a logistic regression model</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training a logistic regression model with regularization rate of&#39;</span><span class="p">,</span> <span class="n">reg</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">reg</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># calculate accuracy</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Accuracy:&#39;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+
+<span class="c1"># calculate AUC</span>
+<span class="n">y_scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AUC: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">auc</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting src/diabetes-training.py
+</pre></div></div>
+</div>
+<p>スクリプトを作成したら、そのスクリプトをジョブとして実行できます。スクリプトは一般的なライブラリを使用する。そのため、pandas、numpy、scikit-learnなどを含むキュレーション環境を使用することができます。</p>
+<p>ジョブはキュレーション環境の最新バージョンである<code class="docutils literal notranslate"><span class="pre">AzureML-sklearn-0.24-ubuntu18.04-py37-cpu</span></code>を使用します。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span>
+
+<span class="c1"># configure job</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python diabetes-training.py&quot;</span><span class="p">,</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;diabetes-train-curated-env&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;diabetes-training&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/lime_zebra_v4hrbnz2m3?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<p>While the job is running, you can already run the next cells.</p>
+</section>
+<section id="List-environments">
+<h2><span class="section-number">5.4. </span>List environments<a class="headerlink" href="#List-environments" title="この見出しへのパーマリンク"></a></h2>
+<p>ワークスペース内の環境を調べてみよう。</p>
+<p>前の作業では、キュレーションされた環境の1つを使いました。ワークスペースにすでに存在するすべての環境を探索するには、環境をリストアップします：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">envs</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">envs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DefaultNcdEnv-azureml-automl
+AzureML-AI-Studio-Development
+AzureML-ACPT-pytorch-1.13-py38-cuda11.7-gpu
+AzureML-ACPT-pytorch-1.12-py38-cuda11.6-gpu
+AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu
+AzureML-ACPT-pytorch-1.11-py38-cuda11.5-gpu
+AzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu
+AzureML-responsibleai-0.21-ubuntu20.04-py38-cpu
+AzureML-responsibleai-0.20-ubuntu20.04-py38-cpu
+AzureML-tensorflow-2.5-ubuntu20.04-py38-cuda11-gpu
+AzureML-tensorflow-2.6-ubuntu20.04-py38-cuda11-gpu
+AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu
+AzureML-sklearn-1.0-ubuntu20.04-py38-cpu
+AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu
+AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+AzureML-pytorch-1.8-ubuntu18.04-py37-cuda11-gpu
+AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu
+AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu
+AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
+AzureML-Triton
+AzureML-Designer-Score
+AzureML-VowpalWabbit-8.8.0
+AzureML-PyTorch-1.3-CPU
+</pre></div></div>
+</div>
+<p>キュレーションされた環境はすべて <strong>AzureML-</strong> で始まる名前を持っていることに注意してください (この接頭辞はあなた自身の環境には使えません)。</p>
+<p>特定の環境を確認するには、その名前とバージョンで環境を検索します。例えば、前のジョブで使用したキュレーション環境の <em>description</em> と <em>tags</em> を取得できます：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AzureML-sklearn-0.24-ubuntu18.04-py37-cpu&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">44</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span> <span class="n">description</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+An environment for tasks such as regression, clustering, and classification with Scikit-learn. Contains the Azure ML SDK and additional python packages. {&#39;Scikit-learn&#39;: &#39;0.24.1&#39;, &#39;OS&#39;: &#39;Ubuntu18.04&#39;, &#39;Training&#39;: &#39;&#39;}
+</pre></div></div>
+</div>
+</section>
+<section id="Create-and-use-a-custom-environment">
+<h2><span class="section-number">5.5. </span>Create and use a custom environment<a class="headerlink" href="#Create-and-use-a-custom-environment" title="この見出しへのパーマリンク"></a></h2>
+<p>キュレーションされた環境に、スクリプトの実行に必要なPythonパッケージがすべて含まれていない場合、独自のカスタム環境を作成することができます。環境に必要なパッケージをすべてリストアップすることで、スクリプトを簡単に再実行できます。すべての依存パッケージは環境に保存され、使用するコンピュートとは関係なく、ジョブ構成で指定することができます。</p>
+<p>例えば、Dockerイメージから簡単に環境を作成することができます。PyTorchのような特定のフレームワークには、必要なものがすべて含まれているDockerイメージが公開されています。</p>
+<p>Dockerイメージから環境を作ってみましょう：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Environment</span>
+
+<span class="n">env_docker_image</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;docker-image-example&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Environment created from a Docker image.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">env_docker_image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Environment({&#39;arm_type&#39;: &#39;environment_version&#39;, &#39;latest_version&#39;: None, &#39;image&#39;: &#39;mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04&#39;, &#39;intellectual_property&#39;: None, &#39;is_anonymous&#39;: False, &#39;auto_increment_version&#39;: False, &#39;auto_delete_setting&#39;: None, &#39;name&#39;: &#39;docker-image-example&#39;, &#39;description&#39;: &#39;Environment created from a Docker image.&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {&#39;azureml.labels&#39;: &#39;latest&#39;}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-example/versions/1&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04&#39;, &#39;creation_context&#39;: &lt;azure.ai.ml.entities._system_data.SystemData object at 0x7f7861d85720&gt;, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f7861d87d60&gt;, &#39;version&#39;: &#39;1&#39;, &#39;conda_file&#39;: None, &#39;build&#39;: None, &#39;inference_config&#39;: None, &#39;os_type&#39;: &#39;Linux&#39;, &#39;conda_file_path&#39;: None, &#39;path&#39;: None, &#39;datastore&#39;: None, &#39;upload_hash&#39;: None, &#39;translated_conda_file&#39;: None})
+</pre></div></div>
+</div>
+<p>The environment is now registered in your workspace and you can reference it when you run a script as a job:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span>
+
+<span class="c1"># configure job</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python diabetes-training.py&quot;</span><span class="p">,</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;docker-image-example:1&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;diabetes-train-custom-env&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;diabetes-training&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/sad_curtain_tdt1gthn51?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>ジョブはすぐに失敗します！エラーメッセージを確認してください。</p>
+</p><p>エラーメッセージはpandasという名前のモジュールが存在しないことを示しています。このようなエラーには2つの原因が考えられます：</p>
+<ul class="simple">
+<li><p>スクリプトはpandasを使用しているが、ライブラリをインポートしていない（<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span> <span class="pre">as</span> <span class="pre">pd</span></code>）。</p></li>
+<li><p>スクリプトはpandasを使用しているが、ライブラリをインポートしていない(<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pandas</span></code>)。</p></li>
+</ul>
+<p>diabetes-training.py`スクリプトを見直すと、スクリプトは正しく、ライブラリがインストールされていないことがわかります。つまり、必要なパッケージが環境に含まれていなかったのです。</p>
+<p>前のジョブで使ったベースDockerイメージを使って、新しい環境を作りましょう。ここで、必要なパッケージがインストールされるようにcondaの仕様を追加する。まず、以下のセルを実行してcondaの仕様ファイルを作成します：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> src/conda-env.yml
+<span class="n">name</span><span class="p">:</span> <span class="n">basic</span><span class="o">-</span><span class="n">env</span><span class="o">-</span><span class="n">cpu</span>
+<span class="n">channels</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<span class="n">dependencies</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.11</span>
+  <span class="o">-</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
+  <span class="o">-</span> <span class="n">pandas</span>
+  <span class="o">-</span> <span class="n">numpy</span>
+  <span class="o">-</span> <span class="n">matplotlib</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Writing src/conda-env.yml
+</pre></div></div>
+</div>
+<p>スクリプトを正常に実行するために必要な依存関係はすべてconda仕様ファイルに含まれていることに注意してください。</p>
+<p>ベースとなる Docker イメージと conda 仕様ファイルを使用して新しい環境を作成し、必要な依存関係を追加します。Azure Machine Learning は、提供された Docker イメージの上に conda 環境を構築します。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Environment</span>
+
+<span class="n">env_docker_conda</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04&quot;</span><span class="p">,</span>
+    <span class="n">conda_file</span><span class="o">=</span><span class="s2">&quot;./src/conda-env.yml&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;docker-image-plus-conda-example&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Environment created from a Docker image plus Conda environment.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">env_docker_conda</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Environment({&#39;arm_type&#39;: &#39;environment_version&#39;, &#39;latest_version&#39;: None, &#39;image&#39;: &#39;mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04&#39;, &#39;intellectual_property&#39;: None, &#39;is_anonymous&#39;: False, &#39;auto_increment_version&#39;: False, &#39;auto_delete_setting&#39;: None, &#39;name&#39;: &#39;docker-image-plus-conda-example&#39;, &#39;description&#39;: &#39;Environment created from a Docker image plus Conda environment.&#39;, &#39;tags&#39;: {}, &#39;properties&#39;: {&#39;azureml.labels&#39;: &#39;latest&#39;}, &#39;print_as_yaml&#39;: False, &#39;id&#39;: &#39;/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-plus-conda-example/versions/1&#39;, &#39;Resource__source_path&#39;: &#39;&#39;, &#39;base_path&#39;: &#39;/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04&#39;, &#39;creation_context&#39;: &lt;azure.ai.ml.entities._system_data.SystemData object at 0x7f7869158cd0&gt;, &#39;serialize&#39;: &lt;msrest.serialization.Serializer object at 0x7f7861ddbd90&gt;, &#39;version&#39;: &#39;1&#39;, &#39;conda_file&#39;: {&#39;channels&#39;: [&#39;conda-forge&#39;], &#39;dependencies&#39;: [&#39;python=3.11&#39;, &#39;scikit-learn&#39;, &#39;pandas&#39;, &#39;numpy&#39;, &#39;matplotlib&#39;], &#39;name&#39;: &#39;basic-env-cpu&#39;}, &#39;build&#39;: None, &#39;inference_config&#39;: None, &#39;os_type&#39;: &#39;Linux&#39;, &#39;conda_file_path&#39;: None, &#39;path&#39;: None, &#39;datastore&#39;: None, &#39;upload_hash&#39;: None, &#39;translated_conda_file&#39;: &#39;{\n  &#34;channels&#34;: [\n    &#34;conda-forge&#34;\n  ],\n  &#34;dependencies&#34;: [\n    &#34;python=3.11&#34;,\n    &#34;scikit-learn&#34;,\n    &#34;pandas&#34;,\n    &#34;numpy&#34;,\n    &#34;matplotlib&#34;\n  ],\n  &#34;name&#34;: &#34;basic-env-cpu&#34;\n}&#39;})
+</pre></div></div>
+</div>
+<p>Now, you can submit a job with the new environment to run the script:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span>
+
+<span class="c1"># configure job</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python diabetes-training.py&quot;</span><span class="p">,</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;docker-image-plus-conda-example:1&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;diabetes-train-custom-env&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;diabetes-training&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">aml_url</span> <span class="o">=</span> <span class="n">returned_job</span><span class="o">.</span><span class="n">studio_url</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Monitor your job at&quot;</span><span class="p">,</span> <span class="n">aml_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading src (0.52 MBs): 100%|██████████| 519350/519350 [00:00&lt;00:00, 10576536.76it/s]
+</span>
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Monitor your job at https://ml.azure.com/runs/sweet_parcel_2n9fgq4p54?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
+</pre></div></div>
+</div>
+<p>新しいカスタム環境でジョブを投入すると、環境の構築が開始されます。新しく作成した環境を初めて使用する場合、環境の構築に 10-15 分かかることがあります。</p>
+<p>ジョブを投入する前に手動で環境構築をトリガーすることもできます。環境を構築する必要があるのは、最初に使用するときだけです。</p>
+<p>ジョブが新しい環境のビルドをトリガーすると、ジョブの <strong>Outputs + logs</strong> タブでビルドのログを確認できます。<strong>azureml-logs/20_image_build_log.txt</strong>を開いて、環境構築のログを確認してください。</p>
+<p>スクリーンショットのビルドログ](./images/screenshot-logs.png)</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-left" title="4. Work with Compute" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="06_Classification%20with%20Automated%20Machine%20Learning.html" class="btn btn-neutral float-right" title="6. 自動機械学習で分類モデルを訓練する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

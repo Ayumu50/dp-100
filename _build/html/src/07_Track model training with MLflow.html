@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7. MLflowによるノートブックでのモデルトレーニングの追跡 &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="8. トレーニングスクリプトをコマンドジョブとして実行する" href="08_0Run%20script%20as%20a%20command%20job.html" />
+    <link rel="prev" title="6. 自動機械学習で分類モデルを訓練する" href="06_Classification%20with%20Automated%20Machine%20Learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. MLflowによるノートブックでのモデルトレーニングの追跡</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Before-you-start">7.1. Before you start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">7.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#MLflow-の設定">7.3. MLflow の設定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Prepare-the-data">7.4. Prepare the data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7. </span>MLflowによるノートブックでのモデルトレーニングの追跡</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/07_Track model training with MLflow.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="MLflowによるノートブックでのモデルトレーニングの追跡">
+<h1><span class="section-number">7. </span>MLflowによるノートブックでのモデルトレーニングの追跡<a class="headerlink" href="#MLflowによるノートブックでのモデルトレーニングの追跡" title="この見出しへのパーマリンク"></a></h1>
+<p>ノートブックでMLflowを使用すると、トレーニングしたモデルを追跡できます。このノートブックは Azure Machine Learning のコンピュートインスタンスで実行するので、MLflow をセットアップする必要はありません。</p>
+<p>いくつかのデータを準備し、糖尿病を予測するモデルをトレーニングします。オートロギングとカスタムロギングを使用して、ノートブックで MLflow を使用する方法を探ります。</p>
+<section id="Before-you-start">
+<h2><span class="section-number">7.1. </span>Before you start<a class="headerlink" href="#Before-you-start" title="この見出しへのパーマリンク"></a></h2>
+<p>You’ll need the latest version of the <strong>azure-ai-ml</strong> package to run the code in this notebook. Run the cell below to verify that it is installed.</p>
+<blockquote>
+<div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2><span class="section-number">7.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="MLflow-の設定">
+<h2><span class="section-number">7.3. </span>MLflow の設定<a class="headerlink" href="#MLflow-の設定" title="この見出しへのパーマリンク"></a></h2>
+<p>Azure Machine Learning studioのコンピュートインスタンス上でこのノートブックを実行しているので、MLflowを設定する必要はない。</p>
+<p>ただし、必要なライブラリがインストールされていることは確認しておきましょう。</p>
+<blockquote>
+<div><p>注<strong>： もし</strong> mlflow** ライブラリがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mlflow</span></code> を実行してインストールしてください。</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">mlflow</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: mlflow
+Version: 2.17.2
+Summary: MLflow is an open source platform for the complete machine learning lifecycle
+Home-page:
+Author:
+Author-email:
+License: Copyright 2018 Databricks, Inc.  All rights reserved.
+
+                                        Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+           1. Definitions.
+
+              &#34;License&#34; shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+
+              &#34;Licensor&#34; shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+
+              &#34;Legal Entity&#34; shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              &#34;control&#34; means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+
+              &#34;You&#34; (or &#34;Your&#34;) shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+
+              &#34;Source&#34; form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+
+              &#34;Object&#34; form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+
+              &#34;Work&#34; shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+
+              &#34;Derivative Works&#34; shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+
+              &#34;Contribution&#34; shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, &#34;submitted&#34;
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as &#34;Not a Contribution.&#34;
+
+              &#34;Contributor&#34; shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+
+              (d) If the Work includes a &#34;NOTICE&#34; text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an &#34;AS IS&#34; BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+
+           END OF TERMS AND CONDITIONS
+           APPENDIX: How to apply the Apache License to your work.
+
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets &#34;[]&#34;
+              replaced with your own identifying information. (Don&#39;t include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same &#34;printed page&#34; as the copyright notice for easier
+              identification within third-party archives.
+
+           Copyright [yyyy] [name of copyright owner]
+
+           Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+
+               http://www.apache.org/licenses/LICENSE-2.0
+
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: alembic, docker, Flask, graphene, gunicorn, Jinja2, markdown, matplotlib, mlflow-skinny, numpy, pandas, pyarrow, scikit-learn, scipy, sqlalchemy
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mlflow</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Requirement already satisfied: mlflow in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (2.17.2)
+Requirement already satisfied: matplotlib&lt;4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (3.6.3)
+Requirement already satisfied: Jinja2&lt;4,&gt;=2.11 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (3.1.4)
+Requirement already satisfied: alembic!=1.10.0,&lt;2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (1.14.0)
+Requirement already satisfied: markdown&lt;4,&gt;=3.3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (3.7)
+Requirement already satisfied: pyarrow&lt;18,&gt;=4.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (14.0.2)
+Requirement already satisfied: sqlalchemy&lt;3,&gt;=1.4.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (2.0.36)
+Requirement already satisfied: scipy&lt;2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (1.10.1)
+Requirement already satisfied: docker&lt;8,&gt;=4.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (7.1.0)
+Requirement already satisfied: pandas&lt;3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (1.3.5)
+Requirement already satisfied: gunicorn&lt;24 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (22.0.0)
+Requirement already satisfied: graphene&lt;4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (3.4.1)
+Requirement already satisfied: Flask&lt;4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (2.3.2)
+Requirement already satisfied: mlflow-skinny==2.17.2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (2.17.2)
+Requirement already satisfied: scikit-learn&lt;2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (1.5.1)
+Requirement already satisfied: numpy&lt;3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow) (1.23.5)
+Requirement already satisfied: requests&lt;3,&gt;=2.17.3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (2.32.3)
+Requirement already satisfied: packaging&lt;25 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (24.1)
+Requirement already satisfied: databricks-sdk&lt;1,&gt;=0.20.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (0.29.0)
+Requirement already satisfied: opentelemetry-sdk&lt;3,&gt;=1.9.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (1.26.0)
+Requirement already satisfied: sqlparse&lt;1,&gt;=0.4.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (0.5.1)
+Requirement already satisfied: click&lt;9,&gt;=7.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (8.1.7)
+Requirement already satisfied: opentelemetry-api&lt;3,&gt;=1.9.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (1.26.0)
+Requirement already satisfied: cloudpickle&lt;4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (2.2.1)
+Requirement already satisfied: gitpython&lt;4,&gt;=3.1.9 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (3.1.43)
+Requirement already satisfied: importlib-metadata!=4.7.0,&lt;9,&gt;=3.7.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (8.0.0)
+Requirement already satisfied: pyyaml&lt;7,&gt;=5.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (6.0.1)
+Requirement already satisfied: protobuf&lt;6,&gt;=3.12.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (3.20.3)
+Requirement already satisfied: cachetools&lt;6,&gt;=5.0.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from mlflow-skinny==2.17.2-&gt;mlflow) (5.4.0)
+Requirement already satisfied: Mako in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from alembic!=1.10.0,&lt;2-&gt;mlflow) (1.3.6)
+Requirement already satisfied: typing-extensions&gt;=4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from alembic!=1.10.0,&lt;2-&gt;mlflow) (4.12.2)
+Requirement already satisfied: urllib3&gt;=1.26.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from docker&lt;8,&gt;=4.0.0-&gt;mlflow) (1.26.19)
+Requirement already satisfied: Werkzeug&gt;=2.3.3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from Flask&lt;4-&gt;mlflow) (3.0.3)
+Requirement already satisfied: blinker&gt;=1.6.2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from Flask&lt;4-&gt;mlflow) (1.8.2)
+Requirement already satisfied: itsdangerous&gt;=2.1.2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from Flask&lt;4-&gt;mlflow) (2.1.2)
+Requirement already satisfied: python-dateutil&lt;3,&gt;=2.7.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from graphene&lt;4-&gt;mlflow) (2.9.0.post0)
+Requirement already satisfied: graphql-relay&lt;3.3,&gt;=3.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from graphene&lt;4-&gt;mlflow) (3.2.0)
+Requirement already satisfied: graphql-core&lt;3.3,&gt;=3.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from graphene&lt;4-&gt;mlflow) (3.2.5)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from Jinja2&lt;4,&gt;=2.11-&gt;mlflow) (2.1.5)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (1.4.5)
+Requirement already satisfied: pillow&gt;=6.2.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (9.2.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (1.2.1)
+Requirement already satisfied: pyparsing&gt;=2.2.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (3.1.2)
+Requirement already satisfied: cycler&gt;=0.10 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from matplotlib&lt;4-&gt;mlflow) (4.51.0)
+Requirement already satisfied: pytz&gt;=2017.3 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from pandas&lt;3-&gt;mlflow) (2022.5)
+Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from scikit-learn&lt;2-&gt;mlflow) (3.5.0)
+Requirement already satisfied: joblib&gt;=1.2.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from scikit-learn&lt;2-&gt;mlflow) (1.2.0)
+Requirement already satisfied: greenlet!=0.4.17 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from sqlalchemy&lt;3,&gt;=1.4.0-&gt;mlflow) (3.1.1)
+Requirement already satisfied: google-auth~=2.0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from databricks-sdk&lt;1,&gt;=0.20.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (2.32.0)
+Requirement already satisfied: gitdb&lt;5,&gt;=4.0.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from gitpython&lt;4,&gt;=3.1.9-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (4.0.11)
+Requirement already satisfied: zipp&gt;=0.5 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from importlib-metadata!=4.7.0,&lt;9,&gt;=3.7.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (3.20.2)
+Requirement already satisfied: deprecated&gt;=1.2.6 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from opentelemetry-api&lt;3,&gt;=1.9.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (1.2.14)
+Requirement already satisfied: opentelemetry-semantic-conventions==0.47b0 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from opentelemetry-sdk&lt;3,&gt;=1.9.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (0.47b0)
+Requirement already satisfied: six&gt;=1.5 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from python-dateutil&lt;3,&gt;=2.7.0-&gt;graphene&lt;4-&gt;mlflow) (1.16.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&lt;3,&gt;=2.17.3-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (2024.8.30)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&lt;3,&gt;=2.17.3-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from requests&lt;3,&gt;=2.17.3-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (3.7)
+Requirement already satisfied: wrapt&lt;2,&gt;=1.10 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from deprecated&gt;=1.2.6-&gt;opentelemetry-api&lt;3,&gt;=1.9.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (1.14.1)
+Requirement already satisfied: smmap&lt;6,&gt;=3.0.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from gitdb&lt;5,&gt;=4.0.1-&gt;gitpython&lt;4,&gt;=3.1.9-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (5.0.1)
+Requirement already satisfied: pyasn1-modules&gt;=0.2.1 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from google-auth~=2.0-&gt;databricks-sdk&lt;1,&gt;=0.20.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (0.4.0)
+Requirement already satisfied: rsa&lt;5,&gt;=3.1.4 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from google-auth~=2.0-&gt;databricks-sdk&lt;1,&gt;=0.20.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (4.9)
+Requirement already satisfied: pyasn1&lt;0.7.0,&gt;=0.4.6 in /anaconda/envs/azureml_py38/lib/python3.10/site-packages (from pyasn1-modules&gt;=0.2.1-&gt;google-auth~=2.0-&gt;databricks-sdk&lt;1,&gt;=0.20.0-&gt;mlflow-skinny==2.17.2-&gt;mlflow) (0.6.0)
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="Prepare-the-data">
+<h2><span class="section-number">7.4. </span>Prepare the data<a class="headerlink" href="#Prepare-the-data" title="この見出しへのパーマリンク"></a></h2>
+<p>糖尿病分類モデルをトレーニングします。学習データは<strong>data</strong>フォルダに<strong>diabetes.csv</strong>として格納されています。 まず、データを読んでみましょう：</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading data...&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data/diabetes.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Reading data...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PatientID</th>
+      <th>Pregnancies</th>
+      <th>PlasmaGlucose</th>
+      <th>DiastolicBloodPressure</th>
+      <th>TricepsThickness</th>
+      <th>SerumInsulin</th>
+      <th>BMI</th>
+      <th>DiabetesPedigree</th>
+      <th>Age</th>
+      <th>Diabetic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1354778</td>
+      <td>0</td>
+      <td>171</td>
+      <td>80</td>
+      <td>34</td>
+      <td>23</td>
+      <td>43.509726</td>
+      <td>1.213191</td>
+      <td>21</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1147438</td>
+      <td>8</td>
+      <td>92</td>
+      <td>93</td>
+      <td>47</td>
+      <td>36</td>
+      <td>21.240576</td>
+      <td>0.158365</td>
+      <td>23</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1640031</td>
+      <td>7</td>
+      <td>115</td>
+      <td>47</td>
+      <td>52</td>
+      <td>35</td>
+      <td>41.511523</td>
+      <td>0.079019</td>
+      <td>23</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1883350</td>
+      <td>9</td>
+      <td>103</td>
+      <td>78</td>
+      <td>25</td>
+      <td>304</td>
+      <td>29.582192</td>
+      <td>1.282870</td>
+      <td>43</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1424119</td>
+      <td>1</td>
+      <td>85</td>
+      <td>59</td>
+      <td>27</td>
+      <td>35</td>
+      <td>42.604536</td>
+      <td>0.549542</td>
+      <td>22</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Next, you’ll split the data into features and the label (Diabetes):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splitting data...&quot;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span><span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span><span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span><span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span><span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span><span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Splitting data...
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Another reason to track your model’s results is when you’re testing another estimator. All models you’ve trained so far used the logistic regression estimator.</p>
+<p>Run the following cell to train a model with the decision tree classifier estimator and review whether the accuracy is higher compared to the other runs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span>
+
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="s2">&quot;DecisionTreeClassifier&quot;</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2024/11/09 04:49:49 INFO mlflow.tracking._tracking_service.client: 🏃 View run plum_duck_ycd6smzy at: https://westus.api.azureml.ms/mlflow/v2.0/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/#/experiments/868412a1-1e72-44ae-a150-3e1cebcbdf51/runs/9f94a26d-0d0f-428e-8013-b7079bc00eef.
+2024/11/09 04:49:49 INFO mlflow.tracking._tracking_service.client: 🧪 View experiment at: https://westus.api.azureml.ms/mlflow/v2.0/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/#/experiments/868412a1-1e72-44ae-a150-3e1cebcbdf51.
+</pre></div></div>
+</div>
+<p>最後に、アーティファクトを記録してみよう。アーチファクトはどのようなファイルでもよい。例えば、ROC曲線をプロットし、そのプロットを画像として保存することができる。その画像をアーティファクトとしてログに記録することができる。</p>
+<p>以下のセルを実行して、パラメータ、メトリクス、アーチファクトをログに記録します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span>
+
+    <span class="c1"># plot ROC curve</span>
+    <span class="n">y_scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="c1"># Plot the diagonal 50% line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot the FPR and TPR achieved by our model</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ROC Curve&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;ROC-Curve.png&quot;</span><span class="p">)</span>
+
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="s2">&quot;DecisionTreeClassifier&quot;</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="s2">&quot;ROC-Curve.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Review the model’s results on the Jobs page of the Azure Machine Learning studio.</p>
+<ul class="simple">
+<li><p>You’ll find the parameters under <strong>Params</strong> in the <strong>Overview</strong> tab.</p></li>
+<li><p>You’ll find the metrics under <strong>Metrics</strong> in the <strong>Overview</strong> tab, and in the <strong>Metrics</strong> tab.</p></li>
+<li><p>You’ll find the artifacts in the <strong>Outputs + logs</strong> tab.</p></li>
+</ul>
+<p><img alt="Screenshot of outputs and logs tab on the Jobs page." src="src/images/output-logs.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="06_Classification%20with%20Automated%20Machine%20Learning.html" class="btn btn-neutral float-left" title="6. 自動機械学習で分類モデルを訓練する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="08_0Run%20script%20as%20a%20command%20job.html" class="btn btn-neutral float-right" title="8. トレーニングスクリプトをコマンドジョブとして実行する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

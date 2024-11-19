@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5. Work with environments &mdash; Sphinx  ドキュメント</title>
+  <title>5. 環境構築 &mdash; Sphinx  ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -27,7 +27,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="6. 自動機械学習で分類モデルを訓練する" href="06_Classification%20with%20Automated%20Machine%20Learning.html" />
-    <link rel="prev" title="4. Work with Compute" href="03_Work%20with%20compute.html" /> 
+    <link rel="prev" title="4. コンピューティングの使用" href="03_Work%20with%20compute.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,8 +54,8 @@
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Work with environments</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. 環境構築</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#始める前に">5.1. 始める前に</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">5.2. Connect to your workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Run-a-script-as-a-job">5.3. Run a script as a job</a></li>
@@ -86,7 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5. </span>Work with environments</li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>環境構築</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/04_Work with environments.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -96,8 +96,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Work-with-environments">
-<h1><span class="section-number">5. </span>Work with environments<a class="headerlink" href="#Work-with-environments" title="この見出しへのパーマリンク"></a></h1>
+  <section id="環境構築">
+<h1><span class="section-number">5. </span>環境構築<a class="headerlink" href="#環境構築" title="この見出しへのパーマリンク"></a></h1>
 <p>Azure Machine Learningジョブとしてスクリプトを実行する場合、ジョブ実行の実行コンテキストを定義する必要があります。重要な設定の1つは、スクリプトを実行するコンピュートターゲットです。これは、ローカルワークステーション（この場合はコンピュートインスタンス）、またはオンデマンドでプロビジョニングされるAzure Machine Learningマネージドコンピュートクラスターのようなリモートコンピュートターゲットになります。</p>
 <p>このノートブックでは、コンピュートクラスタを作成し、ジョブ用のコンピュートターゲットを探索します。</p>
 <section id="始める前に">
@@ -383,7 +383,7 @@ Monitor your job at https://ml.azure.com/runs/sad_curtain_tdt1gthn51?wsid=/subsc
 </p><p>エラーメッセージはpandasという名前のモジュールが存在しないことを示しています。このようなエラーには2つの原因が考えられます：</p>
 <ul class="simple">
 <li><p>スクリプトはpandasを使用しているが、ライブラリをインポートしていない（<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span> <span class="pre">as</span> <span class="pre">pd</span></code>）。</p></li>
-<li><p>スクリプトはpandasを使用しているが、ライブラリをインポートしていない(<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pandas</span></code>)。</p></li>
+<li><p>スクリプトはpandasを使用しているが、ライブラリがインストールされてない(<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pandas</span></code>)。</p></li>
 </ul>
 <p>diabetes-training.py`スクリプトを見直すと、スクリプトは正しく、ライブラリがインストールされていないことがわかります。つまり、必要なパッケージが環境に含まれていなかったのです。</p>
 <p>前のジョブで使ったベースDockerイメージを使って、新しい環境を作りましょう。ここで、必要なパッケージがインストールされるようにcondaの仕様を追加する。まず、以下のセルを実行してcondaの仕様ファイルを作成します：</p>
@@ -492,7 +492,7 @@ Monitor your job at https://ml.azure.com/runs/sweet_parcel_2n9fgq4p54?wsid=/subs
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-left" title="4. Work with Compute" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-left" title="4. コンピューティングの使用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="06_Classification%20with%20Automated%20Machine%20Learning.html" class="btn btn-neutral float-right" title="6. 自動機械学習で分類モデルを訓練する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

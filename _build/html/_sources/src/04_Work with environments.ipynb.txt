@@ -3,8 +3,15 @@
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
       "source": [
-        "# Work with environments\n",
+        "# 環境構築\n",
         "\n",
         "Azure Machine Learningジョブとしてスクリプトを実行する場合、ジョブ実行の実行コンテキストを定義する必要があります。重要な設定の1つは、スクリプトを実行するコンピュートターゲットです。これは、ローカルワークステーション（この場合はコンピュートインスタンス）、またはオンデマンドでプロビジョニングされるAzure Machine Learningマネージドコンピュートクラスターのようなリモートコンピュートターゲットになります。\n",
         "\n",
@@ -13,64 +20,41 @@
         "## 始める前に\n",
         "\n",
         "このノートブックのコードを実行するには、**azure-ai-ml** パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。\n"
-      ],
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "gather": {
+          "logged": 1665745893251
+        }
+      },
+      "outputs": [],
+      "source": [
+        "pip show azure-ai-ml"
+      ]
+    },
+    {
+      "attachments": {},
+      "cell_type": "markdown",
       "metadata": {
         "nteract": {
           "transient": {
             "deleting": false
           }
         }
-      }
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "pip show azure-ai-ml"
-      ],
-      "outputs": [],
-      "execution_count": null,
-      "metadata": {
-        "gather": {
-          "logged": 1665745893251
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
-    },
-    {
-      "attachments": {},
-      "cell_type": "markdown",
+      },
       "source": [
         "## Connect to your workspace\n",
         "\n",
         "必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。\n",
         "\n",
         "ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。"
-      ],
-      "metadata": {
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
-        "from azure.ai.ml import MLClient\n",
-        "\n",
-        "try:\n",
-        "    credential = DefaultAzureCredential()\n",
-        "    # Check if given credential can get token successfully.\n",
-        "    credential.get_token(\"https://management.azure.com/.default\")\n",
-        "except Exception as ex:\n",
-        "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
-        "    credential = InteractiveBrowserCredential()"
-      ],
-      "outputs": [],
       "execution_count": 1,
       "metadata": {
         "gather": {
@@ -84,49 +68,69 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
+        "from azure.ai.ml import MLClient\n",
+        "\n",
+        "try:\n",
+        "    credential = DefaultAzureCredential()\n",
+        "    # Check if given credential can get token successfully.\n",
+        "    credential.get_token(\"https://management.azure.com/.default\")\n",
+        "except Exception as ex:\n",
+        "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
+        "    credential = InteractiveBrowserCredential()"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Get a handle to workspace\n",
-        "ml_client = MLClient.from_config(credential=credential)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Found the config file in: /config.json\n"
-        }
-      ],
       "execution_count": 2,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1730418795279
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Found the config file in: /config.json\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Get a handle to workspace\n",
+        "ml_client = MLClient.from_config(credential=credential)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## Run a script as a job\n",
         "\n",
         "モデルをトレーニングするには、まず **src** フォルダに **diabetes_training.py** スクリプトを作成します。このスクリプトは、学習データと同じフォルダにある **diabetes.csv** ファイルを使用します。\n",
         "\n",
         "スクリプトの最初にライブラリをインポートしていることに注意してください。これらのライブラリの関数は、データの処理とモデルの学習に使用されます。スクリプトの実行に使用する計算機には、これらのライブラリがインストールされている必要があります。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/diabetes-training.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile src/diabetes-training.py\n",
         "# import libraries\n",
@@ -163,33 +167,47 @@
         "y_scores = model.predict_proba(X_test)\n",
         "auc = roc_auc_score(y_test,y_scores[:,1])\n",
         "print('AUC: ' + str(auc))"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/diabetes-training.py\n"
-        }
-      ],
-      "execution_count": 4,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スクリプトを作成したら、そのスクリプトをジョブとして実行できます。スクリプトは一般的なライブラリを使用する。そのため、pandas、numpy、scikit-learnなどを含むキュレーション環境を使用することができます。\n",
         "\n",
         "ジョブはキュレーション環境の最新バージョンである`AzureML-sklearn-0.24-ubuntu18.04-py37-cpu`を使用します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {
+        "gather": {
+          "logged": 1730419355264
+        }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n"
+          ]
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/lime_zebra_v4hrbnz2m3?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -207,109 +225,110 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n"
-        },
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/lime_zebra_v4hrbnz2m3?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 5,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419355264
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "While the job is running, you can already run the next cells."
-      ],
-      "metadata": {}
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## List environments\n",
         "\n",
         "ワークスペース内の環境を調べてみよう。\n",
         "\n",
         "前の作業では、キュレーションされた環境の1つを使いました。ワークスペースにすでに存在するすべての環境を探索するには、環境をリストアップします： "
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 6,
+      "metadata": {
+        "gather": {
+          "logged": 1730419371351
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "DefaultNcdEnv-azureml-automl\n",
+            "AzureML-AI-Studio-Development\n",
+            "AzureML-ACPT-pytorch-1.13-py38-cuda11.7-gpu\n",
+            "AzureML-ACPT-pytorch-1.12-py38-cuda11.6-gpu\n",
+            "AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu\n",
+            "AzureML-ACPT-pytorch-1.11-py38-cuda11.5-gpu\n",
+            "AzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu\n",
+            "AzureML-responsibleai-0.21-ubuntu20.04-py38-cpu\n",
+            "AzureML-responsibleai-0.20-ubuntu20.04-py38-cpu\n",
+            "AzureML-tensorflow-2.5-ubuntu20.04-py38-cuda11-gpu\n",
+            "AzureML-tensorflow-2.6-ubuntu20.04-py38-cuda11-gpu\n",
+            "AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu\n",
+            "AzureML-sklearn-1.0-ubuntu20.04-py38-cpu\n",
+            "AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu\n",
+            "AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu\n",
+            "AzureML-pytorch-1.8-ubuntu18.04-py37-cuda11-gpu\n",
+            "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu\n",
+            "AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu\n",
+            "AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu\n",
+            "AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu\n",
+            "AzureML-Triton\n",
+            "AzureML-Designer-Score\n",
+            "AzureML-VowpalWabbit-8.8.0\n",
+            "AzureML-PyTorch-1.3-CPU\n"
+          ]
+        }
+      ],
       "source": [
         "envs = ml_client.environments.list()\n",
         "for env in envs:\n",
         "    print(env.name)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "DefaultNcdEnv-azureml-automl\nAzureML-AI-Studio-Development\nAzureML-ACPT-pytorch-1.13-py38-cuda11.7-gpu\nAzureML-ACPT-pytorch-1.12-py38-cuda11.6-gpu\nAzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu\nAzureML-ACPT-pytorch-1.11-py38-cuda11.5-gpu\nAzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu\nAzureML-responsibleai-0.21-ubuntu20.04-py38-cpu\nAzureML-responsibleai-0.20-ubuntu20.04-py38-cpu\nAzureML-tensorflow-2.5-ubuntu20.04-py38-cuda11-gpu\nAzureML-tensorflow-2.6-ubuntu20.04-py38-cuda11-gpu\nAzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu\nAzureML-sklearn-1.0-ubuntu20.04-py38-cpu\nAzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu\nAzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu\nAzureML-pytorch-1.8-ubuntu18.04-py37-cuda11-gpu\nAzureML-sklearn-0.24-ubuntu18.04-py37-cpu\nAzureML-lightgbm-3.2-ubuntu18.04-py37-cpu\nAzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu\nAzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu\nAzureML-Triton\nAzureML-Designer-Score\nAzureML-VowpalWabbit-8.8.0\nAzureML-PyTorch-1.3-CPU\n"
-        }
-      ],
-      "execution_count": 6,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419371351
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "キュレーションされた環境はすべて **AzureML-** で始まる名前を持っていることに注意してください (この接頭辞はあなた自身の環境には使えません)。\n",
         "\n",
         "特定の環境を確認するには、その名前とバージョンで環境を検索します。例えば、前のジョブで使用したキュレーション環境の *description* と *tags* を取得できます："
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "env = ml_client.environments.get(\"AzureML-sklearn-0.24-ubuntu18.04-py37-cpu\", version=44)\n",
-        "print(env. description, env.tags)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "An environment for tasks such as regression, clustering, and classification with Scikit-learn. Contains the Azure ML SDK and additional python packages. {'Scikit-learn': '0.24.1', 'OS': 'Ubuntu18.04', 'Training': ''}\n"
-        }
-      ],
       "execution_count": 7,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1730419384606
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "An environment for tasks such as regression, clustering, and classification with Scikit-learn. Contains the Azure ML SDK and additional python packages. {'Scikit-learn': '0.24.1', 'OS': 'Ubuntu18.04', 'Training': ''}\n"
+          ]
+        }
+      ],
+      "source": [
+        "env = ml_client.environments.get(\"AzureML-sklearn-0.24-ubuntu18.04-py37-cpu\", version=44)\n",
+        "print(env. description, env.tags)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## Create and use a custom environment\n",
         "\n",
@@ -318,11 +337,28 @@
         "例えば、Dockerイメージから簡単に環境を作成することができます。PyTorchのような特定のフレームワークには、必要なものがすべて含まれているDockerイメージが公開されています。\n",
         "\n",
         "Dockerイメージから環境を作ってみましょう："
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "gather": {
+          "logged": 1730419421006
+        }
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "Environment({'arm_type': 'environment_version', 'latest_version': None, 'image': 'mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04', 'intellectual_property': None, 'is_anonymous': False, 'auto_increment_version': False, 'auto_delete_setting': None, 'name': 'docker-image-example', 'description': 'Environment created from a Docker image.', 'tags': {}, 'properties': {'azureml.labels': 'latest'}, 'print_as_yaml': False, 'id': '/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-example/versions/1', 'Resource__source_path': '', 'base_path': '/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04', 'creation_context': <azure.ai.ml.entities._system_data.SystemData object at 0x7f7861d85720>, 'serialize': <msrest.serialization.Serializer object at 0x7f7861d87d60>, 'version': '1', 'conda_file': None, 'build': None, 'inference_config': None, 'os_type': 'Linux', 'conda_file_path': None, 'path': None, 'datastore': None, 'upload_hash': None, 'translated_conda_file': None})"
+            ]
+          },
+          "execution_count": 8,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
       "source": [
         "from azure.ai.ml.entities import Environment\n",
         "\n",
@@ -332,37 +368,33 @@
         "    description=\"Environment created from a Docker image.\",\n",
         ")\n",
         "ml_client.environments.create_or_update(env_docker_image)"
-      ],
-      "outputs": [
-        {
-          "output_type": "execute_result",
-          "execution_count": 8,
-          "data": {
-            "text/plain": "Environment({'arm_type': 'environment_version', 'latest_version': None, 'image': 'mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04', 'intellectual_property': None, 'is_anonymous': False, 'auto_increment_version': False, 'auto_delete_setting': None, 'name': 'docker-image-example', 'description': 'Environment created from a Docker image.', 'tags': {}, 'properties': {'azureml.labels': 'latest'}, 'print_as_yaml': False, 'id': '/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-example/versions/1', 'Resource__source_path': '', 'base_path': '/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04', 'creation_context': <azure.ai.ml.entities._system_data.SystemData object at 0x7f7861d85720>, 'serialize': <msrest.serialization.Serializer object at 0x7f7861d87d60>, 'version': '1', 'conda_file': None, 'build': None, 'inference_config': None, 'os_type': 'Linux', 'conda_file_path': None, 'path': None, 'datastore': None, 'upload_hash': None, 'translated_conda_file': None})"
-          },
-          "metadata": {}
-        }
-      ],
-      "execution_count": 8,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419421006
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "The environment is now registered in your workspace and you can reference it when you run a script as a job:"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 9,
+      "metadata": {
+        "gather": {
+          "logged": 1730419447996
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/sad_curtain_tdt1gthn51?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -380,42 +412,37 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/sad_curtain_tdt1gthn51?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 9,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419447996
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "<p style=「color:red;font-size:120%;background-color:yellow;font-weight:bold」> ジョブはすぐに失敗します！エラーメッセージを確認してください。</p>\n",
         "エラーメッセージはpandasという名前のモジュールが存在しないことを示しています。このようなエラーには2つの原因が考えられます：\n",
         "\n",
         "- スクリプトはpandasを使用しているが、ライブラリをインポートしていない（`import pandas as pd`）。\n",
-        "- スクリプトはpandasを使用しているが、ライブラリをインポートしていない(`pip install pandas`)。\n",
+        "- スクリプトはpandasを使用しているが、ライブラリがインストールされてない(`pip install pandas`)。\n",
         "\n",
         "diabetes-training.py`スクリプトを見直すと、スクリプトは正しく、ライブラリがインストールされていないことがわかります。つまり、必要なパッケージが環境に含まれていなかったのです。\n",
         "\n",
         "前のジョブで使ったベースDockerイメージを使って、新しい環境を作りましょう。ここで、必要なパッケージがインストールされるようにcondaの仕様を追加する。まず、以下のセルを実行してcondaの仕様ファイルを作成します：\n"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 10,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Writing src/conda-env.yml\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile src/conda-env.yml\n",
         "name: basic-env-cpu\n",
@@ -427,33 +454,38 @@
         "  - pandas\n",
         "  - numpy\n",
         "  - matplotlib"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Writing src/conda-env.yml\n"
-        }
-      ],
-      "execution_count": 10,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スクリプトを正常に実行するために必要な依存関係はすべてconda仕様ファイルに含まれていることに注意してください。\n",
         "\n",
         "ベースとなる Docker イメージと conda 仕様ファイルを使用して新しい環境を作成し、必要な依存関係を追加します。Azure Machine Learning は、提供された Docker イメージの上に conda 環境を構築します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 11,
+      "metadata": {
+        "gather": {
+          "logged": 1730419537070
+        }
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "Environment({'arm_type': 'environment_version', 'latest_version': None, 'image': 'mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04', 'intellectual_property': None, 'is_anonymous': False, 'auto_increment_version': False, 'auto_delete_setting': None, 'name': 'docker-image-plus-conda-example', 'description': 'Environment created from a Docker image plus Conda environment.', 'tags': {}, 'properties': {'azureml.labels': 'latest'}, 'print_as_yaml': False, 'id': '/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-plus-conda-example/versions/1', 'Resource__source_path': '', 'base_path': '/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04', 'creation_context': <azure.ai.ml.entities._system_data.SystemData object at 0x7f7869158cd0>, 'serialize': <msrest.serialization.Serializer object at 0x7f7861ddbd90>, 'version': '1', 'conda_file': {'channels': ['conda-forge'], 'dependencies': ['python=3.11', 'scikit-learn', 'pandas', 'numpy', 'matplotlib'], 'name': 'basic-env-cpu'}, 'build': None, 'inference_config': None, 'os_type': 'Linux', 'conda_file_path': None, 'path': None, 'datastore': None, 'upload_hash': None, 'translated_conda_file': '{\\n  \"channels\": [\\n    \"conda-forge\"\\n  ],\\n  \"dependencies\": [\\n    \"python=3.11\",\\n    \"scikit-learn\",\\n    \"pandas\",\\n    \"numpy\",\\n    \"matplotlib\"\\n  ],\\n  \"name\": \"basic-env-cpu\"\\n}'})"
+            ]
+          },
+          "execution_count": 11,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
       "source": [
         "from azure.ai.ml.entities import Environment\n",
         "\n",
@@ -464,37 +496,42 @@
         "    description=\"Environment created from a Docker image plus Conda environment.\",\n",
         ")\n",
         "ml_client.environments.create_or_update(env_docker_conda)"
-      ],
-      "outputs": [
-        {
-          "output_type": "execute_result",
-          "execution_count": 11,
-          "data": {
-            "text/plain": "Environment({'arm_type': 'environment_version', 'latest_version': None, 'image': 'mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04', 'intellectual_property': None, 'is_anonymous': False, 'auto_increment_version': False, 'auto_delete_setting': None, 'name': 'docker-image-plus-conda-example', 'description': 'Environment created from a Docker image plus Conda environment.', 'tags': {}, 'properties': {'azureml.labels': 'latest'}, 'print_as_yaml': False, 'id': '/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourceGroups/ai-900/providers/Microsoft.MachineLearningServices/workspaces/koikedemo/environments/docker-image-plus-conda-example/versions/1', 'Resource__source_path': '', 'base_path': '/mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/04', 'creation_context': <azure.ai.ml.entities._system_data.SystemData object at 0x7f7869158cd0>, 'serialize': <msrest.serialization.Serializer object at 0x7f7861ddbd90>, 'version': '1', 'conda_file': {'channels': ['conda-forge'], 'dependencies': ['python=3.11', 'scikit-learn', 'pandas', 'numpy', 'matplotlib'], 'name': 'basic-env-cpu'}, 'build': None, 'inference_config': None, 'os_type': 'Linux', 'conda_file_path': None, 'path': None, 'datastore': None, 'upload_hash': None, 'translated_conda_file': '{\\n  \"channels\": [\\n    \"conda-forge\"\\n  ],\\n  \"dependencies\": [\\n    \"python=3.11\",\\n    \"scikit-learn\",\\n    \"pandas\",\\n    \"numpy\",\\n    \"matplotlib\"\\n  ],\\n  \"name\": \"basic-env-cpu\"\\n}'})"
-          },
-          "metadata": {}
-        }
-      ],
-      "execution_count": 11,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419537070
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "Now, you can submit a job with the new environment to run the script:"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 12,
+      "metadata": {
+        "gather": {
+          "logged": 1730419540131
+        }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "\u001b[32mUploading src (0.52 MBs): 100%|██████████| 519350/519350 [00:00<00:00, 10576536.76it/s]\n",
+            "\u001b[39m\n",
+            "\n"
+          ]
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/sweet_parcel_2n9fgq4p54?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -512,32 +549,12 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "\u001b[32mUploading src (0.52 MBs): 100%|██████████| 519350/519350 [00:00<00:00, 10576536.76it/s]\n\u001b[39m\n\n"
-        },
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/sweet_parcel_2n9fgq4p54?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 12,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1730419540131
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "新しいカスタム環境でジョブを投入すると、環境の構築が開始されます。新しく作成した環境を初めて使用する場合、環境の構築に 10-15 分かかることがあります。\n",
         "\n",
@@ -546,8 +563,7 @@
         "ジョブが新しい環境のビルドをトリガーすると、ジョブの **Outputs + logs** タブでビルドのログを確認できます。**azureml-logs/20_image_build_log.txt**を開いて、環境構築のログを確認してください。\n",
         "\n",
         "スクリーンショットのビルドログ](./images/screenshot-logs.png)"
-      ],
-      "metadata": {}
+      ]
     }
   ],
   "metadata": {
@@ -555,9 +571,21 @@
       "name": "python38-azureml"
     },
     "kernelspec": {
-      "name": "python38-azureml",
+      "display_name": "Python 3.8 - AzureML",
       "language": "python",
-      "display_name": "Python 3.8 - AzureML"
+      "name": "python38-azureml"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.11"
     },
     "microsoft": {
       "host": {
@@ -573,18 +601,6 @@
       "interpreter": {
         "hash": "f2b2cd046deda8eabef1e765a11d0ec9aa9bd1d31d56ce79c815a38c323e14ec"
       }
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.10.11",
-      "mimetype": "text/x-python",
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "pygments_lexer": "ipython3",
-      "nbconvert_exporter": "python",
-      "file_extension": ".py"
     }
   },
   "nbformat": 4,

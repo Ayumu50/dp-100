@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../src/0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/04_Work%20with%20environments.html">5. 環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/setup/setup-hand.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>---
+lab:</p>
+<blockquote>
+<div><p>title: setup.sh を使用しない、リソースの作成</p>
+</div></blockquote>
+<p>---</p>
+<p># Azure Machine Learning ワークスペースを詳しく見る</p>
+<p>Azure Machine Learning には、機械学習モデルをトレーニングおよび管理するためのデータ サイエンス プラットフォームが用意されています。 このラボでは、Azure Machine Learning ワークスペースを作成し、ワークスペースを操作するさまざまな方法について学びます。 このラボは、Azure Machine Learning のさまざまなコア機能と開発者ツールの入門編として設計されています。 機能について詳しく知りたい場合は、他にも探索するラボがあります。</p>
+<p>## 開始する前に</p>
+<p>管理レベルのアクセス権を持つ [Azure サブスクリプション](<a class="reference external" href="https://azure.microsoft.com/free?azure-portal=true">https://azure.microsoft.com/free?azure-portal=true</a>)が必要です。</p>
+<p>## Azure Machine Learning ワークスペースをプロビジョニングする</p>
+<p>Azure Machine Learning ''ワークスペース'' では、モデルのトレーニングと管理に必要なすべてのリソースと資産を管理するための中心的な場所が提供されます。<a href="#id1"><span class="problematic" id="id2">**</span></a>** ワークスペースは、Azure portal で対話型インターフェイスを使用して、または Azure CLI と Azure Machine Learning 拡張機能を使用してプロビジョニングすることができます。 ほとんどの運用シナリオでは、CLI を使用してプロビジョニングを自動化し、反復可能な開発と運用 (<em>DevOps</em>) プロセスにリソースのデプロイを組み込めるようにすることをお勧めします。</p>
+<p>この演習では、Azure portal を使用して Azure Machine Learning をプロビジョニングし、すべてのオプションを調べていきます。</p>
+<ol class="arabic simple">
+<li><p><cite>https://portal.azure.com/</cite> にサインインします。</p></li>
+<li><dl class="simple">
+<dt>次の設定を使用して新しい <strong>Azure Machine Learning</strong> リソースを作成します。</dt><dd><ul class="simple">
+<li><p><strong>[サブスクリプション]</strong>:&quot;<em>ご自身の Azure サブスクリプション</em>&quot;</p></li>
+<li><p><strong>リソース グループ</strong>: <cite>rg-dp100-labs</cite></p></li>
+<li><p><strong>ワークスペース名</strong>: <cite>mlw-dp100-labs</cite></p></li>
+<li><p><strong>[リージョン]</strong>: &quot;<em>最も近い地理的リージョンを選択します</em>&quot;</p></li>
+<li><p><strong>[ストレージ アカウント]</strong>: &quot;<em>ワークスペース用に作成される既定の新しいストレージ アカウントに注目します</em>&quot;</p></li>
+<li><p><strong>[キー コンテナー]</strong>: <em>ワークスペース用に作成される既定の新しいキー コンテナーです</em></p></li>
+<li><p><strong>[Application Insights]</strong>: <em>ワークスペース用に作成される既定の新しい Application Insights リソースです</em></p></li>
+<li><p><strong>[コンテナー レジストリ]</strong>: なし (<em>コンテナーにモデルを初めてデプロイするときに、自動的に作成されます</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>ワークスペースとそれに関連付けられているリソースが作成されるまで待ちます。通常、これには約 5 分かかります。</p></li>
+</ol>
+<p>&gt; <strong>注</strong>:Azure Machine Learning ワークスペースを作成する場合、いくつかの高度なオプションを使用して、<a href="#id3"><span class="problematic" id="id4">*</span></a>プライベート エンドポイント*経由のアクセスを制限し、データ暗号化用のカスタム キーを指定できます。 この演習ではこれらのオプションは使用しませんが、注意してください。</p>
+<p>## Azure Machine Learning スタジオについて調べる</p>
+<p>&quot;Azure Machine Learning スタジオ&quot; は、Azure Machine Learning ワークスペースにアクセスできる Web ベースのポータルです。** Azure Machine Learning スタジオを使用してワークスペース内のすべての資産とリソースを管理できます。</p>
+<p>1. <strong>rg-dp100-labs</strong> という名前のリソース グループに移動します。
+1. そのリソース グループに、Azure Machine Learning ワークスペース、Application Insights、キー コンテナー、ストレージ アカウントが含まれていることを確認します。
+1. Azure Machine Learning ワークスペースを選択します。
+1. <strong>[概要]</strong> ページから <strong>[スタジオの起動]</strong> を選択します。 ブラウザーで別のタブが開き、Azure Machine Learning スタジオが開きます。</p>
+<p>## コンピューティング インスタンスを作成する</p>
+<p>Azure Machine Learning ワークスペース内でワークロードを実行するには、コンピューティング リソースが必要です。 Azure Machine Learning の利点の 1 つは、大規模に実験とトレーニング スクリプトを実行できるクラウドベースのコンピューティングを作成できることです。</p>
+<ol class="arabic">
+<li><dl>
+<dt>Azure Machine Learning スタジオで、左側のメニューから <strong>[コンピューティング]</strong> ページを選択します。 使用できるコンピューティング リソースは 4 種類あります。</dt><dd><ul class="simple">
+<li><p><strong>コンピューティング インスタンス</strong>: Azure Machine Learning によって管理される仮想マシン。 データを探索し、機械学習モデルを反復的に実験する場合の開発に最適です。</p></li>
+<li><p><strong>コンピューティング クラスター</strong>:実験コードをオンデマンドで処理するための、仮想マシンのスケーラブルなクラスター。 運用コードまたは自動ジョブの実行に最適です。</p></li>
+<li><p><strong>Kubernetes クラスター</strong>:トレーニングとスコアリングに使われる Kubernetes クラスター。 大規模なリアルタイムのモデル デプロイに最適です。</p></li>
+<li><p><strong>アタッチされたコンピューティング</strong>: Virtual Machines や Azure Databricks クラスターなどの既存の Azure コンピューティング リソースをワークスペースにアタッチします。</p></li>
+</ul>
+<p>デザイナーで作成した機械学習モデルをトレーニングするには、コンピューティング インスタンスまたはコンピューティング クラスターを使用できます。</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>コンピューティング インスタンス</strong> タブで、次の設定を使用して新しいコンピューティング インスタンスを追加します。</dt><dd><ul class="simple">
+<li><p><strong>コンピューティング名</strong>:<em>一意の名前を入力</em></p></li>
+<li><p><strong>場所</strong>: &quot;自動的にワークスペースと同じ場所になります&quot;**</p></li>
+<li><p><strong>仮想マシンの種類</strong>: <cite>CPU</cite></p></li>
+<li><p><strong>仮想マシンのサイズ</strong>: <cite>Standard_DS11_v2</cite></p></li>
+<li><p><strong>使用可能なクォータ</strong>: 使用できる専用コアが表示されます。</p></li>
+<li><dl class="simple">
+<dt><strong>詳細設定の表示</strong>:次の設定に注意しますが、選択しないでください。</dt><dd><ul>
+<li><p><strong>SSH アクセスを有効にする</strong>: <cite>Unselected</cite> &quot;(これを使って、SSH クライアントを使用した仮想マシンへの直接アクセスを有効にすることができます)&quot;**</p></li>
+<li><p><strong>仮想ネットワークの有効化</strong>: <cite>Unselected</cite> &quot;(通常、これをエンタープライズ環境で使用してネットワーク セキュリティを強化します)&quot;**</p></li>
+<li><p><strong>別のユーザーに割り当てる</strong>: <cite>Unselected</cite> &quot;(これを使用して、コンピューティング インスタンスをデータ サイエンティストに割り当てることができます)&quot;**</p></li>
+<li><p><strong>セットアップ スクリプトを使用したプロビジョニング</strong>: <cite>Unselected</cite> &quot;(これを使用して、作成時にリモート インスタンスで実行するスクリプトを追加できます)&quot;**</p></li>
+<li><p><strong>マネージド ID を割り当てる</strong>: <cite>Unselected</cite> &quot;(システム割り当てまたはユーザー割り当てのマネージド ID をアタッチして、リソースへのアクセスを許可できます)&quot;**</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>[作成]</strong> を選択し、コンピューティング インスタンスが起動して状態が <strong>[実行中]</strong> に変わるまでの間に、次の手順に進みます。</p></li>
+</ol>
+<p>&gt; <strong>注</strong>:コンピューティング インスタンスとクラスターは、標準の Azure 仮想マシン イメージに基づいています。 この演習では、コストとパフォーマンスの最適なバランスを実現するために、<em>Standard_DS11_v2</em> イメージが推薦されます。 サブスクリプションに、このイメージを含まないクォータが存在する場合は、代替イメージを選択します。ただし、大きなイメージはコストを上昇させる可能性があり、小さなイメージはタスクを完了するには十分でない可能性があることに注意してください。 または、Azure 管理者にクォータを拡張するように依頼します。</p>
+<p>## コンピューティング クラスターを作成する</p>
+<ol class="arabic simple">
+<li><p>Azure Machine Learning スタジオで、左側のメニューから <strong>[コンピューティング]</strong> ページを選択します。</p></li>
+<li><dl class="simple">
+<dt><strong>コンピューティング クラスター</strong> タブで、次の設定を使用して新しいコンピューティング クラスターを追加します。</dt><dd><ul class="simple">
+<li><p><strong>場所</strong>: &quot;自動的にワークスペースと同じ場所になります&quot;**</p></li>
+<li><p><strong>バーチャル マシン層</strong>: <cite>Dedicated</cite></p></li>
+<li><p><strong>仮想マシンの種類</strong>: <cite>CPU</cite></p></li>
+<li><p><strong>仮想マシンのサイズ</strong>: <cite>STANDARD_DS11_V2</cite></p></li>
+<li><p><strong>コンピューティング名</strong>:<cite>aml-cluster</cite></p></li>
+<li><p><strong>最小ノード数</strong>: <cite>0</cite></p></li>
+<li><p><strong>最大ノード数</strong>: <cite>2</cite></p></li>
+<li><p><strong>スケール ダウンする前のアイドル時間 (秒)</strong> : <cite>3600</cite></p></li>
+<li><p><strong>SSHアクセスを有効にする</strong>: <cite>Unselected</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>[作成]</strong> を選択し、コンピューティングクラスターが起動して状態が <strong>[実行中]</strong> に変われば作成完了です。</p></li>
+</ol>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

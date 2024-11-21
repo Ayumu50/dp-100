@@ -27,7 +27,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="10. MLflow でモデルをログする" href="10_01Log%20models%20with%20MLflow.html" />
-    <link rel="prev" title="8. トレーニングスクリプトをコマンドジョブとして実行する" href="08_0Run%20script%20as%20a%20command%20job.html" /> 
+    <link rel="prev" title="トレーニングスクリプトをコマンドジョブとして実行する" href="08_1Use%20MLflow%20to%20track%20jobs.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,8 +54,8 @@
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
@@ -445,7 +445,7 @@ Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/sub
 </pre></div>
 </div>
 </div>
-<p>Run the following cell to submit the sweep job.</p>
+<p>以下のセルを実行してスイープ・ジョブを投入します。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -464,7 +464,7 @@ Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/sub
 Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1
 </pre></div></div>
 </div>
-<p>When the job is completed, navigate to the job overview. The <strong>Trials</strong> tab will show all models that have been trained and how the <code class="docutils literal notranslate"><span class="pre">Accuracy</span></code> score differs for each regularization rate value you tried.</p>
+<p>ジョブが完了したら、ジョブの概要に移動します。Trials**タブには、トレーニングされたすべてのモデルと、試した正則化率の値ごとに<code class="docutils literal notranslate"><span class="pre">Accuracy</span></code>スコアがどのように異なるかが表示されます。</p>
 </section>
 </section>
 
@@ -472,7 +472,7 @@ Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscr
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="08_0Run%20script%20as%20a%20command%20job.html" class="btn btn-neutral float-left" title="8. トレーニングスクリプトをコマンドジョブとして実行する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="08_1Use%20MLflow%20to%20track%20jobs.html" class="btn btn-neutral float-left" title="トレーニングスクリプトをコマンドジョブとして実行する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="10_01Log%20models%20with%20MLflow.html" class="btn btn-neutral float-right" title="10. MLflow でモデルをログする" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

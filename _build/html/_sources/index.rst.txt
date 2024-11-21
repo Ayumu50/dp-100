@@ -15,6 +15,7 @@ DP-100 研修補助資料
    src/06_Classification with Automated Machine Learning.ipynb
    src/07_Track model training with MLflow.ipynb
    src/08_0Run script as a command job.ipynb
+   src/08_1Use MLflow to track jobs.ipynb
    src/09_0Hyperparameter tuning.ipynb
    src/10_01Log models with MLflow.ipynb
    src/11_00Deploy to batch endpoint.ipynb

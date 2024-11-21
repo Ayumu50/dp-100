@@ -3,6 +3,7 @@
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "# 自動機械学習で分類モデルを訓練する\n",
         "\n",
@@ -10,64 +11,60 @@
         "\n",
         "Azure Machine Learningでは、異なるアルゴリズムと前処理オプションを使用してトレーニングされたモデルの比較を自動化できます。この機能を活用するには、[Azure Machine Learning Studio](https://ml/azure.com)またはPython SDK(v2)のビジュアルインターフェイスを使用できます。Python SDKでは、自動機械学習ジョブの設定をより詳細に制御できますが、ビジュアルインターフェースの方が使いやすくなっています。\n",
         "\n",
-        "## Before you start\n",
         "\n",
-        "You'll need the latest version of the  **azure-ai-ml** package to run the code in this notebook. Run the cell below to verify that it is installed.\n",
+        "## 始める前に\n",
         "\n",
-        "> **Note**:\n",
-        "> If the **azure-ai-ml** package is not installed, run `pip install azure-ai-ml` to install it."
-      ],
-      "metadata": {}
+        "このノートブックのコードを実行するには、**azure-ai-ml**パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。\n",
+        "\n",
+        "> 注**：\n",
+        "> もし **azure-ai-ml** パッケージがインストールされていない場合は、`pip install azure-ai-ml` を実行してインストールしてください。"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "pip show azure-ai-ml"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Name: azure-ai-ml\r\nVersion: 1.21.1\r\nSummary: Microsoft Azure Machine Learning Client Library for Python\r\nHome-page: https://github.com/Azure/azure-sdk-for-python\r\nAuthor: Microsoft Corporation\r\nAuthor-email: azuresdkengsysadmins@microsoft.com\r\nLicense: MIT License\r\nLocation: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\r\nRequires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\r\nRequired-by: \r\nNote: you may need to restart the kernel to use updated packages.\n"
-        }
-      ],
       "execution_count": 1,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1731288081719
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Name: azure-ai-ml\r\n",
+            "Version: 1.21.1\r\n",
+            "Summary: Microsoft Azure Machine Learning Client Library for Python\r\n",
+            "Home-page: https://github.com/Azure/azure-sdk-for-python\r\n",
+            "Author: Microsoft Corporation\r\n",
+            "Author-email: azuresdkengsysadmins@microsoft.com\r\n",
+            "License: MIT License\r\n",
+            "Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\r\n",
+            "Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\r\n",
+            "Required-by: \r\n",
+            "Note: you may need to restart the kernel to use updated packages.\n"
+          ]
+        }
+      ],
+      "source": [
+        "pip show azure-ai-ml"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## ワークスペースに接続する\n",
         "\n",
         "必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。\n",
         "\n",
         "ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
-        "from azure.ai.ml import MLClient\n",
-        "\n",
-        "try:\n",
-        "    credential = DefaultAzureCredential()\n",
-        "    # Check if given credential can get token successfully.\n",
-        "    credential.get_token(\"https://management.azure.com/.default\")\n",
-        "except Exception as ex:\n",
-        "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
-        "    credential = InteractiveBrowserCredential()"
-      ],
-      "outputs": [],
       "execution_count": 7,
       "metadata": {
         "gather": {
@@ -81,38 +78,48 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
+        "from azure.ai.ml import MLClient\n",
+        "\n",
+        "try:\n",
+        "    credential = DefaultAzureCredential()\n",
+        "    # Check if given credential can get token successfully.\n",
+        "    credential.get_token(\"https://management.azure.com/.default\")\n",
+        "except Exception as ex:\n",
+        "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
+        "    credential = InteractiveBrowserCredential()"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Get a handle to workspace\n",
-        "ml_client = MLClient.from_config(credential=credential)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Found the config file in: /config.json\n"
-        }
-      ],
       "execution_count": 8,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1731288157817
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Found the config file in: /config.json\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Get a handle to workspace\n",
+        "ml_client = MLClient.from_config(credential=credential)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## データの準備\n",
         "\n",
@@ -123,19 +130,10 @@
         "自動機械学習の入力としてデータセットを渡すには、そのデータは表形式で、対象となる列が含まれていなければなりません。データを表形式のデータセットとして解釈するためには、入力データセットは **MLTable** でなければなりません。\n",
         "\n",
         "MLTableデータ資産は、セットアップ時に既に作成されています。このデータ資産は、**Data** ページに移動して調べることができます。ここで名前 `diabetes-training-table` とバージョン `1` を指定してデータアセットを取得します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.ai.ml.constants import AssetTypes\n",
-        "from azure.ai.ml import Input\n",
-        "\n",
-        "# creates a dataset based on the files in the local data folder\n",
-        "my_training_data_input = Input(type=AssetTypes.MLTABLE, path=\"azureml:diabetes-training:1\")"
-      ],
-      "outputs": [],
       "execution_count": 3,
       "metadata": {
         "gather": {
@@ -149,15 +147,21 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.ai.ml.constants import AssetTypes\n",
+        "from azure.ai.ml import Input\n",
+        "\n",
+        "# creates a dataset based on the files in the local data folder\n",
+        "my_training_data_input = Input(type=AssetTypes.MLTABLE, path=\"azureml:diabetes-training:1\")"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## 自動機械学習ジョブの設定\n",
         "\n",
@@ -171,11 +175,26 @@
         "- 総トレーニング時間 `60` 分後にタイムアウトする。\n",
         "- 最大5`のモデルを学習する。\n",
         "- LogisticRegression` アルゴリズムではモデルは学習されない。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "gather": {
+          "logged": 1731288145690
+        },
+        "jupyter": {
+          "outputs_hidden": false,
+          "source_hidden": false
+        },
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.ai.ml import automl\n",
         "\n",
@@ -203,58 +222,22 @@
         "    blocked_training_algorithms=[\"LogisticRegression\"], \n",
         "    enable_onnx_compatible_models=True\n",
         ")"
-      ],
-      "outputs": [],
-      "execution_count": 4,
-      "metadata": {
-        "gather": {
-          "logged": 1731288145690
-        },
-        "jupyter": {
-          "outputs_hidden": false,
-          "source_hidden": false
-        },
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## Run an automated machine learning job\n",
         "\n",
         "OK, you're ready to go. Let's run the automated machine learning experiment.\n",
         "\n",
         "> **Note**: This may take some time!"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Submit the AutoML job\n",
-        "returned_job = ml_client.jobs.create_or_update(\n",
-        "    classification_job\n",
-        ")  \n",
-        "\n",
-        "# submit the job to the backend\n",
-        "aml_url = returned_job.studio_url\n",
-        "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/gray_nutmeg_s9240p5fg4?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
       "execution_count": 9,
       "metadata": {
         "gather": {
@@ -268,19 +251,35 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/gray_nutmeg_s9240p5fg4?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Submit the AutoML job\n",
+        "returned_job = ml_client.jobs.create_or_update(\n",
+        "    classification_job\n",
+        ")  \n",
+        "\n",
+        "# submit the job to the backend\n",
+        "aml_url = returned_job.studio_url\n",
+        "print(\"Monitor your job at\", aml_url)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "While the job is running, you can monitor it in the Studio."
-      ],
-      "metadata": {}
+      ]
     }
   ],
   "metadata": {
@@ -288,9 +287,21 @@
       "name": "python38-azureml"
     },
     "kernelspec": {
-      "name": "python38-azureml",
+      "display_name": "Python 3.8 - AzureML",
       "language": "python",
-      "display_name": "Python 3.8 - AzureML"
+      "name": "python38-azureml"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.11"
     },
     "microsoft": {
       "host": {
@@ -306,18 +317,6 @@
       "interpreter": {
         "hash": "f2b2cd046deda8eabef1e765a11d0ec9aa9bd1d31d56ce79c815a38c323e14ec"
       }
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.10.11",
-      "mimetype": "text/x-python",
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "pygments_lexer": "ipython3",
-      "nbconvert_exporter": "python",
-      "file_extension": ".py"
     }
   },
   "nbformat": 4,

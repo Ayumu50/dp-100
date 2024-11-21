@@ -58,7 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">7. MLflowによるノートブックでのモデルトレーニングの追跡</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Before-you-start">7.1. Before you start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">7.1. 始める前に</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">7.2. ワークスペースに接続する</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#MLflow-の設定">7.3. MLflow の設定</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Prepare-the-data">7.4. Prepare the data</a></li>
@@ -99,11 +99,11 @@
 <h1><span class="section-number">7. </span>MLflowによるノートブックでのモデルトレーニングの追跡<a class="headerlink" href="#MLflowによるノートブックでのモデルトレーニングの追跡" title="この見出しへのパーマリンク"></a></h1>
 <p>ノートブックでMLflowを使用すると、トレーニングしたモデルを追跡できます。このノートブックは Azure Machine Learning のコンピュートインスタンスで実行するので、MLflow をセットアップする必要はありません。</p>
 <p>いくつかのデータを準備し、糖尿病を予測するモデルをトレーニングします。オートロギングとカスタムロギングを使用して、ノートブックで MLflow を使用する方法を探ります。</p>
-<section id="Before-you-start">
-<h2><span class="section-number">7.1. </span>Before you start<a class="headerlink" href="#Before-you-start" title="この見出しへのパーマリンク"></a></h2>
-<p>You’ll need the latest version of the <strong>azure-ai-ml</strong> package to run the code in this notebook. Run the cell below to verify that it is installed.</p>
+<section id="始める前に">
+<h2><span class="section-number">7.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
-<div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
 </div></blockquote>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -642,8 +642,8 @@ Splitting data...
 </pre></div>
 </div>
 </div>
-<p>Another reason to track your model’s results is when you’re testing another estimator. All models you’ve trained so far used the logistic regression estimator.</p>
-<p>Run the following cell to train a model with the decision tree classifier estimator and review whether the accuracy is higher compared to the other runs.</p>
+<p>モデルの結果を追跡するもう1つの理由は、別の推定量をテストするときです。これまで学習したモデルはすべてロジスティック回帰推定を用いています。</p>
+<p>次のセルを実行して、決定木を用いてモデルを訓練し、他の実行と比較して精度が高いかどうかを確認します。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -708,13 +708,12 @@ Splitting data...
 </pre></div>
 </div>
 </div>
-<p>Review the model’s results on the Jobs page of the Azure Machine Learning studio.</p>
+<p>Azure Machine LearningスタジオのJobsページでモデルの結果を確認する。</p>
 <ul class="simple">
-<li><p>You’ll find the parameters under <strong>Params</strong> in the <strong>Overview</strong> tab.</p></li>
-<li><p>You’ll find the metrics under <strong>Metrics</strong> in the <strong>Overview</strong> tab, and in the <strong>Metrics</strong> tab.</p></li>
-<li><p>You’ll find the artifacts in the <strong>Outputs + logs</strong> tab.</p></li>
+<li><p>パラメータは、<strong>Overview</strong> タブの <strong>Params</strong> の下にあります。</p></li>
+<li><p>メトリクスは、<strong>Overview</strong> タブの <strong>Metrics</strong> と、<strong>Metrics</strong> タブにあります。</p></li>
+<li><p>成果物は、<strong>Outputs + logs</strong> タブにあります。</p></li>
 </ul>
-<p><img alt="Screenshot of outputs and logs tab on the Jobs page." src="src/images/output-logs.png" /></p>
 </section>
 </section>
 

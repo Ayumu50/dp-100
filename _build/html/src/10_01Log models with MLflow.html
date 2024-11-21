@@ -54,8 +54,8 @@
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
@@ -838,8 +838,8 @@ Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/sub
 <h2><span class="section-number">10.7. </span>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
 <p>デプロイしたいモデルを選択したら、まずモデルを登録します。</p>
 <p>最新のモデルを登録するには、ジョブの実行名を参照します。モデルをMLflowモデルとして登録することで、後で簡単にデプロイすることができます。</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -857,113 +857,6 @@ Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/sub
 <span class="n">ml_client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">run_model</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">HttpResponseError</span>                         Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[13], line 13</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span> run_model <span style="color: rgb(98,98,98)">=</span> Model(
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     path<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">azureml://jobs/</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>job_name<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">/outputs/artifacts/paths/model/</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">mlflow-diabetes</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">      9</span>     description<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Model created from run.</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">     10</span>     <span style="color: rgb(0,135,0)">type</span><span style="color: rgb(98,98,98)">=</span>AssetTypes<span style="color: rgb(98,98,98)">.</span>MLFLOW_MODEL,
-<span class="ansi-green-intense-fg ansi-bold">     11</span> )
-<span class="ansi-green-intense-fg ansi-bold">     12</span> <span style="color: rgb(95,135,135)"># Uncomment after adding required details above</span>
-<span class="ansi-green-fg">---&gt; 13</span> <span class="ansi-yellow-bg">ml_client</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">models</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">create_or_update</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">run_model</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/_telemetry/activity.py:289</span>, in <span class="ansi-cyan-fg">monitor_with_activity.&lt;locals&gt;.monitor.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    285</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> tracer<span style="color: rgb(98,98,98)">.</span>span():
-<span class="ansi-green-intense-fg ansi-bold">    286</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> log_activity(
-<span class="ansi-green-intense-fg ansi-bold">    287</span>             logger<span style="color: rgb(98,98,98)">.</span>package_logger, activity_name <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> f<span style="color: rgb(98,98,98)">.</span><span style="color: rgb(0,0,135)">__name__</span>, activity_type, custom_dimensions
-<span class="ansi-green-intense-fg ansi-bold">    288</span>         ):
-<span class="ansi-green-fg">--&gt; 289</span>             <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">f</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    290</span> <span class="ansi-bold" style="color: rgb(0,135,0)">elif</span> <span style="color: rgb(0,135,0)">hasattr</span>(logger, <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">package_logger</span><span style="color: rgb(175,0,0)">&#34;</span>):
-<span class="ansi-green-intense-fg ansi-bold">    291</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> log_activity(logger<span style="color: rgb(98,98,98)">.</span>package_logger, activity_name <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> f<span style="color: rgb(98,98,98)">.</span><span style="color: rgb(0,0,135)">__name__</span>, activity_type, custom_dimensions):
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:295</span>, in <span class="ansi-cyan-fg">ModelOperations.create_or_update</span><span class="ansi-blue-fg">(self, model)</span>
-<span class="ansi-green-intense-fg ansi-bold">    293</span>     log_and_raise_error(ex)
-<span class="ansi-green-intense-fg ansi-bold">    294</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">--&gt; 295</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> ex
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:283</span>, in <span class="ansi-cyan-fg">ModelOperations.create_or_update</span><span class="ansi-blue-fg">(self, model)</span>
-<span class="ansi-green-intense-fg ansi-bold">    276</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">str</span>(e) <span style="color: rgb(98,98,98)">==</span> ASSET_PATH_ERROR:
-<span class="ansi-green-intense-fg ansi-bold">    277</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> AssetPathException(
-<span class="ansi-green-intense-fg ansi-bold">    278</span>             message<span style="color: rgb(98,98,98)">=</span>CHANGED_ASSET_PATH_MSG,
-<span class="ansi-green-intense-fg ansi-bold">    279</span>             target<span style="color: rgb(98,98,98)">=</span>ErrorTarget<span style="color: rgb(98,98,98)">.</span>MODEL,
-<span class="ansi-green-intense-fg ansi-bold">    280</span>             no_personal_data_message<span style="color: rgb(98,98,98)">=</span>CHANGED_ASSET_PATH_MSG_NO_PERSONAL_DATA,
-<span class="ansi-green-intense-fg ansi-bold">    281</span>             error_category<span style="color: rgb(98,98,98)">=</span>ErrorCategory<span style="color: rgb(98,98,98)">.</span>USER_ERROR,
-<span class="ansi-green-intense-fg ansi-bold">    282</span>         ) <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">e</span>
-<span class="ansi-green-fg">--&gt; 283</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> e
-<span class="ansi-green-intense-fg ansi-bold">    285</span> model <span style="color: rgb(98,98,98)">=</span> Model<span style="color: rgb(98,98,98)">.</span>_from_rest_object(result)
-<span class="ansi-green-intense-fg ansi-bold">    286</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> auto_increment_version <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> indicator_file:
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:262</span>, in <span class="ansi-cyan-fg">ModelOperations.create_or_update</span><span class="ansi-blue-fg">(self, model)</span>
-<span class="ansi-green-intense-fg ansi-bold">    251</span> auto_increment_version <span style="color: rgb(98,98,98)">=</span> model<span style="color: rgb(98,98,98)">.</span>_auto_increment_version
-<span class="ansi-green-intense-fg ansi-bold">    252</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
-<span class="ansi-green-intense-fg ansi-bold">    253</span>     result <span style="color: rgb(98,98,98)">=</span> (
-<span class="ansi-green-intense-fg ansi-bold">    254</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_model_versions_operation<span style="color: rgb(98,98,98)">.</span>begin_create_or_update(
-<span class="ansi-green-intense-fg ansi-bold">    255</span>             name<span style="color: rgb(98,98,98)">=</span>name,
-<span class="ansi-green-intense-fg ansi-bold">    256</span>             version<span style="color: rgb(98,98,98)">=</span>version,
-<span class="ansi-green-intense-fg ansi-bold">    257</span>             body<span style="color: rgb(98,98,98)">=</span>model_version_resource,
-<span class="ansi-green-intense-fg ansi-bold">    258</span>             registry_name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_registry_name,
-<span class="ansi-green-intense-fg ansi-bold">    259</span>             <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span><span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_scope_kwargs,
-<span class="ansi-green-intense-fg ansi-bold">    260</span>         )<span style="color: rgb(98,98,98)">.</span>result()
-<span class="ansi-green-intense-fg ansi-bold">    261</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_registry_name
-<span class="ansi-green-fg">--&gt; 262</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">else</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_model_versions_operation</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">create_or_update</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    263</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    264</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">version</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">version</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    265</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">model_version_resource</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    266</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">workspace_name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_workspace_name</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    267</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_scope_kwargs</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    268</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    269</span>     )
-<span class="ansi-green-intense-fg ansi-bold">    271</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> result <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_registry_name:
-<span class="ansi-green-intense-fg ansi-bold">    272</span>         result <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_get(name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(0,135,0)">str</span>(model<span style="color: rgb(98,98,98)">.</span>name), version<span style="color: rgb(98,98,98)">=</span>model<span style="color: rgb(98,98,98)">.</span>version)
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/core/tracing/decorator.py:94</span>, in <span class="ansi-cyan-fg">distributed_trace.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper_use_tracer</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     92</span> span_impl_type <span style="color: rgb(98,98,98)">=</span> settings<span style="color: rgb(98,98,98)">.</span>tracing_implementation()
-<span class="ansi-green-intense-fg ansi-bold">     93</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> span_impl_type <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>:
-<span class="ansi-green-fg">---&gt; 94</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     96</span> <span style="color: rgb(95,135,135)"># Merge span is parameter is set, but only if no explicit parent are passed</span>
-<span class="ansi-green-intense-fg ansi-bold">     97</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> merge_span <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> passed_in_parent:
-
-File <span class="ansi-green-fg">/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/_restclient/v2023_08_01_preview/operations/_model_versions_operations.py:650</span>, in <span class="ansi-cyan-fg">ModelVersionsOperations.create_or_update</span><span class="ansi-blue-fg">(self, resource_group_name, workspace_name, name, version, body, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    648</span>     map_error(status_code<span style="color: rgb(98,98,98)">=</span>response<span style="color: rgb(98,98,98)">.</span>status_code, response<span style="color: rgb(98,98,98)">=</span>response, error_map<span style="color: rgb(98,98,98)">=</span>error_map)
-<span class="ansi-green-intense-fg ansi-bold">    649</span>     error <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_deserialize<span style="color: rgb(98,98,98)">.</span>failsafe_deserialize(_models<span style="color: rgb(98,98,98)">.</span>ErrorResponse, pipeline_response)
-<span class="ansi-green-fg">--&gt; 650</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> HttpResponseError(response<span style="color: rgb(98,98,98)">=</span>response, model<span style="color: rgb(98,98,98)">=</span>error, error_format<span style="color: rgb(98,98,98)">=</span>ARMErrorFormat)
-<span class="ansi-green-intense-fg ansi-bold">    652</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> response<span style="color: rgb(98,98,98)">.</span>status_code <span style="color: rgb(98,98,98)">==</span> <span style="color: rgb(98,98,98)">200</span>:
-<span class="ansi-green-intense-fg ansi-bold">    653</span>     deserialized <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_deserialize(<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">ModelVersion</span><span style="color: rgb(175,0,0)">&#39;</span>, pipeline_response)
-
-<span class="ansi-red-fg">HttpResponseError</span>: (UserError) The request is invalid.
-Code: UserError
-Message: The request is invalid.
-Exception Details:      (NoMatchingArtifactsFoundFromJob) No artifacts matching model found from Job.
-        Code: NoMatchingArtifactsFoundFromJob
-        Message: No artifacts matching model found from Job.
-Additional Information:Type: ComponentName
-Info: {
-    &#34;value&#34;: &#34;managementfrontend&#34;
-}Type: Correlation
-Info: {
-    &#34;value&#34;: {
-        &#34;operation&#34;: &#34;4bbf16a1c7291bcd7a7a5f68b677dd4d&#34;,
-        &#34;request&#34;: &#34;f0a2169efe6192c5&#34;
-    }
-}Type: Environment
-Info: {
-    &#34;value&#34;: &#34;westus&#34;
-}Type: Location
-Info: {
-    &#34;value&#34;: &#34;westus&#34;
-}Type: Time
-Info: {
-    &#34;value&#34;: &#34;2024-11-12T01:35:51.071004+00:00&#34;
-}
-</pre></div></div>
 </div>
 <p>スタジオで、<strong>Models</strong> ページに移動します。モデルリストで <code class="docutils literal notranslate"><span class="pre">mlflow-diabetes</span></code> モデルを見つけて選択し、さらに調べます。</p>
 <ul class="simple">

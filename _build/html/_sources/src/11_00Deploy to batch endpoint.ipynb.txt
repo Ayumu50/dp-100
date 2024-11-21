@@ -3,6 +3,7 @@
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "# バッチエンドポイントへのデプロイ\n",
         "\n",
@@ -14,39 +15,42 @@
         "\n",
         "> 注**：\n",
         "> もし **azure-ai-ml** パッケージがインストールされていない場合は、`pip install azure-ai-ml` を実行してインストールしてください。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "pip show azure-ai-ml"
-      ],
-      "outputs": [],
       "execution_count": 1,
       "metadata": {
         "gather": {
           "logged": 1667816557578
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "pip show azure-ai-ml"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## ワークスペースに接続する\n",
         "\n",
         "必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。\n",
         "\n",
         "ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "gather": {
+          "logged": 1667816564779
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
         "from azure.ai.ml import MLClient\n",
@@ -58,63 +62,40 @@
         "except Exception as ex:\n",
         "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
         "    credential = InteractiveBrowserCredential()"
-      ],
-      "outputs": [],
-      "execution_count": null,
-      "metadata": {
-        "gather": {
-          "logged": 1667816564779
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Get a handle to workspace\n",
-        "ml_client = MLClient.from_config(credential=credential)"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
           "logged": 1667816570921
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "# Get a handle to workspace\n",
+        "ml_client = MLClient.from_config(credential=credential)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
-      "source": [
-        "## モデルの登録\n",
-        "\n",
-        "バッチデプロイはワークスペースに登録されたモデルのみをデプロイすることができます。ローカルの `model` フォルダに格納されている MLflow モデルを登録します。"
-      ],
       "metadata": {
         "nteract": {
           "transient": {
             "deleting": false
           }
         }
-      }
+      },
+      "source": [
+        "## モデルの登録\n",
+        "\n",
+        "バッチデプロイはワークスペースに登録されたモデルのみをデプロイすることができます。ローカルの `model` フォルダに格納されている MLflow モデルを登録します。"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.ai.ml.entities import Model\n",
-        "from azure.ai.ml.constants import AssetTypes\n",
-        "\n",
-        "model_name = 'diabetes-mlflow'\n",
-        "model = ml_client.models.create_or_update(\n",
-        "    Model(name=model_name, path='./model', type=AssetTypes.MLFLOW_MODEL)\n",
-        ")"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -128,37 +109,37 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.ai.ml.entities import Model\n",
+        "from azure.ai.ml.constants import AssetTypes\n",
+        "\n",
+        "model_name = 'diabetes-mlflow'\n",
+        "model = ml_client.models.create_or_update(\n",
+        "    Model(name=model_name, path='./model', type=AssetTypes.MLFLOW_MODEL)\n",
+        ")"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
-      "source": [
-        "## バッチエンドポイントの作成\n",
-        "\n",
-        "バッチエンドポイントは、アプリケーションがバッチスコアリングジョブをトリガーするために呼び出すことができる HTTPS エンドポイントです。バッチエンドポイント名は Azure リージョン内で一意である必要があります。datetime` 関数を使用して、現在の日付と時刻に基づいて一意の名前を生成します。"
-      ],
       "metadata": {
         "nteract": {
           "transient": {
             "deleting": false
           }
         }
-      }
+      },
+      "source": [
+        "## バッチエンドポイントの作成\n",
+        "\n",
+        "バッチエンドポイントは、アプリケーションがバッチスコアリングジョブをトリガーするために呼び出すことができる HTTPS エンドポイントです。バッチエンドポイント名は Azure リージョン内で一意である必要があります。datetime` 関数を使用して、現在の日付と時刻に基づいて一意の名前を生成します。"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "import datetime\n",
-        "\n",
-        "endpoint_name = \"batch-\" + datetime.datetime.now().strftime(\"%m%d%H%M%f\")\n",
-        "endpoint_name"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -172,34 +153,26 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "import datetime\n",
+        "\n",
+        "endpoint_name = \"batch-\" + datetime.datetime.now().strftime(\"%m%d%H%M%f\")\n",
+        "endpoint_name"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "BatchEndpoint` クラスでエンドポイントを作成するには、名前とオプションで説明を指定する必要があります。エンドポイントを作成したら、そのエンドポイントにモデルをデプロイします。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.ai.ml.entities import BatchEndpoint\n",
-        "\n",
-        "# create a batch endpoint\n",
-        "endpoint = BatchEndpoint(\n",
-        "    name=endpoint_name,\n",
-        "    description=\"A batch endpoint for classifying diabetes in patients\",\n",
-        ")\n",
-        "\n",
-        "ml_client.batch_endpoints.begin_create_or_update(endpoint)"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -213,28 +186,76 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.ai.ml.entities import BatchEndpoint\n",
+        "\n",
+        "# create a batch endpoint\n",
+        "endpoint = BatchEndpoint(\n",
+        "    name=endpoint_name,\n",
+        "    description=\"A batch endpoint for classifying diabetes in patients\",\n",
+        ")\n",
+        "\n",
+        "ml_client.batch_endpoints.begin_create_or_update(endpoint)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
-      "source": [
-        "<p style=「color:red;font-size:120%;background-color:yellow;font-weight:bold」> 重要です！続行する前に、エンドポイントが作成されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>\n\n## デプロイメントの作成\n\nデプロイメントとは、実際の推論を行うモデルをホストするために必要なリソースのセットです。BatchDeployment` クラスを使用してエンドポイント用のデプロイメントを作成します。\n\nMLflow モデルをデプロイするので、スコアリングスクリプトや環境の定義は必要ありません。Azure Machine Learning が自動的にそれらのアセットを作成してくれます。model` フォルダ内の `MLmodel` ファイルは、モデルの期待される入力と出力を理解するために使用されます。\n\n以下のパラメータでモデルをデプロイします：\n\n- name`： 配置の名前。\n- description`： 配置が何を表しているかをさらに明確にするためのオプションの説明。\n- endpoint_name`： モデルをデプロイするエンドポイントの名前。\n- モデル`： 登録されているモデルの名前。\n- compute`: コンピュート： 予測値を生成するためにデプロイされたモデルを呼び出す際に使用するコンピュート。\n- インスタンス数 `instance_count`： 予測生成に使用するコンピュートノードの数。\n- max_concurrency_per_instance`: 並列スコアリングスクリプトの最大実行数： 計算ノードあたりのスコアリングスクリプトの最大並列実行数。\n- mini_batch_size`： スコアリングスクリプトの実行ごとに渡されるファイルの数。\n- 出力アクション`： それぞれの新しい予測値が新しい行として出力ファイルに追加される。\n- 出力ファイル名`： 予測値が追加されるファイル。\n- retry_settings`: ミニバッチが失敗した場合の設定： ミニバッチが失敗した場合の設定。\n- logging_level`： ログの冗長性レベル。許可される値は `warning`、`info`、`debug` である。\n\n以下のセルを実行すると、デプロイが設定され、作成される。"
-      ],
       "metadata": {
         "nteract": {
           "transient": {
             "deleting": false
           }
         }
-      }
+      },
+      "source": [
+        "<p style=「color:red;font-size:120%;background-color:yellow;font-weight:bold」> 重要です！続行する前に、エンドポイントが作成されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>\n",
+        "\n",
+        "## デプロイメントの作成\n",
+        "\n",
+        "デプロイメントとは、実際の推論を行うモデルをホストするために必要なリソースのセットです。BatchDeployment` クラスを使用してエンドポイント用のデプロイメントを作成します。\n",
+        "\n",
+        "MLflow モデルをデプロイするので、スコアリングスクリプトや環境の定義は必要ありません。Azure Machine Learning が自動的にそれらのアセットを作成してくれます。model` フォルダ内の `MLmodel` ファイルは、モデルの期待される入力と出力を理解するために使用されます。\n",
+        "\n",
+        "以下のパラメータでモデルをデプロイします：\n",
+        "\n",
+        "- name`： 配置の名前。\n",
+        "- description`： 配置が何を表しているかをさらに明確にするためのオプションの説明。\n",
+        "- endpoint_name`： モデルをデプロイするエンドポイントの名前。\n",
+        "- モデル`： 登録されているモデルの名前。\n",
+        "- compute`: コンピュート： 予測値を生成するためにデプロイされたモデルを呼び出す際に使用するコンピュート。\n",
+        "- インスタンス数 `instance_count`： 予測生成に使用するコンピュートノードの数。\n",
+        "- max_concurrency_per_instance`: 並列スコアリングスクリプトの最大実行数： 計算ノードあたりのスコアリングスクリプトの最大並列実行数。\n",
+        "- mini_batch_size`： スコアリングスクリプトの実行ごとに渡されるファイルの数。\n",
+        "- 出力アクション`： それぞれの新しい予測値が新しい行として出力ファイルに追加される。\n",
+        "- 出力ファイル名`： 予測値が追加されるファイル。\n",
+        "- retry_settings`: ミニバッチが失敗した場合の設定： ミニバッチが失敗した場合の設定。\n",
+        "- logging_level`： ログの冗長性レベル。許可される値は `warning`、`info`、`debug` である。\n",
+        "\n",
+        "以下のセルを実行すると、デプロイが設定され、作成される。"
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "gather": {
+          "logged": 1667817147601
+        },
+        "jupyter": {
+          "outputs_hidden": false,
+          "source_hidden": false
+        },
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.ai.ml.entities import BatchDeployment, BatchRetrySettings\n",
         "from azure.ai.ml.constants import BatchDeploymentOutputAction\n",
@@ -254,47 +275,20 @@
         "    logging_level=\"info\",\n",
         ")\n",
         "ml_client.batch_deployments.begin_create_or_update(deployment)"
-      ],
-      "outputs": [],
-      "execution_count": null,
-      "metadata": {
-        "gather": {
-          "logged": 1667817147601
-        },
-        "jupyter": {
-          "outputs_hidden": false,
-          "source_hidden": false
-        },
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "<p style=「color:red;font-size:120%;background-color:yellow;font-weight:bold」> 重要です！デプロイが完了するまでお待ちください！スタジオに緑色の通知が表示されるはずです。</p>\n",
         "\n",
         "1つのエンドポイントに複数のモデルをデプロイできます。デフォルトのデプロイメントを設定すると、バッチエンドポイントを呼び出すときにデフォルトで使用するモデルを指定できます。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "endpoint.defaults = {}\n",
-        "\n",
-        "endpoint.defaults[\"deployment_name\"] = deployment.name\n",
-        "\n",
-        "ml_client.batch_endpoints.begin_create_or_update(endpoint)"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -308,26 +302,47 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "endpoint.defaults = {}\n",
+        "\n",
+        "endpoint.defaults[\"deployment_name\"] = deployment.name\n",
+        "\n",
+        "ml_client.batch_endpoints.begin_create_or_update(endpoint)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "<p style=「color:red;font-size:120%;background-color:yellow;font-weight:bold」> 重要です！続行する前に、デフォルトの配置が設定されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>\n",
         "\n",
         "## バッチ予測用のデータを準備する\n",
         "\n",
         "data`フォルダにラベル付けされていないデータのCSVファイルがあります。data` フォルダ内のファイルを指すデータアセットを作成し、バッチジョブの入力として使用します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "gather": {
+          "logged": 1667816672949
+        },
+        "jupyter": {
+          "outputs_hidden": false,
+          "source_hidden": false
+        },
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.ai.ml.entities import Data\n",
         "from azure.ai.ml.constants import AssetTypes\n",
@@ -342,35 +357,10 @@
         "    name=dataset_name,\n",
         ")\n",
         "ml_client.data.create_or_update(patient_dataset_unlabeled)"
-      ],
-      "outputs": [],
-      "execution_count": null,
-      "metadata": {
-        "gather": {
-          "logged": 1667816672949
-        },
-        "jupyter": {
-          "outputs_hidden": false,
-          "source_hidden": false
-        },
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "patient_dataset_unlabeled = ml_client.data.get(\n",
-        "    name=\"patient-data-unlabeled\", label=\"latest\"\n",
-        ")"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -384,33 +374,29 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "patient_dataset_unlabeled = ml_client.data.get(\n",
+        "    name=\"patient-data-unlabeled\", label=\"latest\"\n",
+        ")"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## ジョブの投入\n",
         "\n",
         "バッチエンドポイントにモデルをデプロイし、ラベル付けされていないデータ資産を手に入れたので、ラベル付けされていないデータに対して予測を生成するためにエンドポイントを呼び出す準備ができました。\n",
         "\n",
         "まず、登録したデータ資産を参照して入力を定義します。次にエンドポイントを起動し、パイプラインジョブを送信します。ジョブのURLを使用して、スタジオでジョブを監視できます。ジョブには、予測値を取得するための（生成された）スコアリングスクリプトの実行を表す子ジョブが含まれます。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.ai.ml import Input\n",
-        "from azure.ai.ml.constants import AssetTypes\n",
-        "\n",
-        "input = Input(type=AssetTypes.URI_FOLDER, path=patient_dataset_unlabeled.id)"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -424,22 +410,18 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.ai.ml import Input\n",
+        "from azure.ai.ml.constants import AssetTypes\n",
+        "\n",
+        "input = Input(type=AssetTypes.URI_FOLDER, path=patient_dataset_unlabeled.id)"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "job = ml_client.batch_endpoints.invoke(\n",
-        "    endpoint_name=endpoint.name, \n",
-        "    input=input)\n",
-        "\n",
-        "ml_client.jobs.get(job.name)"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -453,28 +435,29 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "job = ml_client.batch_endpoints.invoke(\n",
+        "    endpoint_name=endpoint.name, \n",
+        "    input=input)\n",
+        "\n",
+        "ml_client.jobs.get(job.name)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## 結果の取得\n",
         "\n",
         "バッチエンドポイントを呼び出したパイプラインジョブが完了すると、結果を見ることができます。すべての予測結果は、デフォルトのデータストアに格納されている `predictions.csv` ファイルに収集されます。以下のセルを実行することで、ファイルをダウンロードし、データを可視化することができる。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "ml_client.jobs.download(name=job.name, download_path=\".\", output_name=\"score\")"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -488,19 +471,15 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "ml_client.jobs.download(name=job.name, download_path=\".\", output_name=\"score\")"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "with open(\"predictions.csv\", \"r\") as f:\n",
-        "    data = f.read()"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -514,24 +493,16 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "with open(\"predictions.csv\", \"r\") as f:\n",
+        "    data = f.read()"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from ast import literal_eval\n",
-        "import pandas as pd\n",
-        "\n",
-        "score = pd.DataFrame(\n",
-        "    literal_eval(data.replace(\"\\n\", \",\")), columns=[\"file\", \"prediction\"]\n",
-        ")\n",
-        "score"
-      ],
-      "outputs": [],
       "execution_count": null,
       "metadata": {
         "gather": {
@@ -545,11 +516,18 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from ast import literal_eval\n",
+        "import pandas as pd\n",
+        "\n",
+        "score = pd.DataFrame(\n",
+        "    literal_eval(data.replace(\"\\n\", \",\")), columns=[\"file\", \"prediction\"]\n",
+        ")\n",
+        "score"
+      ]
     }
   ],
   "metadata": {
@@ -557,9 +535,21 @@
       "name": "python38-azureml"
     },
     "kernelspec": {
-      "name": "python38-azureml",
+      "display_name": "Python 3.8 - AzureML",
       "language": "python",
-      "display_name": "Python 3.8 - AzureML"
+      "name": "python38-azureml"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.11"
     },
     "microsoft": {
       "host": {
@@ -575,18 +565,6 @@
       "interpreter": {
         "hash": "f2b2cd046deda8eabef1e765a11d0ec9aa9bd1d31d56ce79c815a38c323e14ec"
       }
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.10.11",
-      "mimetype": "text/x-python",
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "pygments_lexer": "ipython3",
-      "nbconvert_exporter": "python",
-      "file_extension": ".py"
     }
   },
   "nbformat": 4,

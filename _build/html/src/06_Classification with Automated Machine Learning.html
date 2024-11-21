@@ -27,7 +27,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="7. MLflowによるノートブックでのモデルトレーニングの追跡" href="07_Track%20model%20training%20with%20MLflow.html" />
-    <link rel="prev" title="5. Work with environments" href="04_Work%20with%20environments.html" /> 
+    <link rel="prev" title="5. 環境構築" href="04_Work%20with%20environments.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,10 +54,10 @@
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">6. 自動機械学習で分類モデルを訓練する</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Before-you-start">6.1. Before you start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">6.1. 始める前に</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">6.2. ワークスペースに接続する</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#データの準備">6.3. データの準備</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#自動機械学習ジョブの設定">6.4. 自動機械学習ジョブの設定</a></li>
@@ -100,11 +100,11 @@
 <h1><span class="section-number">6. </span>自動機械学習で分類モデルを訓練する<a class="headerlink" href="#自動機械学習で分類モデルを訓練する" title="この見出しへのパーマリンク"></a></h1>
 <p>モデルを訓練するために使用できる機械学習アルゴリズムには多くの種類があり、特定のデータと予測要件に最も効果的なアルゴリズムを決定するのは簡単ではない場合があります。さらに、正規化、欠損特徴インピュテーションなどのテクニックを使って学習データを前処理することで、モデルの予測性能に大きな影響を与えることができます。要件に最適なモデルを見つけようとすると、アルゴリズムと前処理変換の多くの組み合わせを試す必要があるかもしれません。</p>
 <p>Azure Machine Learningでは、異なるアルゴリズムと前処理オプションを使用してトレーニングされたモデルの比較を自動化できます。この機能を活用するには、<a class="reference external" href="https://ml/azure.com">Azure Machine Learning Studio</a>またはPython SDK(v2)のビジュアルインターフェイスを使用できます。Python SDKでは、自動機械学習ジョブの設定をより詳細に制御できますが、ビジュアルインターフェースの方が使いやすくなっています。</p>
-<section id="Before-you-start">
-<h2><span class="section-number">6.1. </span>Before you start<a class="headerlink" href="#Before-you-start" title="この見出しへのパーマリンク"></a></h2>
-<p>You’ll need the latest version of the <strong>azure-ai-ml</strong> package to run the code in this notebook. Run the cell below to verify that it is installed.</p>
+<section id="始める前に">
+<h2><span class="section-number">6.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
-<div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
 </div></blockquote>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -274,7 +274,7 @@ Monitor your job at https://ml.azure.com/runs/gray_nutmeg_s9240p5fg4?wsid=/subsc
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="04_Work%20with%20environments.html" class="btn btn-neutral float-left" title="5. Work with environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="04_Work%20with%20environments.html" class="btn btn-neutral float-left" title="5. 環境構築" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="07_Track%20model%20training%20with%20MLflow.html" class="btn btn-neutral float-right" title="7. MLflowによるノートブックでのモデルトレーニングの追跡" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

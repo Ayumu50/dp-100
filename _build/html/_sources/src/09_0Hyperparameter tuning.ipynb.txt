@@ -3,6 +3,7 @@
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "# スイープジョブでハイパーパラメータを調整する\n",
         "\n",
@@ -14,45 +15,60 @@
         "\n",
         "> 注**：\n",
         "> もし **azure-ai-ml** パッケージがインストールされていない場合は、`pip install azure-ai-ml` を実行してインストールしてください。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "pip show azure-ai-ml"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Name: azure-ai-ml\nVersion: 1.21.1\nSummary: Microsoft Azure Machine Learning Client Library for Python\nHome-page: https://github.com/Azure/azure-sdk-for-python\nAuthor: Microsoft Corporation\nAuthor-email: azuresdkengsysadmins@microsoft.com\nLicense: MIT License\nLocation: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\nRequires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\nRequired-by: \nNote: you may need to restart the kernel to use updated packages.\n"
-        }
-      ],
       "execution_count": 2,
       "metadata": {
         "gather": {
           "logged": 1731567640819
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Name: azure-ai-ml\n",
+            "Version: 1.21.1\n",
+            "Summary: Microsoft Azure Machine Learning Client Library for Python\n",
+            "Home-page: https://github.com/Azure/azure-sdk-for-python\n",
+            "Author: Microsoft Corporation\n",
+            "Author-email: azuresdkengsysadmins@microsoft.com\n",
+            "License: MIT License\n",
+            "Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\n",
+            "Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\n",
+            "Required-by: \n",
+            "Note: you may need to restart the kernel to use updated packages.\n"
+          ]
+        }
+      ],
+      "source": [
+        "pip show azure-ai-ml"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## ワークスペースに接続する\n",
         "\n",
         "必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。\n",
         "\n",
         "ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "gather": {
+          "logged": 1731567643151
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
         "from azure.ai.ml import MLClient\n",
@@ -64,44 +80,34 @@
         "except Exception as ex:\n",
         "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
         "    credential = InteractiveBrowserCredential()"
-      ],
-      "outputs": [],
-      "execution_count": 3,
-      "metadata": {
-        "gather": {
-          "logged": 1731567643151
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Get a handle to workspace\n",
-        "ml_client = MLClient.from_config(credential=credential)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Found the config file in: /config.json\n"
-        }
-      ],
       "execution_count": 4,
       "metadata": {
         "gather": {
           "logged": 1731567643234
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Found the config file in: /config.json\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Get a handle to workspace\n",
+        "ml_client = MLClient.from_config(credential=credential)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## 学習スクリプトの作成\n",
         "ハイパーパラメータチューニングは、機械学習モデルを訓練したいが入力パラメータを変えたい場合に最適です。アルゴリズムのハイパーパラメータの1つを表す入力パラメータを期待する学習スクリプトを作成する必要があります。\n",
@@ -112,11 +118,25 @@
         "\n",
         "- training_data`には文字列を指定します。training_data`には文字列を指定します。\n",
         "- reg_rate`は数値を指定しますが、デフォルト値は`0.01`です。この入力パラメータはハイパーパラメータのチューニングに使用する。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {
+        "gather": {
+          "logged": 1731567643292
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "src folder created\n"
+          ]
+        }
+      ],
       "source": [
         "import os\n",
         "\n",
@@ -124,26 +144,21 @@
         "script_folder = 'src'\n",
         "os.makedirs(script_folder, exist_ok=True)\n",
         "print(script_folder, 'folder created')"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "src folder created\n"
-        }
-      ],
-      "execution_count": 5,
-      "metadata": {
-        "gather": {
-          "logged": 1731567643292
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/train.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile $script_folder/train.py\n",
         "# import libraries\n",
@@ -253,24 +268,12 @@
         "    # add space in logs\n",
         "    print(\"*\" * 60)\n",
         "    print(\"\\n\\n\")\n"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/train.py\n"
-        }
-      ],
-      "execution_count": 7,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## コマンドジョブの設定と実行\n",
         "\n",
@@ -284,11 +287,49 @@
         "- experiment_name`: ジョブが属する実験の名前。\n",
         "\n",
         "コマンドジョブは正則化率 `0.1` でトレーニングスクリプトを一度だけ実行することに注意してください。ハイパーパラメータを調整するためにスイープジョブを実行する前に、コマンドジョブでスクリプトが期待通りに動作するかをテストするのがベストプラクティスです。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "gather": {
+          "logged": 1731567806768
+        },
+        "jupyter": {
+          "outputs_hidden": false,
+          "source_hidden": false
+        },
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "\u001b[32mUploading src (0.0 MBs): 100%|██████████| 2915/2915 [00:00<00:00, 294533.89it/s]\n",
+            "\u001b[39m\n",
+            "\n"
+          ]
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command, Input\n",
         "from azure.ai.ml.constants import AssetTypes\n",
@@ -316,41 +357,18 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n\u001b[32mUploading src (0.0 MBs): 100%|██████████| 2915/2915 [00:00<00:00, 294533.89it/s]\n\u001b[39m\n\n"
-        },
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 8,
-      "metadata": {
-        "gather": {
-          "logged": 1731567806768
-        },
-        "jupyter": {
-          "outputs_hidden": false,
-          "source_hidden": false
-        },
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
       "source": [
         "## Define the search space\n",
         "\n",
@@ -359,25 +377,10 @@
         "まず、ハイパーパラメータの探索空間を指定します。3つのモデルをそれぞれ異なる正則化率（`0.01`, `0.1`, `1`）で学習させるためには、`Choice`ハイパーパラメータで探索空間を定義します。\n",
         "\n",
         "[ハイパーパラメータチューニングの選択](https://learn.microsoft.com/ja-jp/azure/machine-learning/how-to-tune-hyperparameters?view=azureml-api-2)"
-      ],
-      "metadata": {
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "from azure.ai.ml.sweep import Choice\n",
-        "\n",
-        "command_job_for_sweep = job(\n",
-        "    reg_rate=Choice(values=[0.01, 0.1, 1]),\n",
-        ")"
-      ],
-      "outputs": [],
       "execution_count": 12,
       "metadata": {
         "gather": {
@@ -391,15 +394,21 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [],
+      "source": [
+        "from azure.ai.ml.sweep import Choice\n",
+        "\n",
+        "command_job_for_sweep = job(\n",
+        "    reg_rate=Choice(values=[0.01, 0.1, 1]),\n",
+        ")"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## スイープジョブの設定と投入\n",
         "トレーニングスクリプトのハイパーパラメータチューニングを行うために、スイープ機能を使用します。スイープジョブを設定するには、以下のように設定する必要があります：\n",
@@ -412,11 +421,26 @@
         "\n",
         "コマンドジョブはスイープジョブのベースとして使用されることに注意してください。コマンドジョブの設定はスイープジョブで再利用されます。\n",
         "\n"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 10,
+      "metadata": {
+        "gather": {
+          "logged": 1731567830646
+        },
+        "jupyter": {
+          "outputs_hidden": false,
+          "source_hidden": false
+        },
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      },
+      "outputs": [],
       "source": [
         "# apply the sweep parameter to obtain the sweep_job\n",
         "sweep_job = command_job_for_sweep.sweep(\n",
@@ -431,49 +455,18 @@
         "\n",
         "# define the limits for this sweep\n",
         "sweep_job.set_limits(max_total_trials=4, max_concurrent_trials=2, timeout=7200)"
-      ],
-      "outputs": [],
-      "execution_count": 10,
-      "metadata": {
-        "gather": {
-          "logged": 1731567830646
-        },
-        "jupyter": {
-          "outputs_hidden": false,
-          "source_hidden": false
-        },
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
-        "Run the following cell to submit the sweep job."
-      ],
-      "metadata": {}
+        "以下のセルを実行してスイープ・ジョブを投入します。"
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "returned_sweep_job = ml_client.create_or_update(sweep_job)\n",
-        "aml_url = returned_sweep_job.studio_url\n",
-        "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
       "execution_count": 11,
       "metadata": {
         "gather": {
@@ -487,19 +480,30 @@
           "transient": {
             "deleting": false
           }
-        },
-        "vscode": {
-          "languageId": "python"
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
+      "source": [
+        "returned_sweep_job = ml_client.create_or_update(sweep_job)\n",
+        "aml_url = returned_sweep_job.studio_url\n",
+        "print(\"Monitor your job at\", aml_url)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
-        "When the job is completed, navigate to the job overview. The **Trials** tab will show all models that have been trained and how the `Accuracy` score differs for each regularization rate value you tried."
-      ],
-      "metadata": {}
+        "ジョブが完了したら、ジョブの概要に移動します。Trials**タブには、トレーニングされたすべてのモデルと、試した正則化率の値ごとに`Accuracy`スコアがどのように異なるかが表示されます。"
+      ]
     }
   ],
   "metadata": {
@@ -507,9 +511,21 @@
       "name": "python38-azureml"
     },
     "kernelspec": {
-      "name": "python38-azureml",
+      "display_name": "Python 3.8 - AzureML",
       "language": "python",
-      "display_name": "Python 3.8 - AzureML"
+      "name": "python38-azureml"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.11"
     },
     "microsoft": {
       "host": {
@@ -525,18 +541,6 @@
       "interpreter": {
         "hash": "f2b2cd046deda8eabef1e765a11d0ec9aa9bd1d31d56ce79c815a38c323e14ec"
       }
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.10.11",
-      "mimetype": "text/x-python",
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "pygments_lexer": "ipython3",
-      "nbconvert_exporter": "python",
-      "file_extension": ".py"
     }
   },
   "nbformat": 4,

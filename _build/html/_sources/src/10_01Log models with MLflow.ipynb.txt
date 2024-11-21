@@ -3,6 +3,7 @@
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "# MLflow でモデルをログする\n",
         "\n",
@@ -14,44 +15,59 @@
         "\n",
         "> 注**：\n",
         "> もし **azure-ai-ml** パッケージがインストールされていない場合は、`pip install azure-ai-ml` を実行してインストールしてください。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "pip show azure-ai-ml"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Name: azure-ai-ml\nVersion: 1.21.1\nSummary: Microsoft Azure Machine Learning Client Library for Python\nHome-page: https://github.com/Azure/azure-sdk-for-python\nAuthor: Microsoft Corporation\nAuthor-email: azuresdkengsysadmins@microsoft.com\nLicense: MIT License\nLocation: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\nRequires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\nRequired-by: \nNote: you may need to restart the kernel to use updated packages.\n"
-        }
-      ],
       "execution_count": 1,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1731375342034
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Name: azure-ai-ml\n",
+            "Version: 1.21.1\n",
+            "Summary: Microsoft Azure Machine Learning Client Library for Python\n",
+            "Home-page: https://github.com/Azure/azure-sdk-for-python\n",
+            "Author: Microsoft Corporation\n",
+            "Author-email: azuresdkengsysadmins@microsoft.com\n",
+            "License: MIT License\n",
+            "Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages\n",
+            "Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions\n",
+            "Required-by: \n",
+            "Note: you may need to restart the kernel to use updated packages.\n"
+          ]
+        }
+      ],
+      "source": [
+        "pip show azure-ai-ml"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## ワークスペースに接続する\n",
         "必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。\n",
         "\n",
         "ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "gather": {
+          "logged": 1731375344414
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential\n",
         "from azure.ai.ml import MLClient\n",
@@ -63,55 +79,59 @@
         "except Exception as ex:\n",
         "    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work\n",
         "    credential = InteractiveBrowserCredential()"
-      ],
-      "outputs": [],
-      "execution_count": 2,
-      "metadata": {
-        "gather": {
-          "logged": 1731375344414
-        },
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
-      "source": [
-        "# Get a handle to workspace\n",
-        "ml_client = MLClient.from_config(credential=credential)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Found the config file in: /config.json\n"
-        }
-      ],
       "execution_count": 3,
       "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
         "gather": {
           "logged": 1731375344470
         }
-      }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Found the config file in: /config.json\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Get a handle to workspace\n",
+        "ml_client = MLClient.from_config(credential=credential)"
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## MLflow でのオートロギング\n",
         "\n",
         "オートロギングを使用すると、モデルは自動的にログに記録されます。モデルのフレーバーとスキーマは推測されます。\n",
         "\n",
         "以下のセルを実行して、**src** フォルダに **train-model-autolog.py** スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の **diabetes.csv** ファイルを使用して分類モデルを学習します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "gather": {
+          "logged": 1731375344526
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "src folder created\n"
+          ]
+        }
+      ],
       "source": [
         "import os\n",
         "\n",
@@ -119,26 +139,21 @@
         "script_folder = 'src'\n",
         "os.makedirs(script_folder, exist_ok=True)\n",
         "print(script_folder, 'folder created')"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "src folder created\n"
-        }
-      ],
-      "execution_count": 4,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375344526
-        }
-      }
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/train-model-autolog.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile $script_folder/train-model-autolog.py\n",
         "# import libraries\n",
@@ -229,32 +244,46 @@
         "    # add space in logs\n",
         "    print(\"*\" * 60)\n",
         "    print(\"\\n\\n\")\n"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/train-model-autolog.py\n"
-        }
-      ],
-      "execution_count": 5,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "これで、スクリプトをコマンド・ジョブとして投入できる。\n",
         "以下のセルを実行してモデルをトレーニングします。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 6,
+      "metadata": {
+        "gather": {
+          "logged": 1731375346469
+        }
+      },
+      "outputs": [
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n",
+            "Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n"
+          ]
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/wheat_curtain_jdlm9cdrkf?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -273,51 +302,41 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": "Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\nClass BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.\n"
-        },
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/wheat_curtain_jdlm9cdrkf?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 6,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375346469
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スタジオで、**diabetes-train-autolog** ジョブに移動して、実行したコマンドジョブの概要を調べます。Outputs + logs** タブでログに記録されたアーティファクトを探します。model` フォルダを選択して `MLmodel` ファイルを見つけ、その中身を調べます。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## オートロギングでフレーバーを指定する\n",
         "\n",
         "オートロギングを使っても、モデルのフレーバーを指定することができます。この例では、モデルのフレーバーは scikit-learn です。\n",
         "\n",
         "以下のセルを実行して、**src** フォルダに **train-model-sklearn.py** スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の**diabetes.csv**ファイルを使用して分類モデルを学習します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/train-model-sklearn.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile $script_folder/train-model-sklearn.py\n",
         "# import libraries\n",
@@ -425,33 +444,35 @@
         "    # add space in logs\n",
         "    print(\"*\" * 60)\n",
         "    print(\"\\n\\n\")"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/train-model-sklearn.py\n"
-        }
-      ],
-      "execution_count": 7,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "これで、スクリプトをコマンド・ジョブとして投入できる。\n",
         "\n",
         "以下のセルを実行してモデルをトレーニングします。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "gather": {
+          "logged": 1731375348036
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/plum_rhythm_kqhcqy6sj2?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -470,48 +491,43 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/plum_rhythm_kqhcqy6sj2?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 8,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375348036
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スタジオで、**diabetes-train-sklearn** ジョブに移動し、実行したコマンドジョブの概要を調べます。Outputs + logs** タブでログに記録された成果物を探します。model` フォルダを選択して `MLmodel` ファイルを見つけ、その内容を調べます。\n",
         "\n",
         "前の2つの実行の `MLmodel` ファイルを比較してください。MLflowのautolog機能がモデルのフレーバーを正しく推論していることがわかります。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## 推測されたシグネチャでモデルをカスタマイズする\n",
         "\n",
         "自動ログではなく、`mlflow.sklearn.log_model`を使用して手動でモデルをログに記録することができます。学習データセットと予測結果からシグネチャを推測して作成します。そして最後に、scikit-learnモデルをログに記録します。\n",
         "\n",
         "以下のセルを実行して、**src** フォルダに **train-model-infer.py** スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の **diabetes.csv** ファイルを使用して分類モデルを学習します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 9,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/train-model-infer.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile $script_folder/train-model-infer.py\n",
         "# import libraries\n",
@@ -610,33 +626,35 @@
         "    # add space in logs\n",
         "    print(\"*\" * 60)\n",
         "    print(\"\\n\\n\")"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/train-model-infer.py\n"
-        }
-      ],
-      "execution_count": 9,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "これで、スクリプトをコマンド・ジョブとして投入できる。\n",
         "\n",
         "以下のセルを実行してモデルをトレーニングします。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 10,
+      "metadata": {
+        "gather": {
+          "logged": 1731375349046
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/good_ear_0tzy7rc006?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -655,48 +673,43 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/good_ear_0tzy7rc006?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 10,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375349046
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スタジオで、**diabetes-train-infer** ジョブに移動し、実行したコマンドジョブの概要を調べます。Outputs + logs** タブでログに記録されたアーティファクトを探します。model` フォルダを選択して `MLmodel` ファイルを見つけ、その内容を調べます。\n",
         "\n",
         "MLmodel`ファイルを前の2つの実行と比較してください。MLflowのautolog機能がモデルのシグネチャーも正しく推論していることがわかります。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## 定義されたシグネチャでモデルをカスタマイズする\n",
         "\n",
         "mlflow.sklearn.log_model`を使ってモデルを手動でログに記録することができます。また、手動でシグネチャを作成します。そして最後に、scikit-learnモデルをログに記録します。\n",
         "\n",
         "以下のセルを実行して、**src** フォルダに **train-model-signature.py** スクリプトを作成します。このスクリプトは、引数として渡される同じフォルダ内の **diabetes.csv** ファイルを使用して分類モデルを学習します。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 11,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting src/train-model-signature.py\n"
+          ]
+        }
+      ],
       "source": [
         "%%writefile $script_folder/train-model-signature.py\n",
         "# import libraries\n",
@@ -811,33 +824,35 @@
         "    # add space in logs\n",
         "    print(\"*\" * 60)\n",
         "    print(\"\\n\\n\")"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Overwriting src/train-model-signature.py\n"
-        }
-      ],
-      "execution_count": 11,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "これで、スクリプトをコマンド・ジョブとして投入できる。\n",
         "\n",
         "以下のセルを実行してモデルをトレーニングします。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": 12,
+      "metadata": {
+        "gather": {
+          "logged": 1731375350288
+        }
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
+          ]
+        }
+      ],
       "source": [
         "from azure.ai.ml import command\n",
         "\n",
@@ -856,48 +871,39 @@
         "returned_job = ml_client.create_or_update(job)\n",
         "aml_url = returned_job.studio_url\n",
         "print(\"Monitor your job at\", aml_url)"
-      ],
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": "Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1\n"
-        }
-      ],
-      "execution_count": 12,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375350288
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スタジオで、**diabetes-train-signature** ジョブに移動し、実行したコマンドジョブの概要を調べます。Outputs + logs** タブでログに記録されたアーティファクトを探します。model` フォルダを選択し、`MLmodel` ファイルを見つけ、その中身を調べます。\n",
         "\n",
         "MLmodel`ファイルを以前の実行と比較する。以前の実行とは署名が異なる。以前の実行ではテンソルベースのシグネチャを使用していたが、最新の実行では列ベースのシグネチャを使用している。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "## モデルの登録\n",
         "\n",
         "デプロイしたいモデルを選択したら、まずモデルを登録します。\n",
         "\n",
         "最新のモデルを登録するには、ジョブの実行名を参照します。モデルをMLflowモデルとして登録することで、後で簡単にデプロイすることができます。"
-      ],
-      "metadata": {}
+      ]
     },
     {
       "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "gather": {
+          "logged": 1731375351575
+        }
+      },
+      "outputs": [],
       "source": [
         "from azure.ai.ml.entities import Model\n",
         "from azure.ai.ml.constants import AssetTypes\n",
@@ -912,39 +918,12 @@
         ")\n",
         "# Uncomment after adding required details above\n",
         "ml_client.models.create_or_update(run_model)"
-      ],
-      "outputs": [
-        {
-          "output_type": "error",
-          "ename": "HttpResponseError",
-          "evalue": "(UserError) The request is invalid.\nCode: UserError\nMessage: The request is invalid.\nException Details:\t(NoMatchingArtifactsFoundFromJob) No artifacts matching model found from Job.\n\tCode: NoMatchingArtifactsFoundFromJob\n\tMessage: No artifacts matching model found from Job.\nAdditional Information:Type: ComponentName\nInfo: {\n    \"value\": \"managementfrontend\"\n}Type: Correlation\nInfo: {\n    \"value\": {\n        \"operation\": \"4bbf16a1c7291bcd7a7a5f68b677dd4d\",\n        \"request\": \"f0a2169efe6192c5\"\n    }\n}Type: Environment\nInfo: {\n    \"value\": \"westus\"\n}Type: Location\nInfo: {\n    \"value\": \"westus\"\n}Type: Time\nInfo: {\n    \"value\": \"2024-11-12T01:35:51.071004+00:00\"\n}",
-          "traceback": [
-            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-            "\u001b[0;31mHttpResponseError\u001b[0m                         Traceback (most recent call last)",
-            "Cell \u001b[0;32mIn[13], line 13\u001b[0m\n\u001b[1;32m      6\u001b[0m run_model \u001b[38;5;241m=\u001b[39m Model(\n\u001b[1;32m      7\u001b[0m     path\u001b[38;5;241m=\u001b[39m\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mazureml://jobs/\u001b[39m\u001b[38;5;132;01m{\u001b[39;00mjob_name\u001b[38;5;132;01m}\u001b[39;00m\u001b[38;5;124m/outputs/artifacts/paths/model/\u001b[39m\u001b[38;5;124m\"\u001b[39m,\n\u001b[1;32m      8\u001b[0m     name\u001b[38;5;241m=\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mmlflow-diabetes\u001b[39m\u001b[38;5;124m\"\u001b[39m,\n\u001b[1;32m      9\u001b[0m     description\u001b[38;5;241m=\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mModel created from run.\u001b[39m\u001b[38;5;124m\"\u001b[39m,\n\u001b[1;32m     10\u001b[0m     \u001b[38;5;28mtype\u001b[39m\u001b[38;5;241m=\u001b[39mAssetTypes\u001b[38;5;241m.\u001b[39mMLFLOW_MODEL,\n\u001b[1;32m     11\u001b[0m )\n\u001b[1;32m     12\u001b[0m \u001b[38;5;66;03m# Uncomment after adding required details above\u001b[39;00m\n\u001b[0;32m---> 13\u001b[0m \u001b[43mml_client\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mmodels\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mcreate_or_update\u001b[49m\u001b[43m(\u001b[49m\u001b[43mrun_model\u001b[49m\u001b[43m)\u001b[49m\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/_telemetry/activity.py:289\u001b[0m, in \u001b[0;36mmonitor_with_activity.<locals>.monitor.<locals>.wrapper\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m    285\u001b[0m     \u001b[38;5;28;01mwith\u001b[39;00m tracer\u001b[38;5;241m.\u001b[39mspan():\n\u001b[1;32m    286\u001b[0m         \u001b[38;5;28;01mwith\u001b[39;00m log_activity(\n\u001b[1;32m    287\u001b[0m             logger\u001b[38;5;241m.\u001b[39mpackage_logger, activity_name \u001b[38;5;129;01mor\u001b[39;00m f\u001b[38;5;241m.\u001b[39m\u001b[38;5;18m__name__\u001b[39m, activity_type, custom_dimensions\n\u001b[1;32m    288\u001b[0m         ):\n\u001b[0;32m--> 289\u001b[0m             \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[43mf\u001b[49m\u001b[43m(\u001b[49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[43margs\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[43mkwargs\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m    290\u001b[0m \u001b[38;5;28;01melif\u001b[39;00m \u001b[38;5;28mhasattr\u001b[39m(logger, \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mpackage_logger\u001b[39m\u001b[38;5;124m\"\u001b[39m):\n\u001b[1;32m    291\u001b[0m     \u001b[38;5;28;01mwith\u001b[39;00m log_activity(logger\u001b[38;5;241m.\u001b[39mpackage_logger, activity_name \u001b[38;5;129;01mor\u001b[39;00m f\u001b[38;5;241m.\u001b[39m\u001b[38;5;18m__name__\u001b[39m, activity_type, custom_dimensions):\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:295\u001b[0m, in \u001b[0;36mModelOperations.create_or_update\u001b[0;34m(self, model)\u001b[0m\n\u001b[1;32m    293\u001b[0m     log_and_raise_error(ex)\n\u001b[1;32m    294\u001b[0m \u001b[38;5;28;01melse\u001b[39;00m:\n\u001b[0;32m--> 295\u001b[0m     \u001b[38;5;28;01mraise\u001b[39;00m ex\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:283\u001b[0m, in \u001b[0;36mModelOperations.create_or_update\u001b[0;34m(self, model)\u001b[0m\n\u001b[1;32m    276\u001b[0m     \u001b[38;5;28;01mif\u001b[39;00m \u001b[38;5;28mstr\u001b[39m(e) \u001b[38;5;241m==\u001b[39m ASSET_PATH_ERROR:\n\u001b[1;32m    277\u001b[0m         \u001b[38;5;28;01mraise\u001b[39;00m AssetPathException(\n\u001b[1;32m    278\u001b[0m             message\u001b[38;5;241m=\u001b[39mCHANGED_ASSET_PATH_MSG,\n\u001b[1;32m    279\u001b[0m             target\u001b[38;5;241m=\u001b[39mErrorTarget\u001b[38;5;241m.\u001b[39mMODEL,\n\u001b[1;32m    280\u001b[0m             no_personal_data_message\u001b[38;5;241m=\u001b[39mCHANGED_ASSET_PATH_MSG_NO_PERSONAL_DATA,\n\u001b[1;32m    281\u001b[0m             error_category\u001b[38;5;241m=\u001b[39mErrorCategory\u001b[38;5;241m.\u001b[39mUSER_ERROR,\n\u001b[1;32m    282\u001b[0m         ) \u001b[38;5;28;01mfrom\u001b[39;00m \u001b[38;5;21;01me\u001b[39;00m\n\u001b[0;32m--> 283\u001b[0m     \u001b[38;5;28;01mraise\u001b[39;00m e\n\u001b[1;32m    285\u001b[0m model \u001b[38;5;241m=\u001b[39m Model\u001b[38;5;241m.\u001b[39m_from_rest_object(result)\n\u001b[1;32m    286\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m auto_increment_version \u001b[38;5;129;01mand\u001b[39;00m indicator_file:\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/operations/_model_operations.py:262\u001b[0m, in \u001b[0;36mModelOperations.create_or_update\u001b[0;34m(self, model)\u001b[0m\n\u001b[1;32m    251\u001b[0m auto_increment_version \u001b[38;5;241m=\u001b[39m model\u001b[38;5;241m.\u001b[39m_auto_increment_version\n\u001b[1;32m    252\u001b[0m \u001b[38;5;28;01mtry\u001b[39;00m:\n\u001b[1;32m    253\u001b[0m     result \u001b[38;5;241m=\u001b[39m (\n\u001b[1;32m    254\u001b[0m         \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_model_versions_operation\u001b[38;5;241m.\u001b[39mbegin_create_or_update(\n\u001b[1;32m    255\u001b[0m             name\u001b[38;5;241m=\u001b[39mname,\n\u001b[1;32m    256\u001b[0m             version\u001b[38;5;241m=\u001b[39mversion,\n\u001b[1;32m    257\u001b[0m             body\u001b[38;5;241m=\u001b[39mmodel_version_resource,\n\u001b[1;32m    258\u001b[0m             registry_name\u001b[38;5;241m=\u001b[39m\u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_registry_name,\n\u001b[1;32m    259\u001b[0m             \u001b[38;5;241m*\u001b[39m\u001b[38;5;241m*\u001b[39m\u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_scope_kwargs,\n\u001b[1;32m    260\u001b[0m         )\u001b[38;5;241m.\u001b[39mresult()\n\u001b[1;32m    261\u001b[0m         \u001b[38;5;28;01mif\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_registry_name\n\u001b[0;32m--> 262\u001b[0m         \u001b[38;5;28;01melse\u001b[39;00m \u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_model_versions_operation\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mcreate_or_update\u001b[49m\u001b[43m(\u001b[49m\n\u001b[1;32m    263\u001b[0m \u001b[43m            \u001b[49m\u001b[43mname\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mname\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m    264\u001b[0m \u001b[43m            \u001b[49m\u001b[43mversion\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mversion\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m    265\u001b[0m \u001b[43m            \u001b[49m\u001b[43mbody\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mmodel_version_resource\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m    266\u001b[0m \u001b[43m            \u001b[49m\u001b[43mworkspace_name\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_workspace_name\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m    267\u001b[0m \u001b[43m            \u001b[49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_scope_kwargs\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m    268\u001b[0m \u001b[43m        \u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m    269\u001b[0m     )\n\u001b[1;32m    271\u001b[0m     \u001b[38;5;28;01mif\u001b[39;00m \u001b[38;5;129;01mnot\u001b[39;00m result \u001b[38;5;129;01mand\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_registry_name:\n\u001b[1;32m    272\u001b[0m         result \u001b[38;5;241m=\u001b[39m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_get(name\u001b[38;5;241m=\u001b[39m\u001b[38;5;28mstr\u001b[39m(model\u001b[38;5;241m.\u001b[39mname), version\u001b[38;5;241m=\u001b[39mmodel\u001b[38;5;241m.\u001b[39mversion)\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/core/tracing/decorator.py:94\u001b[0m, in \u001b[0;36mdistributed_trace.<locals>.decorator.<locals>.wrapper_use_tracer\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m     92\u001b[0m span_impl_type \u001b[38;5;241m=\u001b[39m settings\u001b[38;5;241m.\u001b[39mtracing_implementation()\n\u001b[1;32m     93\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m span_impl_type \u001b[38;5;129;01mis\u001b[39;00m \u001b[38;5;28;01mNone\u001b[39;00m:\n\u001b[0;32m---> 94\u001b[0m     \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[43mfunc\u001b[49m\u001b[43m(\u001b[49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[43margs\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[38;5;241;43m*\u001b[39;49m\u001b[43mkwargs\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m     96\u001b[0m \u001b[38;5;66;03m# Merge span is parameter is set, but only if no explicit parent are passed\u001b[39;00m\n\u001b[1;32m     97\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m merge_span \u001b[38;5;129;01mand\u001b[39;00m \u001b[38;5;129;01mnot\u001b[39;00m passed_in_parent:\n",
-            "File \u001b[0;32m/anaconda/envs/azureml_py38/lib/python3.10/site-packages/azure/ai/ml/_restclient/v2023_08_01_preview/operations/_model_versions_operations.py:650\u001b[0m, in \u001b[0;36mModelVersionsOperations.create_or_update\u001b[0;34m(self, resource_group_name, workspace_name, name, version, body, **kwargs)\u001b[0m\n\u001b[1;32m    648\u001b[0m     map_error(status_code\u001b[38;5;241m=\u001b[39mresponse\u001b[38;5;241m.\u001b[39mstatus_code, response\u001b[38;5;241m=\u001b[39mresponse, error_map\u001b[38;5;241m=\u001b[39merror_map)\n\u001b[1;32m    649\u001b[0m     error \u001b[38;5;241m=\u001b[39m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_deserialize\u001b[38;5;241m.\u001b[39mfailsafe_deserialize(_models\u001b[38;5;241m.\u001b[39mErrorResponse, pipeline_response)\n\u001b[0;32m--> 650\u001b[0m     \u001b[38;5;28;01mraise\u001b[39;00m HttpResponseError(response\u001b[38;5;241m=\u001b[39mresponse, model\u001b[38;5;241m=\u001b[39merror, error_format\u001b[38;5;241m=\u001b[39mARMErrorFormat)\n\u001b[1;32m    652\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m response\u001b[38;5;241m.\u001b[39mstatus_code \u001b[38;5;241m==\u001b[39m \u001b[38;5;241m200\u001b[39m:\n\u001b[1;32m    653\u001b[0m     deserialized \u001b[38;5;241m=\u001b[39m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_deserialize(\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mModelVersion\u001b[39m\u001b[38;5;124m'\u001b[39m, pipeline_response)\n",
-            "\u001b[0;31mHttpResponseError\u001b[0m: (UserError) The request is invalid.\nCode: UserError\nMessage: The request is invalid.\nException Details:\t(NoMatchingArtifactsFoundFromJob) No artifacts matching model found from Job.\n\tCode: NoMatchingArtifactsFoundFromJob\n\tMessage: No artifacts matching model found from Job.\nAdditional Information:Type: ComponentName\nInfo: {\n    \"value\": \"managementfrontend\"\n}Type: Correlation\nInfo: {\n    \"value\": {\n        \"operation\": \"4bbf16a1c7291bcd7a7a5f68b677dd4d\",\n        \"request\": \"f0a2169efe6192c5\"\n    }\n}Type: Environment\nInfo: {\n    \"value\": \"westus\"\n}Type: Location\nInfo: {\n    \"value\": \"westus\"\n}Type: Time\nInfo: {\n    \"value\": \"2024-11-12T01:35:51.071004+00:00\"\n}"
-          ]
-        }
-      ],
-      "execution_count": 13,
-      "metadata": {
-        "vscode": {
-          "languageId": "python"
-        },
-        "gather": {
-          "logged": 1731375351575
-        }
-      }
+      ]
     },
     {
       "attachments": {},
       "cell_type": "markdown",
+      "metadata": {},
       "source": [
         "スタジオで、**Models** ページに移動します。モデルリストで `mlflow-diabetes` モデルを見つけて選択し、さらに調べます。\n",
         "\n",
@@ -952,8 +931,7 @@
         "- Artifacts**タブには `MLmodel` ファイルが格納されているディレクトリがあります。\n",
         "\n",
         "モデルの挙動をさらに調べたい場合は、**オプションで**モデルをリアルタイムエンドポイントにデプロイすることを選択できます。"
-      ],
-      "metadata": {}
+      ]
     }
   ],
   "metadata": {
@@ -961,9 +939,21 @@
       "name": "python38-azureml"
     },
     "kernelspec": {
-      "name": "python38-azureml",
+      "display_name": "Python 3.8 - AzureML",
       "language": "python",
-      "display_name": "Python 3.8 - AzureML"
+      "name": "python38-azureml"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.11"
     },
     "microsoft": {
       "host": {
@@ -979,18 +969,6 @@
       "interpreter": {
         "hash": "f2b2cd046deda8eabef1e765a11d0ec9aa9bd1d31d56ce79c815a38c323e14ec"
       }
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.10.11",
-      "mimetype": "text/x-python",
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "pygments_lexer": "ipython3",
-      "nbconvert_exporter": "python",
-      "file_extension": ".py"
     }
   },
   "nbformat": 4,

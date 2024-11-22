@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>10. MLflow でモデルをログする &mdash; Sphinx  ドキュメント</title>
+  <title>9. MLflow でモデルをログする &mdash; Sphinx  ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -26,8 +26,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="11. バッチエンドポイントへのデプロイ" href="11_00Deploy%20to%20batch%20endpoint.html" />
-    <link rel="prev" title="9. スイープジョブでハイパーパラメータを調整する" href="09_0Hyperparameter%20tuning.html" /> 
+    <link rel="next" title="10. バッチエンドポイントへのデプロイ" href="11_00Deploy%20to%20batch%20endpoint.html" />
+    <link rel="prev" title="モデルを評価するための責任あるAIダッシュボードの作成" href="10_0Create%20Responsible%20AI%20dashboard.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,20 +58,19 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">10. MLflow でモデルをログする</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">10.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">10.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#MLflow-でのオートロギング">10.3. MLflow でのオートロギング</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#オートロギングでフレーバーを指定する">10.4. オートロギングでフレーバーを指定する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#推測されたシグネチャでモデルをカスタマイズする">10.5. 推測されたシグネチャでモデルをカスタマイズする</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#定義されたシグネチャでモデルをカスタマイズする">10.6. 定義されたシグネチャでモデルをカスタマイズする</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#モデルの登録">10.7. モデルの登録</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. MLflow でモデルをログする</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">9.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">9.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#MLflow-でのオートロギング">9.3. MLflow でのオートロギング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#オートロギングでフレーバーを指定する">9.4. オートロギングでフレーバーを指定する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#推測されたシグネチャでモデルをカスタマイズする">9.5. 推測されたシグネチャでモデルをカスタマイズする</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#定義されたシグネチャでモデルをカスタマイズする">9.6. 定義されたシグネチャでモデルをカスタマイズする</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#モデルの登録">9.7. モデルの登録</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -88,7 +87,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">10. </span>MLflow でモデルをログする</li>
+      <li class="breadcrumb-item active"><span class="section-number">9. </span>MLflow でモデルをログする</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/10_01Log models with MLflow.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,10 +98,10 @@
            <div itemprop="articleBody">
              
   <section id="MLflow-でモデルをログする">
-<h1><span class="section-number">10. </span>MLflow でモデルをログする<a class="headerlink" href="#MLflow-でモデルをログする" title="この見出しへのパーマリンク"></a></h1>
+<h1><span class="section-number">9. </span>MLflow でモデルをログする<a class="headerlink" href="#MLflow-でモデルをログする" title="この見出しへのパーマリンク"></a></h1>
 <p>Azure Machine Learning の MLflow を使ってモデルのログを取ることができます。モデルをアーティファクトではなくモデルとしてログに記録すると、出力ディレクトリに MLmodel が作成されます。MLmodel ファイルには、モデルのすべてのメタデータが含まれます。モデルをログに記録する際に、モデルの署名をカスタマイズすることができます。</p>
 <section id="始める前に">
-<h2><span class="section-number">10.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -135,7 +134,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">10.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
@@ -174,7 +173,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="MLflow-でのオートロギング">
-<h2><span class="section-number">10.3. </span>MLflow でのオートロギング<a class="headerlink" href="#MLflow-でのオートロギング" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.3. </span>MLflow でのオートロギング<a class="headerlink" href="#MLflow-でのオートロギング" title="この見出しへのパーマリンク"></a></h2>
 <p>オートロギングを使用すると、モデルは自動的にログに記録されます。モデルのフレーバーとスキーマは推測されます。</p>
 <p>以下のセルを実行して、<strong>src</strong> フォルダに <strong>train-model-autolog.py</strong> スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の <strong>diabetes.csv</strong> ファイルを使用して分類モデルを学習します。</p>
 <div class="nbinput docutils container">
@@ -351,9 +350,10 @@ Monitor your job at https://ml.azure.com/runs/wheat_curtain_jdlm9cdrkf?wsid=/sub
 <p>スタジオで、<strong>diabetes-train-autolog</strong> ジョブに移動して、実行したコマンドジョブの概要を調べます。Outputs + logs** タブでログに記録されたアーティファクトを探します。model<code class="docutils literal notranslate"><span class="pre">フォルダを選択して</span></code>MLmodel` ファイルを見つけ、その中身を調べます。</p>
 </section>
 <section id="オートロギングでフレーバーを指定する">
-<h2><span class="section-number">10.4. </span>オートロギングでフレーバーを指定する<a class="headerlink" href="#オートロギングでフレーバーを指定する" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.4. </span>オートロギングでフレーバーを指定する<a class="headerlink" href="#オートロギングでフレーバーを指定する" title="この見出しへのパーマリンク"></a></h2>
 <p>オートロギングを使っても、モデルのフレーバーを指定することができます。この例では、モデルのフレーバーは scikit-learn です。</p>
 <p>以下のセルを実行して、<strong>src</strong> フォルダに <strong>train-model-sklearn.py</strong> スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の<strong>diabetes.csv</strong>ファイルを使用して分類モデルを学習します。</p>
+<p>入出力のデータ形式だったりより詳細な情報がロギングされる。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -372,7 +372,9 @@ Monitor your job at https://ml.azure.com/runs/wheat_curtain_jdlm9cdrkf?wsid=/sub
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="c1"># SKlearn のログ</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">autolog</span><span class="p">()</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">autolog</span><span class="p">(</span><span class="n">log_input_examples</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="c1"># 入力データ例をログに記録しない</span>
+    <span class="n">log_model_signature</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># モデルシグネチャを記録しない</span>
+    <span class="n">log_models</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="c1"># モデルアーティファクトを保存する</span>
 
     <span class="c1"># read data</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">training_data</span><span class="p">)</span>
@@ -513,7 +515,7 @@ Monitor your job at https://ml.azure.com/runs/plum_rhythm_kqhcqy6sj2?wsid=/subsc
 <p>前の2つの実行の <code class="docutils literal notranslate"><span class="pre">MLmodel</span></code> ファイルを比較してください。MLflowのautolog機能がモデルのフレーバーを正しく推論していることがわかります。</p>
 </section>
 <section id="推測されたシグネチャでモデルをカスタマイズする">
-<h2><span class="section-number">10.5. </span>推測されたシグネチャでモデルをカスタマイズする<a class="headerlink" href="#推測されたシグネチャでモデルをカスタマイズする" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.5. </span>推測されたシグネチャでモデルをカスタマイズする<a class="headerlink" href="#推測されたシグネチャでモデルをカスタマイズする" title="この見出しへのパーマリンク"></a></h2>
 <p>自動ログではなく、<code class="docutils literal notranslate"><span class="pre">mlflow.sklearn.log_model</span></code>を使用して手動でモデルをログに記録することができます。学習データセットと予測結果からシグネチャを推測して作成します。そして最後に、scikit-learnモデルをログに記録します。</p>
 <p>以下のセルを実行して、<strong>src</strong> フォルダに <strong>train-model-infer.py</strong> スクリプトを作成します。このスクリプトは、引数として渡された同じフォルダ内の <strong>diabetes.csv</strong> ファイルを使用して分類モデルを学習します。</p>
 <div class="nbinput docutils container">
@@ -666,9 +668,10 @@ Monitor your job at https://ml.azure.com/runs/good_ear_0tzy7rc006?wsid=/subscrip
 <p>MLmodel`ファイルを前の2つの実行と比較してください。MLflowのautolog機能がモデルのシグネチャーも正しく推論していることがわかります。</p>
 </section>
 <section id="定義されたシグネチャでモデルをカスタマイズする">
-<h2><span class="section-number">10.6. </span>定義されたシグネチャでモデルをカスタマイズする<a class="headerlink" href="#定義されたシグネチャでモデルをカスタマイズする" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.6. </span>定義されたシグネチャでモデルをカスタマイズする<a class="headerlink" href="#定義されたシグネチャでモデルをカスタマイズする" title="この見出しへのパーマリンク"></a></h2>
 <p>mlflow.sklearn.log_model`を使ってモデルを手動でログに記録することができます。また、手動でシグネチャを作成します。そして最後に、scikit-learnモデルをログに記録します。</p>
 <p>以下のセルを実行して、<strong>src</strong> フォルダに <strong>train-model-signature.py</strong> スクリプトを作成します。このスクリプトは、引数として渡される同じフォルダ内の <strong>diabetes.csv</strong> ファイルを使用して分類モデルを学習します。</p>
+<p>MLflowのシグネチャー（signature） は、モデルの入出力データのスキーマ（形式や構造）を記述した情報です。これにより、MLflowで管理されるモデルが、どのようなデータを入力として受け取り、どのようなデータを出力するかを明確に定義できます。これにより、モデルの再利用性や信頼性が向上します。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -835,11 +838,11 @@ Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/sub
 <p>MLmodel`ファイルを以前の実行と比較する。以前の実行とは署名が異なる。以前の実行ではテンソルベースのシグネチャを使用していたが、最新の実行では列ベースのシグネチャを使用している。</p>
 </section>
 <section id="モデルの登録">
-<h2><span class="section-number">10.7. </span>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">9.7. </span>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
 <p>デプロイしたいモデルを選択したら、まずモデルを登録します。</p>
 <p>最新のモデルを登録するには、ジョブの実行名を参照します。モデルをMLflowモデルとして登録することで、後で簡単にデプロイすることができます。</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -858,6 +861,28 @@ Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/sub
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[1], line 4</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">azure</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">ai</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">ml</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">entities</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Model
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">azure</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">ai</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">ml</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">constants</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> AssetTypes
+<span class="ansi-green-fg">----&gt; 4</span> job_name <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">returned_job</span><span style="color: rgb(98,98,98)">.</span>name
+<span class="ansi-green-intense-fg ansi-bold">      6</span> run_model <span style="color: rgb(98,98,98)">=</span> Model(
+<span class="ansi-green-intense-fg ansi-bold">      7</span>     path<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">azureml://jobs/</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>job_name<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">/outputs/artifacts/paths/model/</span><span style="color: rgb(175,0,0)">&#34;</span>,
+<span class="ansi-green-intense-fg ansi-bold">      8</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">mlflow-diabetes</span><span style="color: rgb(175,0,0)">&#34;</span>,
+<span class="ansi-green-intense-fg ansi-bold">      9</span>     description<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Model created from run.</span><span style="color: rgb(175,0,0)">&#34;</span>,
+<span class="ansi-green-intense-fg ansi-bold">     10</span>     <span style="color: rgb(0,135,0)">type</span><span style="color: rgb(98,98,98)">=</span>AssetTypes<span style="color: rgb(98,98,98)">.</span>MLFLOW_MODEL,
+<span class="ansi-green-intense-fg ansi-bold">     11</span> )
+<span class="ansi-green-intense-fg ansi-bold">     12</span> <span style="color: rgb(95,135,135)"># Uncomment after adding required details above</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;returned_job&#39; is not defined
+</pre></div></div>
+</div>
 <p>スタジオで、<strong>Models</strong> ページに移動します。モデルリストで <code class="docutils literal notranslate"><span class="pre">mlflow-diabetes</span></code> モデルを見つけて選択し、さらに調べます。</p>
 <ul class="simple">
 <li><p>mlflow-diabetes<code class="docutils literal notranslate"><span class="pre">モデルの**Details**</span> <span class="pre">タブでは、</span></code>MLFLOW`タイプのモデルであることと、モデルをトレーニングしたジョブを確認することができます。</p></li>
@@ -871,8 +896,8 @@ Monitor your job at https://ml.azure.com/runs/maroon_jackal_8lm92lh825?wsid=/sub
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="09_0Hyperparameter%20tuning.html" class="btn btn-neutral float-left" title="9. スイープジョブでハイパーパラメータを調整する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="11_00Deploy%20to%20batch%20endpoint.html" class="btn btn-neutral float-right" title="11. バッチエンドポイントへのデプロイ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="10_0Create%20Responsible%20AI%20dashboard.html" class="btn btn-neutral float-left" title="モデルを評価するための責任あるAIダッシュボードの作成" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="11_00Deploy%20to%20batch%20endpoint.html" class="btn btn-neutral float-right" title="10. バッチエンドポイントへのデプロイ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

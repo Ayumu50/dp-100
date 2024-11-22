@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>12. オンラインエンドポイントへのデプロイ &mdash; Sphinx  ドキュメント</title>
+  <title>11. オンラインエンドポイントへのデプロイ &mdash; Sphinx  ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -26,7 +26,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="prev" title="11. バッチエンドポイントへのデプロイ" href="11_00Deploy%20to%20batch%20endpoint.html" /> 
+    <link rel="prev" title="10. バッチエンドポイントへのデプロイ" href="11_00Deploy%20to%20batch%20endpoint.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,20 +57,19 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">12. オンラインエンドポイントへのデプロイ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">12.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">12.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの定義と作成">12.3. エンドポイントの定義と作成</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#デプロイの設定">12.4. デプロイの設定</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-the-deployment">12.5. Create the deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Test-the-deployment">12.6. Test the deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの一覧表示">12.7. エンドポイントの一覧表示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの詳細を取得する">12.8. エンドポイントの詳細を取得する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#エンドポイントとデプロイメントを削除する">12.9. エンドポイントとデプロイメントを削除する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. オンラインエンドポイントへのデプロイ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#始める前に">11.1. 始める前に</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">11.2. ワークスペースに接続する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの定義と作成">11.3. エンドポイントの定義と作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#デプロイの設定">11.4. デプロイの設定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-the-deployment">11.5. Create the deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Test-the-deployment">11.6. Test the deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの一覧表示">11.7. エンドポイントの一覧表示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#エンドポイントの詳細を取得する">11.8. エンドポイントの詳細を取得する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#エンドポイントとデプロイメントを削除する">11.9. エンドポイントとデプロイメントを削除する</a></li>
 </ul>
 </li>
 </ul>
@@ -89,7 +88,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">12. </span>オンラインエンドポイントへのデプロイ</li>
+      <li class="breadcrumb-item active"><span class="section-number">11. </span>オンラインエンドポイントへのデプロイ</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/11_11Deploy to online endpoint.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,10 +99,10 @@
            <div itemprop="articleBody">
              
   <section id="オンラインエンドポイントへのデプロイ">
-<h1><span class="section-number">12. </span>オンラインエンドポイントへのデプロイ<a class="headerlink" href="#オンラインエンドポイントへのデプロイ" title="この見出しへのパーマリンク"></a></h1>
+<h1><span class="section-number">11. </span>オンラインエンドポイントへのデプロイ<a class="headerlink" href="#オンラインエンドポイントへのデプロイ" title="この見出しへのパーマリンク"></a></h1>
 <p>アプリケーションからモデルを利用するには、オンラインエンドポイントにモデルをデプロイします。ローカルファイルからMLflowモデルを作成し、エンドポイントをテストします。</p>
 <section id="始める前に">
-<h2><span class="section-number">12.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -118,7 +117,7 @@
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">12.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
@@ -149,7 +148,7 @@
 </div>
 </section>
 <section id="エンドポイントの定義と作成">
-<h2><span class="section-number">12.3. </span>エンドポイントの定義と作成<a class="headerlink" href="#エンドポイントの定義と作成" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.3. </span>エンドポイントの定義と作成<a class="headerlink" href="#エンドポイントの定義と作成" title="この見出しへのパーマリンク"></a></h2>
 <p>最終的なゴールは、エンドポイントにモデルをデプロイすることです。そのため、まずエンドポイントを作成する必要があります。エンドポイントは、アプリケーションがモデルから予測を受け取るために呼び出すことができるHTTPSエンドポイントになります。アプリケーションは、そのURIを使用し、キーまたはトークンで認証することで、エンドポイントを利用することができます。</p>
 <p>次のセルを実行してエンドポイントを定義します。エンドポイントの名前は一意でなければならないことに注意してください。一意な名前を生成するには <code class="docutils literal notranslate"><span class="pre">datetime</span></code> 関数を使用します。</p>
 <div class="nbinput nblast docutils container">
@@ -182,7 +181,7 @@
 <p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！続行する前に、エンドポイントが正常に作成されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>
 </p></section>
 <section id="デプロイの設定">
-<h2><span class="section-number">12.4. </span>デプロイの設定<a class="headerlink" href="#デプロイの設定" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.4. </span>デプロイの設定<a class="headerlink" href="#デプロイの設定" title="この見出しへのパーマリンク"></a></h2>
 <p>1つのエンドポイントに複数のモデルをデプロイできます。これは、現在のモデルを本番環境に置いたまま、デプロイされたモデルを更新したい場合に便利です。どのモデルをエンドポイントにデプロイするかを指定するために、デプロイメントを設定する必要があります。以下のセルでは、ローカルの <code class="docutils literal notranslate"><span class="pre">model</span></code> フォルダ（このノートブックと同じフォルダに格納されています）に格納されている学習済みのモデルを参照します。MLflow モデルで作業しているので、環境やスコアリングスクリプトを指定する必要はないことに注意してください。</p>
 <p>モデルのデプロイに必要なインフラストラクチャも指定します。</p>
 <div class="nbinput nblast docutils container">
@@ -211,7 +210,7 @@
 </div>
 </section>
 <section id="Create-the-deployment">
-<h2><span class="section-number">12.5. </span>Create the deployment<a class="headerlink" href="#Create-the-deployment" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.5. </span>Create the deployment<a class="headerlink" href="#Create-the-deployment" title="この見出しへのパーマリンク"></a></h2>
 <p>Finally, you can actually deploy the model to the endpoint by running the following cell:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -238,7 +237,7 @@
 <p style="color:red;font-size:120%;background-color:yellow;font-weight:bold"><p>IMPORTANT! Wait until the blue deployment is configured before continuing! A green notification should appear in the studio.</p>
 </p></section>
 <section id="Test-the-deployment">
-<h2><span class="section-number">12.6. </span>Test the deployment<a class="headerlink" href="#Test-the-deployment" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.6. </span>Test the deployment<a class="headerlink" href="#Test-the-deployment" title="この見出しへのパーマリンク"></a></h2>
 <p>エンドポイントを呼び出して、デプロイされたモデルをテストしてみましょう。サンプルデータを含むJSONファイルが入力として使用される。学習されたモデルは、年齢、BMI、妊娠回数などの医療データに基づいて、患者が糖尿病かどうかを予測します。0]<code class="docutils literal notranslate"><span class="pre">は患者が糖尿病でないことを示す。1]</span></code>は患者が糖尿病であることを意味する。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -261,7 +260,7 @@
 <p>オプションとして、<code class="docutils literal notranslate"><span class="pre">sample-data.json</span></code>ファイルの値を変更して、異なる予測を試みることもできる。</p>
 </section>
 <section id="エンドポイントの一覧表示">
-<h2><span class="section-number">12.7. </span>エンドポイントの一覧表示<a class="headerlink" href="#エンドポイントの一覧表示" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.7. </span>エンドポイントの一覧表示<a class="headerlink" href="#エンドポイントの一覧表示" title="この見出しへのパーマリンク"></a></h2>
 <p>スタジオではすべてのエンドポイントを表示できますが、SDKを使用してすべてのエンドポイントを一覧表示することもできます：</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -275,7 +274,7 @@
 </div>
 </section>
 <section id="エンドポイントの詳細を取得する">
-<h2><span class="section-number">12.8. </span>エンドポイントの詳細を取得する<a class="headerlink" href="#エンドポイントの詳細を取得する" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.8. </span>エンドポイントの詳細を取得する<a class="headerlink" href="#エンドポイントの詳細を取得する" title="この見出しへのパーマリンク"></a></h2>
 <p>特定のエンドポイントに関する詳細情報が必要な場合は、SDKを使用して詳細を調べることもできます。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -294,7 +293,7 @@
 </div>
 </section>
 <section id="エンドポイントとデプロイメントを削除する">
-<h2><span class="section-number">12.9. </span>エンドポイントとデプロイメントを削除する<a class="headerlink" href="#エンドポイントとデプロイメントを削除する" title="この見出しへのパーマリンク"></a></h2>
+<h2><span class="section-number">11.9. </span>エンドポイントとデプロイメントを削除する<a class="headerlink" href="#エンドポイントとデプロイメントを削除する" title="この見出しへのパーマリンク"></a></h2>
 <p>エンドポイントは常に利用可能なので、コスト削減のために一時停止することはできません。不必要なコストを避けるには、エンドポイントを削除してください。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -311,7 +310,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="11_00Deploy%20to%20batch%20endpoint.html" class="btn btn-neutral float-left" title="11. バッチエンドポイントへのデプロイ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="11_00Deploy%20to%20batch%20endpoint.html" class="btn btn-neutral float-left" title="10. バッチエンドポイントへのデプロイ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

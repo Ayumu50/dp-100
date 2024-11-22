@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>スクリプトをパイプラインジョブとして実行する &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">スクリプトをパイプラインジョブとして実行する</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/08_0Run a pipeline job.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="スクリプトをパイプラインジョブとして実行する">
+<h1>スクリプトをパイプラインジョブとして実行する<a class="headerlink" href="#スクリプトをパイプラインジョブとして実行する" title="この見出しへのパーマリンク"></a></h1>
+<p>パイプラインを使用すると、複数のステップを1つのワークフローにまとめることができます。コンポーネントでパイプラインを構築できます。それぞれのコンポーネントは実行するPythonスクリプトを反映します。コンポーネントはYAMLファイルで定義され、スクリプトとその実行方法を指定します。</p>
+<section id="始める前に">
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、最新バージョンの <strong>azure-ai-ml</strong> パッケージが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<blockquote>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="スクリプトの作成">
+<h2>スクリプトの作成<a class="headerlink" href="#スクリプトの作成" title="この見出しへのパーマリンク"></a></h2>
+<p>つのステップでパイプラインを構築する：</p>
+<ol class="arabic simple">
+<li><p><strong>データを準備する</strong>： 欠損データを修正し、データを正規化する。</p></li>
+<li><p><strong>モデルを訓練する</strong>： ロジスティック回帰モデルを訓練する。</p></li>
+</ol>
+<p>次のセルを実行して、<strong>src</strong> フォルダーと2つのスクリプトを作成する。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># create a folder for the script files</span>
+<span class="n">script_folder</span> <span class="o">=</span> <span class="s1">&#39;src&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">script_folder</span><span class="p">,</span> <span class="s1">&#39;folder created&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+src folder created
+</pre></div></div>
+</div>
+<p>データの前処理のpyファイル</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> $script_folder/prep-data.py
+<span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># read data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input_data</span><span class="p">)</span>
+
+    <span class="n">cleaned_data</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">normalized_data</span> <span class="o">=</span> <span class="n">normalize_data</span><span class="p">(</span><span class="n">cleaned_data</span><span class="p">)</span>
+
+    <span class="n">output_df</span> <span class="o">=</span> <span class="n">normalized_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">((</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_data</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;diabetes.csv&quot;</span><span class="p">),</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># function that reads the data</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Count the rows and print the result</span>
+    <span class="n">row_count</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Preparing </span><span class="si">{}</span><span class="s1"> rows of data&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row_count</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># function that removes missing values</span>
+<span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># function that normalizes the data</span>
+<span class="k">def</span> <span class="nf">normalize_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="n">num_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span><span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span><span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span><span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span><span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span><span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">num_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">num_cols</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="c1"># setup arg parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="c1"># add arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--input_data&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;input_data&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_data&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;output_data&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># return args</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="c1"># run script</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># run main function</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting src/prep-data.py
+</pre></div></div>
+</div>
+<p>モデルの学習のpyファイル</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> $script_folder/train-model.py
+<span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">mlflow</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># enable autologging</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">autolog</span><span class="p">()</span>
+
+    <span class="c1"># read data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">training_data</span><span class="p">)</span>
+
+    <span class="c1"># split data</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1"># train model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+    <span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># function that reads the data</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+
+    <span class="n">all_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">data_path</span> <span class="o">+</span> <span class="s2">&quot;/*.csv&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_files</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># function that splits the data</span>
+<span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splitting data...&quot;</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span><span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span><span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span><span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span><span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span><span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+
+<span class="c1"># function that trains the model</span>
+<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;Regularization rate&quot;</span><span class="p">,</span> <span class="n">reg_rate</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training model...&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">reg_rate</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model_output</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># function that evaluates the model</span>
+<span class="k">def</span> <span class="nf">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="c1"># calculate accuracy</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Accuracy:&#39;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+
+    <span class="c1"># calculate AUC</span>
+    <span class="n">y_scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AUC: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">auc</span><span class="p">))</span>
+
+    <span class="c1"># plot ROC curve</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="c1"># Plot the diagonal 50% line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot the FPR and TPR achieved by our model</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ROC Curve&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;ROC-Curve.png&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="c1"># setup arg parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="c1"># add arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--training_data&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;training_data&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--reg_rate&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;reg_rate&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;model_output&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># return args</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="c1"># run script</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># parse args</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># run main function</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># add space in logs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting src/train-model.py
+</pre></div></div>
+</div>
+</section>
+<section id="コンポーネントの定義">
+<h2>コンポーネントの定義<a class="headerlink" href="#コンポーネントの定義" title="この見出しへのパーマリンク"></a></h2>
+<p>コンポーネントを定義するには、次のように指定する必要がある：</p>
+<ul class="simple">
+<li><p><strong>メタデータ</strong>： <em>name</em>、<em>display name</em>、<em>version</em>、<em>description</em>、<em>type</em>など。メタデータはコンポーネントの説明と管理に役立ちます。</p></li>
+<li><p><strong>インターフェース</strong>： <strong>input</strong>と<strong>output</strong>。例えば、モデル学習コンポーネントは、学習データと正則化率を入力として受け取り、学習済みモデルファイルを出力として生成します。</p></li>
+<li><p><strong>コマンド、コード、環境</strong>：コンポーネントを実行するための<em>コマンド</em>、<em>コード</em>、<em>環境</em>。コマンドはコンポーネントを実行するシェルコマンドです。Code は通常ソースコードのディレクトリを指します。環境は、AzureML環境（キュレーションまたはカスタム作成）、dockerイメージ、またはconda環境です。</p></li>
+</ul>
+<p>以下のセルを実行して、パイプラインステップとして実行したい各コンポーネントの YAML を作成します。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%writefile prep-data.yml
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: prep_data
+display_name: Prepare training data
+version: 1
+type: command
+inputs:
+  input_data:
+    type: uri_file
+outputs:
+  output_data:
+    type: uri_folder
+code: ./src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+command: &gt;-
+  python prep-data.py
+  --input_data ${{inputs.input_data}}
+  --output_data ${{outputs.output_data}}
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting prep-data.yml
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%writefile train-model.yml
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_model
+display_name: Train a logistic regression model
+version: 1
+type: command
+inputs:
+  training_data:
+    type: uri_folder
+  reg_rate:
+    type: number
+    default: 0.01
+outputs:
+  model_output:
+    type: mlflow_model
+code: ./src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+command: &gt;-
+  python train-model.py
+  --training_data ${{inputs.training_data}}
+  --reg_rate ${{inputs.reg_rate}}
+  --model_output ${{outputs.model_output}}
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting train-model.yml
+</pre></div></div>
+</div>
+</section>
+<section id="Load-the-components">
+<h2>Load the components<a class="headerlink" href="#Load-the-components" title="この見出しへのパーマリンク"></a></h2>
+<p>それぞれのコンポーネントを定義したので、YAMLファイルを参照してコンポーネントをロードできます。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">load_component</span>
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="n">prep_data</span> <span class="o">=</span> <span class="n">load_component</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">parent_dir</span> <span class="o">+</span> <span class="s2">&quot;./prep-data.yml&quot;</span><span class="p">)</span>
+<span class="n">train_logistic_regression</span> <span class="o">=</span> <span class="n">load_component</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">parent_dir</span> <span class="o">+</span> <span class="s2">&quot;./train-model.yml&quot;</span><span class="p">)</span>
+<span class="c1">#それぞれのymlファイルをロードする</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Build-the-pipeline">
+<h2>Build the pipeline<a class="headerlink" href="#Build-the-pipeline" title="この見出しへのパーマリンク"></a></h2>
+<p>コンポーネントを作成してロードしたら、パイプラインを構築します。つのコンポーネントをパイプラインにまとめる。まず、<code class="docutils literal notranslate"><span class="pre">prep_data</span></code>コンポーネントを実行します。1つ目のコンポーネントの出力は2つ目のコンポーネント <code class="docutils literal notranslate"><span class="pre">train_logistic_regression</span></code> の入力になるはずです。</p>
+<p>diabetes_classification<code class="docutils literal notranslate"><span class="pre">関数は、完全なパイプラインを表します。この関数は1つの入力変数を必要とする：</span> <span class="pre">pipeline_job_input</span></code>である。データアセットはセットアップ時に作成されます。登録されたデータアセットをパイプラインの入力として使用します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.dsl</span> <span class="kn">import</span> <span class="n">pipeline</span>
+<span class="c1">#パイプラインのまとめをおこなう</span>
+<span class="nd">@pipeline</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diabetes_classification</span><span class="p">(</span><span class="n">pipeline_job_input</span><span class="p">):</span>
+    <span class="n">clean_data</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">input_data</span><span class="o">=</span><span class="n">pipeline_job_input</span><span class="p">)</span>
+    <span class="n">train_model</span> <span class="o">=</span> <span class="n">train_logistic_regression</span><span class="p">(</span><span class="n">training_data</span><span class="o">=</span><span class="n">clean_data</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;pipeline_job_transformed_data&quot;</span><span class="p">:</span> <span class="n">clean_data</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">output_data</span><span class="p">,</span>
+        <span class="s2">&quot;pipeline_job_trained_model&quot;</span><span class="p">:</span> <span class="n">train_model</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">model_output</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="n">pipeline_job</span> <span class="o">=</span> <span class="n">diabetes_classification</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FILE</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml:diabetes-data:1&quot;</span><span class="p">))</span><span class="c1">#pathはデータのURIに切り替える</span>
+</pre></div>
+</div>
+</div>
+<p>You can retrieve the configuration of the pipeline job by printing the <code class="docutils literal notranslate"><span class="pre">pipeline_job</span></code> object:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pipeline_job</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+display_name: diabetes_classification
+type: pipeline
+inputs:
+  pipeline_job_input:
+    type: uri_file
+    path: azureml:diabetes-data:1
+outputs:
+  pipeline_job_transformed_data:
+    type: uri_folder
+  pipeline_job_trained_model:
+    type: mlflow_model
+jobs:
+  clean_data:
+    type: command
+    inputs:
+      input_data:
+        path: ${{parent.inputs.pipeline_job_input}}
+    outputs:
+      output_data: ${{parent.outputs.pipeline_job_transformed_data}}
+    component:
+      $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+      name: prep_data
+      version: &#39;1&#39;
+      display_name: Prepare training data
+      type: command
+      inputs:
+        input_data:
+          type: uri_file
+      outputs:
+        output_data:
+          type: uri_folder
+      command: python prep-data.py  --input_data ${{inputs.input_data}} --output_data
+        ${{outputs.output_data}}
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      code: /mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/09/src
+      is_deterministic: true
+  train_model:
+    type: command
+    inputs:
+      training_data:
+        path: ${{parent.jobs.clean_data.outputs.output_data}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+    component:
+      $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+      name: train_model
+      version: &#39;1&#39;
+      display_name: Train a logistic regression model
+      type: command
+      inputs:
+        training_data:
+          type: uri_folder
+        reg_rate:
+          type: number
+          default: &#39;0.01&#39;
+      outputs:
+        model_output:
+          type: mlflow_model
+      command: &#39;python train-model.py  --training_data ${{inputs.training_data}}  --reg_rate
+        ${{inputs.reg_rate}}  --model_output ${{outputs.model_output}} &#39;
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      code: /mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/09/src
+      is_deterministic: true
+
+</pre></div></div>
+</div>
+<p>You can change any parameter of the pipeline job configuration by referring to the parameter and specifying the new value:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the output mode</span>
+<span class="n">pipeline_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">pipeline_job_transformed_data</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;upload&quot;</span>
+<span class="n">pipeline_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">pipeline_job_trained_model</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;upload&quot;</span>
+<span class="c1"># set pipeline level compute</span>
+<span class="n">pipeline_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">default_compute</span> <span class="o">=</span> <span class="s2">&quot;aml-cluster&quot;</span>
+<span class="c1"># set pipeline level datastore</span>
+<span class="n">pipeline_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">default_datastore</span> <span class="o">=</span> <span class="s2">&quot;workspaceblobstore&quot;</span>
+
+<span class="c1"># print the pipeline job again to review the changes</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipeline_job</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+display_name: diabetes_classification
+type: pipeline
+inputs:
+  pipeline_job_input:
+    type: uri_file
+    path: azureml:diabetes-data:1
+outputs:
+  pipeline_job_transformed_data:
+    mode: upload
+    type: uri_folder
+  pipeline_job_trained_model:
+    mode: upload
+    type: mlflow_model
+jobs:
+  clean_data:
+    type: command
+    inputs:
+      input_data:
+        path: ${{parent.inputs.pipeline_job_input}}
+    outputs:
+      output_data: ${{parent.outputs.pipeline_job_transformed_data}}
+    component:
+      $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+      name: prep_data
+      version: &#39;1&#39;
+      display_name: Prepare training data
+      type: command
+      inputs:
+        input_data:
+          type: uri_file
+      outputs:
+        output_data:
+          type: uri_folder
+      command: python prep-data.py  --input_data ${{inputs.input_data}} --output_data
+        ${{outputs.output_data}}
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      code: /mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/09/src
+      is_deterministic: true
+  train_model:
+    type: command
+    inputs:
+      training_data:
+        path: ${{parent.jobs.clean_data.outputs.output_data}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+    component:
+      $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+      name: train_model
+      version: &#39;1&#39;
+      display_name: Train a logistic regression model
+      type: command
+      inputs:
+        training_data:
+          type: uri_folder
+        reg_rate:
+          type: number
+          default: &#39;0.01&#39;
+      outputs:
+        model_output:
+          type: mlflow_model
+      command: &#39;python train-model.py  --training_data ${{inputs.training_data}}  --reg_rate
+        ${{inputs.reg_rate}}  --model_output ${{outputs.model_output}} &#39;
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      code: /mnt/batch/tasks/shared/LS_root/mounts/clusters/demokoike/code/Users/wwe.ayumu/azure-ml-labs/Labs/09/src
+      is_deterministic: true
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:aml-cluster
+
+</pre></div></div>
+</div>
+</section>
+<section id="Submit-the-pipeline-job">
+<h2>Submit the pipeline job<a class="headerlink" href="#Submit-the-pipeline-job" title="この見出しへのパーマリンク"></a></h2>
+<p>Finally, when you’ve built the pipeline and configured the pipeline job to run as required, you can submit the pipeline job:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># submit job to workspace</span>
+<span class="n">pipeline_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span>
+    <span class="n">pipeline_job</span><span class="p">,</span> <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;pipeline_diabetes&quot;</span>
+<span class="p">)</span>
+<span class="n">pipeline_job</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading src (0.01 MBs): 100%|██████████| 7921/7921 [00:00&lt;00:00, 253586.15it/s]
+</span>
+
+pathOnCompute is not a known attribute of class &lt;class &#39;azure.ai.ml._restclient.v2023_04_01_preview.models._models_py3.UriFolderJobOutput&#39;&gt; and will be ignored
+pathOnCompute is not a known attribute of class &lt;class &#39;azure.ai.ml._restclient.v2023_04_01_preview.models._models_py3.MLFlowModelJobOutput&#39;&gt; and will be ignored
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<table style="width:100%"><tr><th>Experiment</th><th>Name</th><th>Type</th><th>Status</th><th>Details Page</th></tr><tr><td>pipeline_diabetes</td><td>bright_egg_zygkqsdw60</td><td>pipeline</td><td>NotStarted</td><td><a href="https://ml.azure.com/runs/bright_egg_zygkqsdw60?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&amp;tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1" target="_blank" rel="noopener">Link to Azure Machine Learning studio</a></td></tr></table></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

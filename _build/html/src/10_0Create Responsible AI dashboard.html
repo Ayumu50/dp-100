@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>モデルを評価するための責任あるAIダッシュボードの作成 &mdash; Sphinx  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="9. MLflow でモデルをログする" href="10_01Log%20models%20with%20MLflow.html" />
+    <link rel="prev" title="8. スイープジョブでハイパーパラメータを調整する" href="09_0Hyperparameter%20tuning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">モデルを評価するための責任あるAIダッシュボードの作成</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/10_0Create Responsible AI dashboard.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="モデルを評価するための責任あるAIダッシュボードの作成">
+<h1>モデルを評価するための責任あるAIダッシュボードの作成<a class="headerlink" href="#モデルを評価するための責任あるAIダッシュボードの作成" title="この見出しへのパーマリンク"></a></h1>
+<p>機械学習モデルを比較・評価する場合、パフォーマンス指標だけでなく、より多くのことを確認したいと思うでしょう。Azure Machine Learningでは、責任あるAIダッシュボードを作成して、データの異なるコホートに対するモデルのパフォーマンスを調べることができます。</p>
+<section id="データの準備">
+<h2>データの準備<a class="headerlink" href="#データの準備" title="この見出しへのパーマリンク"></a></h2>
+<p>責任あるAIダッシュボードを作成するには、Parquetファイルとして保存され、データ資産として登録されたトレーニングデータセットとテストデータセットが必要です。</p>
+<p>データは現在CSVファイルとして保存されています。それらをParquetファイルに変換しましょう。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># read training and test dataset</span>
+<span class="n">df_training</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;train-data/diabetes.csv&quot;</span><span class="p">)</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test-data/diabetes-test.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># display the first few rows of the training dataset</span>
+<span class="n">df_training</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pregnancies</th>
+      <th>PlasmaGlucose</th>
+      <th>DiastolicBloodPressure</th>
+      <th>TricepsThickness</th>
+      <th>SerumInsulin</th>
+      <th>BMI</th>
+      <th>DiabetesPedigree</th>
+      <th>Age</th>
+      <th>Diabetic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>171</td>
+      <td>80</td>
+      <td>34</td>
+      <td>23</td>
+      <td>43.509726</td>
+      <td>1.213191</td>
+      <td>21</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8</td>
+      <td>92</td>
+      <td>93</td>
+      <td>47</td>
+      <td>36</td>
+      <td>21.240576</td>
+      <td>0.158365</td>
+      <td>23</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>115</td>
+      <td>47</td>
+      <td>52</td>
+      <td>35</td>
+      <td>41.511523</td>
+      <td>0.079019</td>
+      <td>23</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>103</td>
+      <td>78</td>
+      <td>25</td>
+      <td>304</td>
+      <td>29.582192</td>
+      <td>1.282870</td>
+      <td>43</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>85</td>
+      <td>59</td>
+      <td>27</td>
+      <td>35</td>
+      <td>42.604536</td>
+      <td>0.549542</td>
+      <td>22</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="kn">import</span> <span class="nn">pyarrow.parquet</span> <span class="k">as</span> <span class="nn">pq</span>
+
+<span class="c1"># convert data to table</span>
+<span class="n">table_training</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df_training</span><span class="p">)</span>
+<span class="n">table_test</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df_test</span><span class="p">)</span>
+
+<span class="c1"># write tables out to parquet</span>
+<span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">table_training</span><span class="p">,</span> <span class="s2">&quot;train-data/diabetes-training.parquet&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">)</span>
+<span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">table_test</span><span class="p">,</span> <span class="s2">&quot;test-data/diabetes-test.parquet&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="続ける前に">
+<h2>続ける前に<a class="headerlink" href="#続ける前に" title="この見出しへのパーマリンク"></a></h2>
+<p>このノートブックのコードを実行するには、<strong>azureml-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
+<blockquote>
+<div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">show</span> <span class="n">azure</span><span class="o">-</span><span class="n">ai</span><span class="o">-</span><span class="n">ml</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name: azure-ai-ml
+Version: 1.21.1
+Summary: Microsoft Azure Machine Learning Client Library for Python
+Home-page: https://github.com/Azure/azure-sdk-for-python
+Author: Microsoft Corporation
+Author-email: azuresdkengsysadmins@microsoft.com
+License: MIT License
+Location: /anaconda/envs/azureml_py38/lib/python3.10/site-packages
+Requires: azure-common, azure-core, azure-mgmt-core, azure-storage-blob, azure-storage-file-datalake, azure-storage-file-share, colorama, isodate, jsonschema, marshmallow, msrest, opencensus-ext-azure, opencensus-ext-logging, pydash, pyjwt, pyyaml, strictyaml, tqdm, typing-extensions
+Required-by:
+Note: you may need to restart the kernel to use updated packages.
+</pre></div></div>
+</div>
+</section>
+<section id="ワークスペースに接続する">
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
+<p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span><span class="p">,</span> <span class="n">InteractiveBrowserCredential</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">MLClient</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">DefaultAzureCredential</span><span class="p">()</span>
+    <span class="c1"># Check if given credential can get token successfully.</span>
+    <span class="n">credential</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="c1"># Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">InteractiveBrowserCredential</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a handle to workspace</span>
+<span class="n">ml_client</span> <span class="o">=</span> <span class="n">MLClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Found the config file in: /config.json
+</pre></div></div>
+</div>
+</section>
+<section id="データ資産の作成">
+<h2>データ資産の作成<a class="headerlink" href="#データ資産の作成" title="この見出しへのパーマリンク"></a></h2>
+<p>責任あるAIダッシュボードを作成するには、トレーニングデータセットとテストデータセットを<strong>MLtable</strong>データ資産として登録する必要があります。MLtableデータ資産は、先ほど作成したParquetファイルを参照します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_data_path</span> <span class="o">=</span> <span class="s2">&quot;train-data/&quot;</span>
+<span class="n">test_data_path</span> <span class="o">=</span> <span class="s2">&quot;test-data/&quot;</span>
+<span class="n">data_version</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">input_train_data</span> <span class="o">=</span> <span class="s2">&quot;diabetes_train_mltable&quot;</span>
+<span class="n">input_test_data</span> <span class="o">=</span> <span class="s2">&quot;diabetes_test_mltable&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Try getting data already registered in workspace</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">input_train_data</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">data_version</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">input_test_data</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">data_version</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">train_data_path</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLTABLE</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RAI diabetes training data&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">input_train_data</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">data_version</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">test_data_path</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLTABLE</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RAI diabetes test data&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">input_test_data</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">data_version</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading train-data (0.7 MBs): 100%|██████████| 698279/698279 [00:00&lt;00:00, 15957340.96it/s]
+</span>
+
+<span class="ansi-green-fg">Uploading test-data (0.35 MBs): 100%|██████████| 353077/353077 [00:00&lt;00:00, 10103995.26it/s]
+</span>
+
+</pre></div></div>
+</div>
+</section>
+<section id="AIダッシュボードを作成するためのパイプラインを構築する">
+<h2>AIダッシュボードを作成するためのパイプラインを構築する<a class="headerlink" href="#AIダッシュボードを作成するためのパイプラインを構築する" title="この見出しへのパーマリンク"></a></h2>
+<p>ダッシュボードを作成するには、Azure Machine Learningワークスペースにデフォルトで登録されているビルド済みコンポーネントを使用してパイプラインをビルドします。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get handle to azureml registry for the RAI built in components</span>
+<span class="n">registry_name</span> <span class="o">=</span> <span class="s2">&quot;azureml&quot;</span>
+<span class="n">ml_client_registry</span> <span class="o">=</span> <span class="n">MLClient</span><span class="p">(</span>
+    <span class="n">credential</span><span class="o">=</span><span class="n">credential</span><span class="p">,</span>
+    <span class="n">subscription_id</span><span class="o">=</span><span class="n">ml_client</span><span class="o">.</span><span class="n">subscription_id</span><span class="p">,</span>
+    <span class="n">resource_group_name</span><span class="o">=</span><span class="n">ml_client</span><span class="o">.</span><span class="n">resource_group_name</span><span class="p">,</span>
+    <span class="n">registry_name</span><span class="o">=</span><span class="n">registry_name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ml_client_registry</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MLClient(credential=&lt;azure.identity._credentials.default.DefaultAzureCredential object at 0x7fe7ace6cf70&gt;,
+         subscription_id=6c6683e9-e5fe-4038-8519-ce6ebec2ba15,
+         resource_group_name=registry-builtin-prod-eastus-01,
+         workspace_name=None)
+</pre></div></div>
+</div>
+<section id="モデルの登録">
+<h3>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h3>
+<p>機械学習モデルはすでに学習済みです。このモデルは患者が糖尿病であるかどうかを予測します。すべてのモデルファイルは <code class="docutils literal notranslate"><span class="pre">model</span></code> フォルダに格納されています。</p>
+<p>model` フォルダとその中身を指定してモデルを登録する。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">file_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLFLOW_MODEL</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;local-mlflow-diabetes&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model created from local file.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">file_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-fg">Uploading model (0.0 MBs): 100%|██████████| 2296/2296 [00:00&lt;00:00, 80567.92it/s]
+</span>
+
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="パイプラインの構築">
+<h2>パイプラインの構築<a class="headerlink" href="#パイプラインの構築" title="この見出しへのパーマリンク"></a></h2>
+<p>AIダッシュボードを作成するには、あらかじめ用意されているコンポーネントを使用してパイプラインを作成します。どのコンポーネントを使用するか、どの機能をダッシュボードに含めるかを選択できます。エラー分析とモデルの解釈可能性を含むダッシュボードを作成します。</p>
+<p>ダッシュボードを構築するためのパイプラインには、担当するAI機能の他に、ダッシュボードを構築するためのコンポーネントと、生成されたすべてのインサイトを収集するためのコンポーネントが必要です。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">name</span>
+<span class="n">expected_model_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">:1&quot;</span>
+<span class="n">azureml_model_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;azureml:</span><span class="si">{</span><span class="n">expected_model_id</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;latest&quot;</span>
+
+<span class="n">rai_constructor_component</span> <span class="o">=</span> <span class="n">ml_client_registry</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;microsoft_azureml_rai_tabular_insight_constructor&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span>
+<span class="p">)</span><span class="c1">#RAI ダッシュボードの構築プロセスを開始するためのコンポーネントです。エラー解析、説明性、カウンターファクチュアル（反事実分析）などをまとめてセットアップします。</span>
+
+<span class="c1"># we get latest version and use the same version for all components</span>
+<span class="n">version</span> <span class="o">=</span> <span class="n">rai_constructor_component</span><span class="o">.</span><span class="n">version</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The current version of RAI built-in components is: &quot;</span> <span class="o">+</span> <span class="n">version</span><span class="p">)</span>
+
+<span class="n">rai_erroranalysis_component</span> <span class="o">=</span> <span class="n">ml_client_registry</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;microsoft_azureml_rai_tabular_erroranalysis&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span>
+<span class="p">)</span><span class="c1">#エラー解析を行うためのコンポーネントです。</span>
+
+<span class="n">rai_explanation_component</span> <span class="o">=</span> <span class="n">ml_client_registry</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;microsoft_azureml_rai_tabular_explanation&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span>
+<span class="p">)</span><span class="c1">#説明性解析を行うためのコンポーネントです。モデルの予測に対する説明（SHAP値など）を生成</span>
+
+<span class="n">rai_gather_component</span> <span class="o">=</span> <span class="n">ml_client_registry</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;microsoft_azureml_rai_tabular_insight_gather&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The current version of RAI built-in components is: 0.17.0
+</pre></div></div>
+</div>
+<div class="line-block">
+<div class="line">使用したいコンポーネントをすべて取得したら、パイプラインを構築し、適切な順序でコンポーネントを接続します： 1. ダッシュボードを構築する。</div>
+<div class="line">エラー分析を追加する</div>
+<div class="line">2. 説明を追加する。</div>
+<div class="line">3. すべての洞察を収集し、ダッシュボードで可視化する。</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 必要なAzure MLモジュールのインポート</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">dsl</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="c1"># Azure ML上のコンピュートクラスター名</span>
+<span class="n">compute_name</span> <span class="o">=</span> <span class="s2">&quot;aml-cluster&quot;</span>
+
+<span class="c1"># パイプラインの定義（デコレーターを使用）</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">compute</span><span class="o">=</span><span class="n">compute_name</span><span class="p">,</span>  <span class="c1"># パイプラインを実行するコンピュートクラスター</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RAI insights on diabetes data&quot;</span><span class="p">,</span>  <span class="c1"># パイプラインの説明</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;RAI_insights_</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># 実験名（動的に生成）</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">rai_decision_pipeline</span><span class="p">(</span>
+    <span class="n">target_column_name</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span>  <span class="c1"># 入力引数として列名、訓練データ、テストデータを受け取る</span>
+<span class="p">):</span>
+    <span class="c1"># Step 1: RAIInsightsを初期化するジョブ</span>
+    <span class="n">create_rai_job</span> <span class="o">=</span> <span class="n">rai_constructor_component</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;RAI dashboard diabetes&quot;</span><span class="p">,</span>  <span class="c1"># ダッシュボードのタイトル</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span>  <span class="c1"># タスクの種類（分類タスク）</span>
+        <span class="n">model_info</span><span class="o">=</span><span class="n">expected_model_id</span><span class="p">,</span>  <span class="c1"># モデルの情報（事前に定義されたID）</span>
+        <span class="n">model_input</span><span class="o">=</span><span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLFLOW_MODEL</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">azureml_model_id</span><span class="p">),</span>  <span class="c1"># モデルへの入力パス</span>
+        <span class="n">train_dataset</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>  <span class="c1"># 訓練データセット</span>
+        <span class="n">test_dataset</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>  <span class="c1"># テストデータセット</span>
+        <span class="n">target_column_name</span><span class="o">=</span><span class="n">target_column_name</span><span class="p">,</span>  <span class="c1"># ターゲット列の名前</span>
+    <span class="p">)</span>
+    <span class="n">create_rai_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># ジョブのタイムアウトを300秒に設定</span>
+
+    <span class="c1"># Step 2: エラー解析の追加</span>
+    <span class="n">error_job</span> <span class="o">=</span> <span class="n">rai_erroranalysis_component</span><span class="p">(</span>
+        <span class="n">rai_insights_dashboard</span><span class="o">=</span><span class="n">create_rai_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">rai_insights_dashboard</span><span class="p">,</span>  <span class="c1"># RAIダッシュボードを入力として使用</span>
+    <span class="p">)</span>
+    <span class="n">error_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># ジョブのタイムアウトを300秒に設定</span>
+
+    <span class="c1"># Step 3: 説明性解析の追加</span>
+    <span class="n">explanation_job</span> <span class="o">=</span> <span class="n">rai_explanation_component</span><span class="p">(</span>
+        <span class="n">rai_insights_dashboard</span><span class="o">=</span><span class="n">create_rai_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">rai_insights_dashboard</span><span class="p">,</span>  <span class="c1"># RAIダッシュボードを入力として使用</span>
+        <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;add explanation&quot;</span><span class="p">,</span>  <span class="c1"># 説明を追加するコメント</span>
+    <span class="p">)</span>
+    <span class="n">explanation_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># ジョブのタイムアウトを300秒に設定</span>
+
+    <span class="c1"># Step 4: すべてのインサイトを統合する</span>
+    <span class="n">rai_gather_job</span> <span class="o">=</span> <span class="n">rai_gather_component</span><span class="p">(</span>
+        <span class="n">constructor</span><span class="o">=</span><span class="n">create_rai_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">rai_insights_dashboard</span><span class="p">,</span>  <span class="c1"># 初期化したRAIダッシュボード</span>
+        <span class="n">insight_3</span><span class="o">=</span><span class="n">error_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">error_analysis</span><span class="p">,</span>  <span class="c1"># エラー解析の結果</span>
+        <span class="n">insight_4</span><span class="o">=</span><span class="n">explanation_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">explanation</span><span class="p">,</span>  <span class="c1"># 説明性解析の結果</span>
+    <span class="p">)</span>
+    <span class="n">rai_gather_job</span><span class="o">.</span><span class="n">set_limits</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># ジョブのタイムアウトを300秒に設定</span>
+
+    <span class="c1"># ダッシュボードの出力をアップロードモードに設定</span>
+    <span class="n">rai_gather_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">dashboard</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;upload&quot;</span>
+
+    <span class="c1"># 最終的なダッシュボードをパイプラインの出力として返す</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;dashboard&quot;</span><span class="p">:</span> <span class="n">rai_gather_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">dashboard</span><span class="p">,</span>
+    <span class="p">}</span>
+<br/></pre></div>
+</div>
+</div>
+<p>パイプラインが構築されたので、必要な2つの入力、つまりトレーニングとテストのデータセットを定義する必要がある。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="n">target_feature</span> <span class="o">=</span> <span class="s2">&quot;Diabetic&quot;</span>
+
+<span class="n">diabetes_train_pq</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;mltable&quot;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;azureml:</span><span class="si">{</span><span class="n">input_train_data</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">data_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;download&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">diabetes_test_pq</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;mltable&quot;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;azureml:</span><span class="si">{</span><span class="n">input_test_data</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">data_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;download&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>最後に、すべてをまとめます：入力をパイプラインに割り当て、ターゲット列（予測ラベル）を設定します。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Output</span>
+
+<span class="c1"># Pipeline to construct the RAI Insights</span>
+<span class="n">insights_pipeline_job</span> <span class="o">=</span> <span class="n">rai_decision_pipeline</span><span class="p">(</span>
+    <span class="n">target_column_name</span><span class="o">=</span><span class="s2">&quot;Diabetic&quot;</span><span class="p">,</span>
+    <span class="n">train_data</span><span class="o">=</span><span class="n">diabetes_train_pq</span><span class="p">,</span>
+    <span class="n">test_data</span><span class="o">=</span><span class="n">diabetes_test_pq</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Workaround to enable the download</span>
+<span class="n">rand_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+<span class="n">insights_pipeline_job</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">dashboard</span> <span class="o">=</span> <span class="n">Output</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;azureml://datastores/workspaceblobstore/paths/</span><span class="si">{</span><span class="n">rand_path</span><span class="si">}</span><span class="s2">/dashboard/&quot;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;upload&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;uri_folder&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="パイプラインの実行">
+<h2>パイプラインの実行<a class="headerlink" href="#パイプラインの実行" title="この見出しへのパーマリンク"></a></h2>
+<p>パイプラインの構築に成功したら、パイプラインを送信できます。以下のコードはパイプラインを送信し、パイプラインのステータスをチェックします。スタジオでパイプラインのステータスを確認することもできます。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">PipelineJob</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">submit_and_wait</span><span class="p">(</span><span class="n">ml_client</span><span class="p">,</span> <span class="n">pipeline_job</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PipelineJob</span><span class="p">:</span>
+    <span class="n">created_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">pipeline_job</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">created_job</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pipeline job can be accessed in the following URL:&quot;</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{0}</span><span class="s1">&quot;&gt;</span><span class="si">{0}</span><span class="s1">&lt;/a&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">created_job</span><span class="o">.</span><span class="n">studio_url</span><span class="p">)))</span>
+
+    <span class="k">while</span> <span class="n">created_job</span><span class="o">.</span><span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s2">&quot;Completed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Failed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Canceled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NotResponding&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">created_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">created_job</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Latest status : </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">created_job</span><span class="o">.</span><span class="n">status</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">created_job</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;Completed&quot;</span>
+    <span class="k">return</span> <span class="n">created_job</span>
+
+
+<span class="c1"># This is the actual submission</span>
+<span class="n">insights_job</span> <span class="o">=</span> <span class="n">submit_and_wait</span><span class="p">(</span><span class="n">ml_client</span><span class="p">,</span> <span class="n">insights_pipeline_job</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+pathOnCompute is not a known attribute of class &lt;class &#39;azure.ai.ml._restclient.v2023_04_01_preview.models._models_py3.UriFolderJobOutput&#39;&gt; and will be ignored
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pipeline job can be accessed in the following URL:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="https://ml.azure.com/runs/witty_pummelo_spskv3zt2m?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1">https://ml.azure.com/runs/witty_pummelo_spskv3zt2m?wsid=/subscriptions/2fbd9cca-a295-4d4f-a5c4-bf80e223260f/resourcegroups/ai-900/workspaces/koikedemo&tid=adcb56ab-ed63-4be3-8e5e-2fa7d2eb44e1</a></div>
+</div>
+<p>When the pipeline is completed, you can review the dashboard in the studio.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="09_0Hyperparameter%20tuning.html" class="btn btn-neutral float-left" title="8. スイープジョブでハイパーパラメータを調整する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="10_01Log%20models%20with%20MLflow.html" class="btn btn-neutral float-right" title="9. MLflow でモデルをログする" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, trainocate.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

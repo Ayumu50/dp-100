@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="8. トレーニングスクリプトをコマンドジョブとして実行する" href="08_0Run%20script%20as%20a%20command%20job.html" />
-    <link rel="prev" title="6. 自動機械学習で分類モデルを訓練する" href="06_Classification%20with%20Automated%20Machine%20Learning.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,18 +55,11 @@
 <li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">7. MLflowによるノートブックでのモデルトレーニングの追跡</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">7.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">7.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#MLflow-の設定">7.3. MLflow の設定</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Prepare-the-data">7.4. Prepare the data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -96,11 +87,11 @@
            <div itemprop="articleBody">
              
   <section id="MLflowによるノートブックでのモデルトレーニングの追跡">
-<h1><span class="section-number">7. </span>MLflowによるノートブックでのモデルトレーニングの追跡<a class="headerlink" href="#MLflowによるノートブックでのモデルトレーニングの追跡" title="この見出しへのパーマリンク"></a></h1>
+<h1>MLflowによるノートブックでのモデルトレーニングの追跡<a class="headerlink" href="#MLflowによるノートブックでのモデルトレーニングの追跡" title="この見出しへのパーマリンク"></a></h1>
 <p>ノートブックでMLflowを使用すると、トレーニングしたモデルを追跡できます。このノートブックは Azure Machine Learning のコンピュートインスタンスで実行するので、MLflow をセットアップする必要はありません。</p>
 <p>いくつかのデータを準備し、糖尿病を予測するモデルをトレーニングします。オートロギングとカスタムロギングを使用して、ノートブックで MLflow を使用する方法を探ります。</p>
 <section id="始める前に">
-<h2><span class="section-number">7.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -133,7 +124,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">7.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
@@ -172,7 +163,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="MLflow-の設定">
-<h2><span class="section-number">7.3. </span>MLflow の設定<a class="headerlink" href="#MLflow-の設定" title="この見出しへのパーマリンク"></a></h2>
+<h2>MLflow の設定<a class="headerlink" href="#MLflow-の設定" title="この見出しへのパーマリンク"></a></h2>
 <p>Azure Machine Learning studioのコンピュートインスタンス上でこのノートブックを実行しているので、MLflowを設定する必要はない。</p>
 <p>ただし、必要なライブラリがインストールされていることは確認しておきましょう。</p>
 <blockquote>
@@ -487,7 +478,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="Prepare-the-data">
-<h2><span class="section-number">7.4. </span>Prepare the data<a class="headerlink" href="#Prepare-the-data" title="この見出しへのパーマリンク"></a></h2>
+<h2>Prepare the data<a class="headerlink" href="#Prepare-the-data" title="この見出しへのパーマリンク"></a></h2>
 <p>糖尿病分類モデルをトレーニングします。学習データは<strong>data</strong>フォルダに<strong>diabetes.csv</strong>として格納されています。 まず、データを読んでみましょう：</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -720,10 +711,7 @@ Splitting data...
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="06_Classification%20with%20Automated%20Machine%20Learning.html" class="btn btn-neutral float-left" title="6. 自動機械学習で分類モデルを訓練する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="08_0Run%20script%20as%20a%20command%20job.html" class="btn btn-neutral float-right" title="8. トレーニングスクリプトをコマンドジョブとして実行する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

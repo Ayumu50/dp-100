@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="11. オンラインエンドポイントへのデプロイ" href="11_11Deploy%20to%20online%20endpoint.html" />
-    <link rel="prev" title="9. MLflow でモデルをログする" href="10_01Log%20models%20with%20MLflow.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,17 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">10. バッチエンドポイントへのデプロイ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">10.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">10.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#モデルの登録">10.3. モデルの登録</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#バッチエンドポイントの作成">10.4. バッチエンドポイントの作成</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#デプロイメントの作成">10.5. デプロイメントの作成</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#バッチ予測用のデータを準備する">10.6. バッチ予測用のデータを準備する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ジョブの投入">10.7. ジョブの投入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#結果の取得">10.8. 結果の取得</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">10. バッチエンドポイントへのデプロイ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
@@ -99,10 +87,10 @@
            <div itemprop="articleBody">
              
   <section id="バッチエンドポイントへのデプロイ">
-<h1><span class="section-number">10. </span>バッチエンドポイントへのデプロイ<a class="headerlink" href="#バッチエンドポイントへのデプロイ" title="この見出しへのパーマリンク"></a></h1>
+<h1>バッチエンドポイントへのデプロイ<a class="headerlink" href="#バッチエンドポイントへのデプロイ" title="この見出しへのパーマリンク"></a></h1>
 <p>ある診療所が一日中患者の測定を行い、各患者の詳細を個別のファイルに保存しているとする。そして一晩中、糖尿病予測モデルを使用して、その日のすべての患者データをバッチ処理し、翌朝に待機する予測を生成して、クリニックが糖尿病のリスクがあると予測される患者をフォローアップできるようにします。Azure Machine Learningでは、バッチエンドポイントを作成することでこれを実現できます。</p>
 <section id="始める前に">
-<h2><span class="section-number">10.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、最新バージョンの <strong>azure-ai-ml</strong> パッケージが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -117,7 +105,7 @@
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">10.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
@@ -148,7 +136,7 @@
 </div>
 </section>
 <section id="モデルの登録">
-<h2><span class="section-number">10.3. </span>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
+<h2>モデルの登録<a class="headerlink" href="#モデルの登録" title="この見出しへのパーマリンク"></a></h2>
 <p>バッチデプロイはワークスペースに登録されたモデルのみをデプロイすることができます。ローカルの <code class="docutils literal notranslate"><span class="pre">model</span></code> フォルダに格納されている MLflow モデルを登録します。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -166,7 +154,7 @@
 </div>
 </section>
 <section id="バッチエンドポイントの作成">
-<h2><span class="section-number">10.4. </span>バッチエンドポイントの作成<a class="headerlink" href="#バッチエンドポイントの作成" title="この見出しへのパーマリンク"></a></h2>
+<h2>バッチエンドポイントの作成<a class="headerlink" href="#バッチエンドポイントの作成" title="この見出しへのパーマリンク"></a></h2>
 <p>バッチエンドポイントは、アプリケーションがバッチスコアリングジョブをトリガーするために呼び出すことができる HTTPS エンドポイントです。バッチエンドポイント名は Azure リージョン内で一意である必要があります。datetime` 関数を使用して、現在の日付と時刻に基づいて一意の名前を生成します。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -199,7 +187,7 @@
 <p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！続行する前に、エンドポイントが作成されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>
 </p></section>
 <section id="デプロイメントの作成">
-<h2><span class="section-number">10.5. </span>デプロイメントの作成<a class="headerlink" href="#デプロイメントの作成" title="この見出しへのパーマリンク"></a></h2>
+<h2>デプロイメントの作成<a class="headerlink" href="#デプロイメントの作成" title="この見出しへのパーマリンク"></a></h2>
 <p>デプロイメントとは、実際の推論を行うモデルをホストするために必要なリソースのセットです。BatchDeployment` クラスを使用してエンドポイント用のデプロイメントを作成します。</p>
 <p>MLflow モデルをデプロイするので、スコアリングスクリプトや環境の定義は必要ありません。Azure Machine Learning が自動的にそれらのアセットを作成してくれます。model<code class="docutils literal notranslate"><span class="pre">フォルダ内の</span></code>MLmodel` ファイルは、モデルの期待される入力と出力を理解するために使用されます。</p>
 <p>以下のパラメータでモデルをデプロイします：</p>
@@ -260,7 +248,7 @@
 <p style="「color:red;font-size:120%;background-color:yellow;font-weight:bold」"><p>重要です！続行する前に、デフォルトの配置が設定されるまで待ちます！スタジオに緑色の通知が表示されるはずです。</p>
 </p></section>
 <section id="バッチ予測用のデータを準備する">
-<h2><span class="section-number">10.6. </span>バッチ予測用のデータを準備する<a class="headerlink" href="#バッチ予測用のデータを準備する" title="この見出しへのパーマリンク"></a></h2>
+<h2>バッチ予測用のデータを準備する<a class="headerlink" href="#バッチ予測用のデータを準備する" title="この見出しへのパーマリンク"></a></h2>
 <p>data<code class="docutils literal notranslate"><span class="pre">フォルダにラベル付けされていないデータのCSVファイルがあります。data</span></code> フォルダ内のファイルを指すデータアセットを作成し、バッチジョブの入力として使用します。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -294,7 +282,7 @@
 </div>
 </section>
 <section id="ジョブの投入">
-<h2><span class="section-number">10.7. </span>ジョブの投入<a class="headerlink" href="#ジョブの投入" title="この見出しへのパーマリンク"></a></h2>
+<h2>ジョブの投入<a class="headerlink" href="#ジョブの投入" title="この見出しへのパーマリンク"></a></h2>
 <p>バッチエンドポイントにモデルをデプロイし、ラベル付けされていないデータ資産を手に入れたので、ラベル付けされていないデータに対して予測を生成するためにエンドポイントを呼び出す準備ができました。</p>
 <p>まず、登録したデータ資産を参照して入力を定義します。次にエンドポイントを起動し、パイプラインジョブを送信します。ジョブのURLを使用して、スタジオでジョブを監視できます。ジョブには、予測値を取得するための（生成された）スコアリングスクリプトの実行を表す子ジョブが含まれます。</p>
 <div class="nbinput nblast docutils container">
@@ -322,7 +310,7 @@
 </div>
 </section>
 <section id="結果の取得">
-<h2><span class="section-number">10.8. </span>結果の取得<a class="headerlink" href="#結果の取得" title="この見出しへのパーマリンク"></a></h2>
+<h2>結果の取得<a class="headerlink" href="#結果の取得" title="この見出しへのパーマリンク"></a></h2>
 <p>バッチエンドポイントを呼び出したパイプラインジョブが完了すると、結果を見ることができます。すべての予測結果は、デフォルトのデータストアに格納されている <code class="docutils literal notranslate"><span class="pre">predictions.csv</span></code> ファイルに収集されます。以下のセルを実行することで、ファイルをダウンロードし、データを可視化することができる。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -361,10 +349,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="10_01Log%20models%20with%20MLflow.html" class="btn btn-neutral float-left" title="9. MLflow でモデルをログする" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="11_11Deploy%20to%20online%20endpoint.html" class="btn btn-neutral float-right" title="11. オンラインエンドポイントへのデプロイ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="モデルを評価するための責任あるAIダッシュボードの作成" href="10_0Create%20Responsible%20AI%20dashboard.html" />
-    <link rel="prev" title="トレーニングスクリプトをコマンドジョブとして実行する" href="08_1Use%20MLflow%20to%20track%20jobs.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,15 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">8. スイープジョブでハイパーパラメータを調整する</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">8.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">8.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#学習スクリプトの作成">8.3. 学習スクリプトの作成</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#コマンドジョブの設定と実行">8.4. コマンドジョブの設定と実行</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Define-the-search-space">8.5. Define the search space</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#スイープジョブの設定と投入">8.6. スイープジョブの設定と投入</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. スイープジョブでハイパーパラメータを調整する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
@@ -97,10 +87,10 @@
            <div itemprop="articleBody">
              
   <section id="スイープジョブでハイパーパラメータを調整する">
-<h1><span class="section-number">8. </span>スイープジョブでハイパーパラメータを調整する<a class="headerlink" href="#スイープジョブでハイパーパラメータを調整する" title="この見出しへのパーマリンク"></a></h1>
+<h1>スイープジョブでハイパーパラメータを調整する<a class="headerlink" href="#スイープジョブでハイパーパラメータを調整する" title="この見出しへのパーマリンク"></a></h1>
 <p>機械学習アルゴリズムの中には、ハイパーパラメータ（学習に影響を与えるが、学習データ自体からは決定できないパラメータ値）を必要とするものがたくさんある。例えば、ロジスティック回帰モデルを学習する場合、正則化率のハイパーパラメータを使用してモデルの偏りを打ち消すことができます。また、畳み込みニューラルネットワークを学習する場合、学習率やバッチサイズのようなハイパーパラメータを使用して、重みの調整方法やミニバッチで処理されるデータ項目の数をそれぞれ制御することができます。ハイパーパラメータ値の選択は、学習済みモデルのパフォーマンスや学習にかかる時間に大きく影響する可能性があり、最適解を見つけるために複数の組み合わせを試す必要があることがよくあります。</p>
 <section id="始める前に">
-<h2><span class="section-number">8.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong>パッケージの最新版が必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -133,7 +123,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">8.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
@@ -172,7 +162,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="学習スクリプトの作成">
-<h2><span class="section-number">8.3. </span>学習スクリプトの作成<a class="headerlink" href="#学習スクリプトの作成" title="この見出しへのパーマリンク"></a></h2>
+<h2>学習スクリプトの作成<a class="headerlink" href="#学習スクリプトの作成" title="この見出しへのパーマリンク"></a></h2>
 <p>ハイパーパラメータチューニングは、機械学習モデルを訓練したいが入力パラメータを変えたい場合に最適です。アルゴリズムのハイパーパラメータの1つを表す入力パラメータを期待する学習スクリプトを作成する必要があります。</p>
 <p>以下のセルを実行して、<strong>src</strong> フォルダーとトレーニングスクリプトを作成します。</p>
 <p>トレーニングスクリプトは2つの入力パラメータを必要とすることに注意してください：</p>
@@ -326,7 +316,7 @@ Overwriting src/train.py
 </div>
 </section>
 <section id="コマンドジョブの設定と実行">
-<h2><span class="section-number">8.4. </span>コマンドジョブの設定と実行<a class="headerlink" href="#コマンドジョブの設定と実行" title="この見出しへのパーマリンク"></a></h2>
+<h2>コマンドジョブの設定と実行<a class="headerlink" href="#コマンドジョブの設定と実行" title="この見出しへのパーマリンク"></a></h2>
 <p>糖尿病を予測する分類モデルをトレーニングするために以下のセルを実行します。モデルは<strong>src</strong>フォルダにある<strong>train.py</strong>スクリプトを実行することで学習されます。学習データとして、登録されている <code class="docutils literal notranslate"><span class="pre">diabetes-data</span></code> データアセットを使用します。</p>
 <ul class="simple">
 <li><p>code`: 実行するスクリプトを含むフォルダを指定します。</p></li>
@@ -396,7 +386,7 @@ Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/sub
 </div>
 </section>
 <section id="Define-the-search-space">
-<h2><span class="section-number">8.5. </span>Define the search space<a class="headerlink" href="#Define-the-search-space" title="この見出しへのパーマリンク"></a></h2>
+<h2>Define the search space<a class="headerlink" href="#Define-the-search-space" title="この見出しへのパーマリンク"></a></h2>
 <p>コマンド・ジョブが正常に完了したら、掃引ジョブを設定して実行できます。</p>
 <p>まず、ハイパーパラメータの探索空間を指定します。3つのモデルをそれぞれ異なる正則化率（<code class="docutils literal notranslate"><span class="pre">0.01</span></code>, <code class="docutils literal notranslate"><span class="pre">0.1</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>）で学習させるためには、<code class="docutils literal notranslate"><span class="pre">Choice</span></code>ハイパーパラメータで探索空間を定義します。</p>
 <p><a class="reference external" href="https://learn.microsoft.com/ja-jp/azure/machine-learning/how-to-tune-hyperparameters?view=azureml-api-2">ハイパーパラメータチューニングの選択</a></p>
@@ -414,7 +404,7 @@ Monitor your job at https://ml.azure.com/runs/musing_branch_xw2ht66r4x?wsid=/sub
 </div>
 </section>
 <section id="スイープジョブの設定と投入">
-<h2><span class="section-number">8.6. </span>スイープジョブの設定と投入<a class="headerlink" href="#スイープジョブの設定と投入" title="この見出しへのパーマリンク"></a></h2>
+<h2>スイープジョブの設定と投入<a class="headerlink" href="#スイープジョブの設定と投入" title="この見出しへのパーマリンク"></a></h2>
 <p>トレーニングスクリプトのハイパーパラメータチューニングを行うために、スイープ機能を使用します。スイープジョブを設定するには、以下のように設定する必要があります：</p>
 <ul class="simple">
 <li><p>compute<code class="docutils literal notranslate"><span class="pre">：</span> <span class="pre">compute</span></code>: ジョブを実行する計算対象の名前。</p></li>
@@ -470,10 +460,7 @@ Monitor your job at https://ml.azure.com/runs/quiet_moon_6qzx0m40gb?wsid=/subscr
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="08_1Use%20MLflow%20to%20track%20jobs.html" class="btn btn-neutral float-left" title="トレーニングスクリプトをコマンドジョブとして実行する" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="10_0Create%20Responsible%20AI%20dashboard.html" class="btn btn-neutral float-right" title="モデルを評価するための責任あるAIダッシュボードの作成" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

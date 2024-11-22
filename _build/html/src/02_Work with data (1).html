@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="4. Work with Compute" href="03_Work%20with%20compute.html" />
-    <link rel="prev" title="2. Python SDKを使用したトレーニングスクリプトの実行" href="01_Run%20training%20script.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,26 +51,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. データの扱い方</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">3.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">3.2. Connect to your workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#List-the-datastores">3.3. List the datastores</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-a-datastore">3.4. Create a datastore</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-data-assets">3.5. Create data assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Read-data-in-notebook">3.6. Read data in notebook</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ノートブックでデータを読む">3.7. ノートブックでデータを読む</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Use-data-in-a-job">3.8. Use data in a job</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. Work with Compute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. Work with environments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. データの扱い方</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -100,11 +87,11 @@
            <div itemprop="articleBody">
              
   <section id="データの扱い方">
-<h1><span class="section-number">3. </span>データの扱い方<a class="headerlink" href="#データの扱い方" title="この見出しへのパーマリンク"></a></h1>
+<h1>データの扱い方<a class="headerlink" href="#データの扱い方" title="この見出しへのパーマリンク"></a></h1>
 <p>データは機械学習モデルを構築する基盤です。データをクラウドで一元管理し、複数のワークステーションやコンピュートターゲットで実験やトレーニングモデルを実行するデータサイエンティストのチームがアクセスできるようにすることは、プロフェッショナルなデータサイエンスソリューションの重要な部分です。</p>
 <p>このノートブックでは、データを扱うための2つのAzure Machine Learningオブジェクトについて説明します： <em>データストア</em>と<em>データアセット</em>です。</p>
 <section id="始める前に">
-<h2><span class="section-number">3.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p><strong>Note</strong>: If the <strong>azure-ai-ml</strong> package is not installed, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> to install it.</p>
@@ -137,7 +124,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="Connect-to-your-workspace">
-<h2><span class="section-number">3.2. </span>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
+<h2>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。</p>
 <div class="nbinput nblast docutils container">
@@ -176,7 +163,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="List-the-datastores">
-<h2><span class="section-number">3.3. </span>List the datastores<a class="headerlink" href="#List-the-datastores" title="この見出しへのパーマリンク"></a></h2>
+<h2>List the datastores<a class="headerlink" href="#List-the-datastores" title="この見出しへのパーマリンク"></a></h2>
 <p>Azure Machine Learning ワークスペースを作成すると、Azure Storage Account も作成される。Storage Account には Blob ストレージとファイル ストレージが含まれ、自動的に <strong>datastores</strong> としてワークスペースに接続される。ワークスペースに接続されているすべてのデータストアを一覧できます：</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -203,7 +190,7 @@ workspaceblobstore
 <p>workspaceblobstore<code class="docutils literal notranslate"><span class="pre">は、先ほど説明した**azureml-blobstore-...**コンテナに接続していることに注意してください。workspacefilestore</span></code>は<strong>code-…</strong>ファイル共有に接続する。</p>
 </section>
 <section id="Create-a-datastore">
-<h2><span class="section-number">3.4. </span>Create a datastore<a class="headerlink" href="#Create-a-datastore" title="この見出しへのパーマリンク"></a></h2>
+<h2>Create a datastore<a class="headerlink" href="#Create-a-datastore" title="この見出しへのパーマリンク"></a></h2>
 <p>別の Azure ストレージサービスと Azure Machine Learning ワークスペースを接続したい場合は、いつでもデータストアを作成できる。データストアを作成すると、ワークスペースとストレージ間の接続が作成され、ストレージサービス自体は作成されないことに注意してください。</p>
 <p>データストアを作成し、（既に存在する）ストレージに接続するには、以下のように指定する必要がある：</p>
 <ul class="simple">
@@ -272,7 +259,7 @@ workspaceblobstore
 </div>
 </section>
 <section id="Create-data-assets">
-<h2><span class="section-number">3.5. </span>Create data assets<a class="headerlink" href="#Create-data-assets" title="この見出しへのパーマリンク"></a></h2>
+<h2>Create data assets<a class="headerlink" href="#Create-data-assets" title="この見出しへのパーマリンク"></a></h2>
 <p>データストア内の特定のフォルダやファイルを指定するには、データアセットを作成します。データアセットには3つのタイプがあります：</p>
 <ul class="simple">
 <li><p>URI_FILE` は特定のファイルを指す。</p></li>
@@ -421,10 +408,10 @@ diabetes-table
 </div>
 </section>
 <section id="Read-data-in-notebook">
-<h2><span class="section-number">3.6. </span>Read data in notebook<a class="headerlink" href="#Read-data-in-notebook" title="この見出しへのパーマリンク"></a></h2>
+<h2>Read data in notebook<a class="headerlink" href="#Read-data-in-notebook" title="この見出しへのパーマリンク"></a></h2>
 </section>
 <section id="ノートブックでデータを読む">
-<h2><span class="section-number">3.7. </span>ノートブックでデータを読む<a class="headerlink" href="#ノートブックでデータを読む" title="この見出しへのパーマリンク"></a></h2>
+<h2>ノートブックでデータを読む<a class="headerlink" href="#ノートブックでデータを読む" title="この見出しへのパーマリンク"></a></h2>
 <p>最初はノートブックでデータ資産を操作して、データを探索したり機械学習モデルを実験したりしたいと思うかもしれません。URI_FILE<code class="docutils literal notranslate"><span class="pre">または</span></code>URI_FOLDER<code class="docutils literal notranslate"><span class="pre">タイプのデータアセットは、通常のデータ読み込みと同様に読み込まれます。例えば、データ資産が指すCSVファイルを読み込むには、pandasの関数</span></code>read_csv()` を使用します。</p>
 <p>MLTable` 型のデータアセットは、スキーマとデータの解釈方法を指定する <strong>MLTable</strong> ファイルによって既に **読み込まれ* ています。このファイルはスキーマを指定し、データをどのように解釈するかを指定します。データはすでに <em>read</em> されているので、MLTable 型のデータ資産を簡単に pandas dataframe に変換することができます。</p>
 <p>mltable`ライブラリをインストールする必要があります（ターミナルでインストールしました）。その後、データ資産をデータフレームに変換し、データを可視化することができます。</p>
@@ -604,7 +591,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="Use-data-in-a-job">
-<h2><span class="section-number">3.8. </span>Use data in a job<a class="headerlink" href="#Use-data-in-a-job" title="この見出しへのパーマリンク"></a></h2>
+<h2>Use data in a job<a class="headerlink" href="#Use-data-in-a-job" title="この見出しへのパーマリンク"></a></h2>
 <p>ノートブックを実験に使った後 スクリプトを使って機械学習モデルを学習することができる。スクリプトはジョブとして実行でき、ジョブごとに入力と出力を指定できます。</p>
 <p>ジョブの入力または出力として、<strong>データアセット</strong>または<strong>データストアパス</strong>のいずれかを使用できます。</p>
 <p>以下のセルは <strong>src</strong> フォルダに <strong>move-data.py</strong> スクリプトを作成します。スクリプトは <code class="docutils literal notranslate"><span class="pre">read_csv()</span></code> 関数で入力データを読み込みます。スクリプトはデータを CSV ファイルとして出力パスに格納します。</p>
@@ -767,10 +754,7 @@ Monitor your job at https://ml.azure.com/runs/orange_night_lh9tdjlryq?wsid=/subs
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="01_Run%20training%20script.html" class="btn btn-neutral float-left" title="2. Python SDKを使用したトレーニングスクリプトの実行" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-right" title="4. Work with Compute" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

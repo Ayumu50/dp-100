@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="6. 自動機械学習で分類モデルを訓練する" href="06_Classification%20with%20Automated%20Machine%20Learning.html" />
-    <link rel="prev" title="4. コンピューティングの使用" href="03_Work%20with%20compute.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,21 +53,13 @@
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. 環境構築</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">5.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">5.2. Connect to your workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Run-a-script-as-a-job">5.3. Run a script as a job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#List-environments">5.4. List environments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-and-use-a-custom-environment">5.5. Create and use a custom environment</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -97,11 +87,11 @@
            <div itemprop="articleBody">
              
   <section id="環境構築">
-<h1><span class="section-number">5. </span>環境構築<a class="headerlink" href="#環境構築" title="この見出しへのパーマリンク"></a></h1>
+<h1>環境構築<a class="headerlink" href="#環境構築" title="この見出しへのパーマリンク"></a></h1>
 <p>Azure Machine Learningジョブとしてスクリプトを実行する場合、ジョブ実行の実行コンテキストを定義する必要があります。重要な設定の1つは、スクリプトを実行するコンピュートターゲットです。これは、ローカルワークステーション（この場合はコンピュートインスタンス）、またはオンデマンドでプロビジョニングされるAzure Machine Learningマネージドコンピュートクラスターのようなリモートコンピュートターゲットになります。</p>
 <p>このノートブックでは、コンピュートクラスタを作成し、ジョブ用のコンピュートターゲットを探索します。</p>
 <section id="始める前に">
-<h2><span class="section-number">5.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -113,7 +103,7 @@
 </div>
 </section>
 <section id="Connect-to-your-workspace">
-<h2><span class="section-number">5.2. </span>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
+<h2>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。</p>
 <div class="nbinput nblast docutils container">
@@ -152,7 +142,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="Run-a-script-as-a-job">
-<h2><span class="section-number">5.3. </span>Run a script as a job<a class="headerlink" href="#Run-a-script-as-a-job" title="この見出しへのパーマリンク"></a></h2>
+<h2>Run a script as a job<a class="headerlink" href="#Run-a-script-as-a-job" title="この見出しへのパーマリンク"></a></h2>
 <p>モデルをトレーニングするには、まず <strong>src</strong> フォルダに <strong>diabetes_training.py</strong> スクリプトを作成します。このスクリプトは、学習データと同じフォルダにある <strong>diabetes.csv</strong> ファイルを使用します。</p>
 <p>スクリプトの最初にライブラリをインポートしていることに注意してください。これらのライブラリの関数は、データの処理とモデルの学習に使用されます。スクリプトの実行に使用する計算機には、これらのライブラリがインストールされている必要があります。</p>
 <div class="nbinput docutils container">
@@ -254,7 +244,7 @@ Monitor your job at https://ml.azure.com/runs/lime_zebra_v4hrbnz2m3?wsid=/subscr
 <p>While the job is running, you can already run the next cells.</p>
 </section>
 <section id="List-environments">
-<h2><span class="section-number">5.4. </span>List environments<a class="headerlink" href="#List-environments" title="この見出しへのパーマリンク"></a></h2>
+<h2>List environments<a class="headerlink" href="#List-environments" title="この見出しへのパーマリンク"></a></h2>
 <p>ワークスペース内の環境を調べてみよう。</p>
 <p>前の作業では、キュレーションされた環境の1つを使いました。ワークスペースにすでに存在するすべての環境を探索するには、環境をリストアップします：</p>
 <div class="nbinput docutils container">
@@ -319,7 +309,7 @@ An environment for tasks such as regression, clustering, and classification with
 </div>
 </section>
 <section id="Create-and-use-a-custom-environment">
-<h2><span class="section-number">5.5. </span>Create and use a custom environment<a class="headerlink" href="#Create-and-use-a-custom-environment" title="この見出しへのパーマリンク"></a></h2>
+<h2>Create and use a custom environment<a class="headerlink" href="#Create-and-use-a-custom-environment" title="この見出しへのパーマリンク"></a></h2>
 <p>キュレーションされた環境に、スクリプトの実行に必要なPythonパッケージがすべて含まれていない場合、独自のカスタム環境を作成することができます。環境に必要なパッケージをすべてリストアップすることで、スクリプトを簡単に再実行できます。すべての依存パッケージは環境に保存され、使用するコンピュートとは関係なく、ジョブ構成で指定することができます。</p>
 <p>例えば、Dockerイメージから簡単に環境を作成することができます。PyTorchのような特定のフレームワークには、必要なものがすべて含まれているDockerイメージが公開されています。</p>
 <p>Dockerイメージから環境を作ってみましょう：</p>
@@ -490,10 +480,7 @@ Monitor your job at https://ml.azure.com/runs/sweet_parcel_2n9fgq4p54?wsid=/subs
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="03_Work%20with%20compute.html" class="btn btn-neutral float-left" title="4. コンピューティングの使用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="06_Classification%20with%20Automated%20Machine%20Learning.html" class="btn btn-neutral float-right" title="6. 自動機械学習で分類モデルを訓練する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

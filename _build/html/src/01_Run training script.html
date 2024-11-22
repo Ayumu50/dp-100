@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="3. データの扱い方" href="02_Work%20with%20data%20%281%29.html" />
-    <link rel="prev" title="1. 〜研修へようこそ" href="0.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,22 +50,16 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Python SDKを使用したトレーニングスクリプトの実行</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">2.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ワークスペースに接続する">2.2. ワークスペースに接続する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Python-SDKを使ってモデルをトレーニングする">2.3. Python SDKを使ってモデルをトレーニングする</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_Work%20with%20compute.html">4. コンピューティングの使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -95,10 +87,10 @@
            <div itemprop="articleBody">
              
   <section id="Python-SDKを使用したトレーニングスクリプトの実行">
-<h1><span class="section-number">2. </span>Python SDKを使用したトレーニングスクリプトの実行<a class="headerlink" href="#Python-SDKを使用したトレーニングスクリプトの実行" title="この見出しへのパーマリンク"></a></h1>
+<h1>Python SDKを使用したトレーニングスクリプトの実行<a class="headerlink" href="#Python-SDKを使用したトレーニングスクリプトの実行" title="この見出しへのパーマリンク"></a></h1>
 <p>Python SDK for Azure Machine Learningを使用すると、スクリプトをジョブとして送信できます。ジョブを使用することで、機械学習モデルを学習する際の入力パラメーターと出力を簡単に追跡することができます。</p>
 <section id="始める前に">
-<h2><span class="section-number">2.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、最新バージョンの <strong>azure-ai-ml</strong> パッケージが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -113,7 +105,7 @@
 </div>
 </section>
 <section id="ワークスペースに接続する">
-<h2><span class="section-number">2.2. </span>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
+<h2>ワークスペースに接続する<a class="headerlink" href="#ワークスペースに接続する" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。 ワークスペースに接続するには、サブスクリプションID、リソースグループ名、ワークスペース名といった識別子のパラメータが必要だ。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、デフォルト値を使用してワークスペースに接続できる。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -143,7 +135,7 @@
 </div>
 </section>
 <section id="Python-SDKを使ってモデルをトレーニングする">
-<h2><span class="section-number">2.3. </span>Python SDKを使ってモデルをトレーニングする<a class="headerlink" href="#Python-SDKを使ってモデルをトレーニングする" title="この見出しへのパーマリンク"></a></h2>
+<h2>Python SDKを使ってモデルをトレーニングする<a class="headerlink" href="#Python-SDKを使ってモデルをトレーニングする" title="この見出しへのパーマリンク"></a></h2>
 <p>モデルをトレーニングするには、まず<strong>src</strong>フォルダに<strong>diabetes_training.py</strong>スクリプトを作成します。このスクリプトは学習データと同じフォルダにある<strong>diabetes.csv</strong>ファイルを使用します。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -217,10 +209,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="0.html" class="btn btn-neutral float-left" title="1. 〜研修へようこそ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="02_Work%20with%20data%20%281%29.html" class="btn btn-neutral float-right" title="3. データの扱い方" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

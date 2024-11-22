@@ -25,9 +25,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="5. 環境構築" href="04_Work%20with%20environments.html" />
-    <link rel="prev" title="3. データの扱い方" href="02_Work%20with%20data%20%281%29.html" /> 
+    <link rel="search" title="検索" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,22 +52,14 @@
 <li class="toctree-l1"><a class="reference internal" href="0.html">1. 〜研修へようこそ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_Run%20training%20script.html">2. Python SDKを使用したトレーニングスクリプトの実行</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Work%20with%20data%20%281%29.html">3. データの扱い方</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. コンピューティングの使用</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#始める前に">4.1. 始める前に</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Connect-to-your-workspace">4.2. Connect to your workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-a-compute-cluster">4.3. Create a compute cluster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-a-script-to-train-a-model">4.4. Create a script to train a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Run-a-job-on-a-compute-cluster">4.5. Run a job on a compute cluster</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. コンピューティングの使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Work%20with%20environments.html">5. 環境構築</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Classification%20with%20Automated%20Machine%20Learning.html">6. 自動機械学習で分類モデルを訓練する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07_Track%20model%20training%20with%20MLflow.html">7. MLflowによるノートブックでのモデルトレーニングの追跡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_0Run%20script%20as%20a%20command%20job.html">8. トレーニングスクリプトをコマンドジョブとして実行する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">9. スイープジョブでハイパーパラメータを調整する</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">10. MLflow でモデルをログする</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">11. バッチエンドポイントへのデプロイ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">12. オンラインエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_0Hyperparameter%20tuning.html">8. スイープジョブでハイパーパラメータを調整する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_01Log%20models%20with%20MLflow.html">9. MLflow でモデルをログする</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_00Deploy%20to%20batch%20endpoint.html">10. バッチエンドポイントへのデプロイ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_11Deploy%20to%20online%20endpoint.html">11. オンラインエンドポイントへのデプロイ</a></li>
 </ul>
 
         </div>
@@ -97,11 +87,11 @@
            <div itemprop="articleBody">
              
   <section id="コンピューティングの使用">
-<h1><span class="section-number">4. </span>コンピューティングの使用<a class="headerlink" href="#コンピューティングの使用" title="この見出しへのパーマリンク"></a></h1>
+<h1>コンピューティングの使用<a class="headerlink" href="#コンピューティングの使用" title="この見出しへのパーマリンク"></a></h1>
 <p>Azure Machine Learningジョブとしてスクリプトを実行する場合、ジョブ実行の実行コンテキストを定義する必要があります。重要な設定の1つは、スクリプトを実行するコンピュートターゲットです。これは、ローカルワークステーション（この場合はコンピュートインスタンス）、またはオンデマンドでプロビジョニングされるAzure Machine Learningマネージドコンピュートクラスターのようなリモートコンピュートターゲットになります。</p>
 <p>このノートブックでは、コンピュートクラスタを作成し、ジョブ用のコンピュートターゲットを探索します。</p>
 <section id="始める前に">
-<h2><span class="section-number">4.1. </span>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
+<h2>始める前に<a class="headerlink" href="#始める前に" title="この見出しへのパーマリンク"></a></h2>
 <p>このノートブックのコードを実行するには、<strong>azure-ai-ml</strong> パッケージの最新バージョンが必要です。以下のセルを実行して、インストールされていることを確認してください。</p>
 <blockquote>
 <div><p>注<strong>： もし</strong> azure-ai-ml** パッケージがインストールされていない場合は、<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">azure-ai-ml</span></code> を実行してインストールしてください。</p>
@@ -134,7 +124,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </section>
 <section id="Connect-to-your-workspace">
-<h2><span class="section-number">4.2. </span>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
+<h2>Connect to your workspace<a class="headerlink" href="#Connect-to-your-workspace" title="この見出しへのパーマリンク"></a></h2>
 <p>必要な SDK パッケージがインストールされ、ワークスペースに接続する準備が整いました。</p>
 <p>ワークスペースに接続するには、識別子のパラメータ（サブスクリプションID、リソースグループ名、ワークスペース名）が必要です。Azure Machine Learningが管理するコンピュートインスタンスで作業しているので、ワークスペースに接続するにはデフォルト値を使用できる。</p>
 <div class="nbinput nblast docutils container">
@@ -173,7 +163,7 @@ Found the config file in: /config.json
 </div>
 </section>
 <section id="Create-a-compute-cluster">
-<h2><span class="section-number">4.3. </span>Create a compute cluster<a class="headerlink" href="#Create-a-compute-cluster" title="この見出しへのパーマリンク"></a></h2>
+<h2>Create a compute cluster<a class="headerlink" href="#Create-a-compute-cluster" title="この見出しへのパーマリンク"></a></h2>
 <p>多くの場合、大量のデータを処理する必要がある複雑な実験や長期間の実験を処理するには、ローカルのコンピュートリソースでは不十分な場合があります。Azure Machine Learningは、さまざまなコンピュートターゲットをサポートしており、ワークスペースで定義してジョブの実行に使用できます。</p>
 <p>Azure Machine Learning studio](<a class="reference external" href="https://ml.azure.com">https://ml.azure.com</a>)、Python SDK、またはAzure CLIを使用して、コンピュートクラスタを作成できます。以下のコードでは、ワークスペースに <code class="docutils literal notranslate"><span class="pre">aml-cluster</span></code> という名前のコンピュートクラスタが存在するかどうかをチェックし、存在しない場合は作成します。</p>
 <div class="nbinput docutils container">
@@ -279,7 +269,7 @@ AMLCompute の名前 aml-cluster 最大のCPU 2 nodes
 </div>
 </section>
 <section id="Create-a-script-to-train-a-model">
-<h2><span class="section-number">4.4. </span>Create a script to train a model<a class="headerlink" href="#Create-a-script-to-train-a-model" title="この見出しへのパーマリンク"></a></h2>
+<h2>Create a script to train a model<a class="headerlink" href="#Create-a-script-to-train-a-model" title="この見出しへのパーマリンク"></a></h2>
 <p>モデルをトレーニングするには、まず <strong>src</strong> フォルダに <strong>diabetes_training.py</strong> スクリプトを作成します。このスクリプトは学習データと同じフォルダにある<strong>diabetes.csv</strong>ファイルを使用します。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -333,7 +323,7 @@ Writing src/diabetes-training.py
 </div>
 </section>
 <section id="Run-a-job-on-a-compute-cluster">
-<h2><span class="section-number">4.5. </span>Run a job on a compute cluster<a class="headerlink" href="#Run-a-job-on-a-compute-cluster" title="この見出しへのパーマリンク"></a></h2>
+<h2>Run a job on a compute cluster<a class="headerlink" href="#Run-a-job-on-a-compute-cluster" title="この見出しへのパーマリンク"></a></h2>
 <p>これで、作成したコンピュートクラスタ上でジョブを実行する準備ができました。</p>
 <blockquote>
 <div><p>注意 計算クラスタが0ノードから1ノードにスケールする必要があるためです。計算クラスタの準備ができると、スクリプトが実行されます。ジョブが終了すると、コンピュートクラスタはゼロノードまでスケールダウンします。コンピュートクラスタの状態は、<strong>Compute</strong>ページで確認できます。</p>
@@ -391,10 +381,7 @@ Monitor your job at https://ml.azure.com/runs/lucid_door_dswxxpm5ks?wsid=/subscr
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="02_Work%20with%20data%20%281%29.html" class="btn btn-neutral float-left" title="3. データの扱い方" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="04_Work%20with%20environments.html" class="btn btn-neutral float-right" title="5. 環境構築" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
